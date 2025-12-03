@@ -1,0 +1,1667 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="地图可视化系统 - 石家庄市实时求助地图，可视化查看周边求助需求，快速定位可提供帮助的位置">
+    <meta name="keywords" content="地图可视化,石家庄地图,实时求助地图,地理位置,援助定位">
+    <title>地图可视化 - 石家庄市实时求助地图 | 援手社区</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        /* 地图概览 */
+        .map-overview {
+            background: linear-gradient(135deg, #1cc88a 0%, #36b9cc 100%);
+            color: white;
+            padding: 120px 0 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .map-overview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+            opacity: 0.1;
+        }
+        
+        .map-overview h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .map-overview p {
+            font-size: 20px;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            position: relative;
+            line-height: 1.6;
+        }
+        
+        /* 实时地图容器 */
+        .live-map-container {
+            padding: 0;
+            position: relative;
+            background: #f8f9fa;
+        }
+        
+        .map-header {
+            background: white;
+            padding: 25px 40px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .map-title h2 {
+            margin: 0;
+            color: var(--dark-color);
+        }
+        
+        .map-title p {
+            margin: 8px 0 0;
+            color: var(--gray-color);
+        }
+        
+        .map-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .map-refresh {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #f8f9fa;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--dark-color);
+            transition: all 0.3s ease;
+        }
+        
+        .map-refresh:hover {
+            background: #e9ecef;
+        }
+        
+        .map-refresh i {
+            transition: transform 0.5s ease;
+        }
+        
+        .map-refresh.refreshing i {
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Leaflet地图容器 */
+        #shijiazhuang-map {
+            height: 600px;
+            width: 100%;
+            z-index: 1;
+        }
+        
+        /* 地图侧边栏 */
+        .map-sidebar {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 350px;
+            height: 100%;
+            background: white;
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            padding: 30px;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+        }
+        
+        .sidebar-toggle {
+            position: absolute;
+            left: -45px;
+            top: 30px;
+            width: 45px;
+            height: 45px;
+            background: white;
+            border: none;
+            border-radius: 8px 0 0 8px;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--dark-color);
+        }
+        
+        .sidebar-content {
+            margin-top: 20px;
+        }
+        
+        .help-filter {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .filter-title {
+            margin: 0 0 20px;
+            font-size: 18px;
+            color: var(--dark-color);
+        }
+        
+        .filter-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .filter-option input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #1cc88a;
+        }
+        
+        .filter-option label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            color: var(--dark-color);
+        }
+        
+        .priority-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .emergency-dot { background: #ff6b6b; }
+        .high-dot { background: #f6c23e; }
+        .medium-dot { background: #36b9cc; }
+        .low-dot { background: #858796; }
+        
+        .distance-slider {
+            margin: 25px 0;
+        }
+        
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .slider-value {
+            font-weight: 600;
+            color: #1cc88a;
+        }
+        
+        .range-slider {
+            width: 100%;
+            height: 8px;
+            -webkit-appearance: none;
+            background: #e0e0e0;
+            border-radius: 4px;
+            outline: none;
+        }
+        
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            background: #1cc88a;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        /* 求助列表 */
+        .help-list {
+            margin-top: 30px;
+        }
+        
+        .help-item {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid #1cc88a;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .help-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .help-item.emergency {
+            border-left-color: #ff6b6b;
+        }
+        
+        .help-item.high {
+            border-left-color: #f6c23e;
+        }
+        
+        .help-item.medium {
+            border-left-color: #36b9cc;
+        }
+        
+        .help-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        
+        .help-title {
+            margin: 0;
+            font-size: 16px;
+            color: var(--dark-color);
+        }
+        
+        .help-priority {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .emergency-priority { background: #ff6b6b; }
+        .high-priority { background: #f6c23e; }
+        .medium-priority { background: #36b9cc; }
+        
+        .help-location {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: var(--gray-color);
+            margin-bottom: 12px;
+        }
+        
+        .help-description {
+            font-size: 14px;
+            color: var(--gray-color);
+            line-height: 1.5;
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .help-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .help-distance {
+            font-size: 14px;
+            color: var(--gray-color);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .help-time {
+            font-size: 12px;
+            color: #999;
+        }
+        
+        /* 区域统计 */
+        .area-stats {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #1cc88a, #36b9cc);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin: 0 auto 25px;
+        }
+        
+        .stat-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 16px;
+            color: var(--gray-color);
+        }
+        
+        .stat-trend {
+            font-size: 14px;
+            color: #1cc88a;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        
+        /* 热门求助区域 */
+        .hot-zones {
+            padding: 80px 0;
+        }
+        
+        .zones-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .zone-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+        
+        .zone-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .zone-header {
+            background: linear-gradient(135deg, #1cc88a, #36b9cc);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .zone-name {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .zone-address {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .zone-content {
+            padding: 25px;
+        }
+        
+        .zone-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .zone-stat {
+            text-align: center;
+        }
+        
+        .zone-stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+        
+        .zone-stat-label {
+            font-size: 13px;
+            color: var(--gray-color);
+        }
+        
+        .zone-help-types {
+            margin-top: 20px;
+        }
+        
+        .help-type-tag {
+            display: inline-block;
+            background: #f8f9fa;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: var(--gray-color);
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+        
+        /* 地图功能 */
+        .map-features {
+            padding: 80px 0;
+            background: var(--light-color);
+        }
+        
+        .features-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+        
+        .feature-item {
+            text-align: center;
+        }
+        
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #1cc88a, #36b9cc);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto 25px;
+        }
+        
+        .feature-title {
+            font-size: 20px;
+            color: var(--dark-color);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .feature-description {
+            color: var(--gray-color);
+            line-height: 1.6;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 1200px) {
+            .map-sidebar {
+                transform: translateX(100%);
+            }
+            
+            .map-sidebar.open {
+                transform: translateX(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .map-overview {
+                padding: 80px 0 60px;
+            }
+            
+            .map-overview h1 {
+                font-size: 36px;
+            }
+            
+            .map-header {
+                padding: 20px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            #shijiazhuang-map {
+                height: 450px;
+            }
+            
+            .map-sidebar {
+                width: 100%;
+                height: 50vh;
+                bottom: 0;
+                top: auto;
+                transform: translateY(100%);
+                border-radius: 20px 20px 0 0;
+            }
+            
+            .map-sidebar.open {
+                transform: translateY(0);
+            }
+            
+            .sidebar-toggle {
+                left: 50%;
+                transform: translateX(-50%);
+                top: -45px;
+                width: 80px;
+                height: 45px;
+                border-radius: 20px 20px 0 0;
+            }
+            
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .zones-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .map-overview h1 {
+                font-size: 28px;
+            }
+            
+            .map-overview p {
+                font-size: 16px;
+            }
+            
+            #shijiazhuang-map {
+                height: 350px;
+            }
+            
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .feature-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 24px;
+            }
+            
+            .feature-title {
+                font-size: 18px;
+            }
+        }
+        
+        /* 自定义Leaflet样式 */
+        .leaflet-control-zoom {
+            border: none !important;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1) !important;
+            border-radius: 8px !important;
+            overflow: hidden;
+        }
+        
+        .leaflet-control-zoom a {
+            background: white !important;
+            color: var(--dark-color) !important;
+            border: none !important;
+            width: 40px !important;
+            height: 40px !important;
+            line-height: 40px !important;
+        }
+        
+        .leaflet-control-zoom a:hover {
+            background: #f8f9fa !important;
+        }
+        
+        .leaflet-popup-content {
+            min-width: 250px;
+            padding: 15px;
+        }
+        
+        .custom-marker {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+            border: 3px solid white;
+        }
+        
+        .emergency-marker { background: #ff6b6b; }
+        .high-marker { background: #f6c23e; }
+        .medium-marker { background: #36b9cc; }
+        .low-marker { background: #858796; }
+        
+        .marker-pulse {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            opacity: 0;
+            animation: pulse 2s infinite;
+        }
+        
+        .emergency-marker .marker-pulse { background: rgba(255, 107, 107, 0.5); }
+        .high-marker .marker-pulse { background: rgba(246, 194, 62, 0.5); }
+        .medium-marker .marker-pulse { background: rgba(54, 185, 204, 0.5); }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.7;
+            }
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 跳过导航链接（辅助功能） -->
+    <a href="#main-content" class="sr-only">跳过导航</a>
+    
+    <!-- 导航栏 -->
+    <header>
+        <div class="container">
+            <nav class="navbar" aria-label="主导航">
+                <div class="logo">
+                    <i class="fas fa-hands-helping" aria-hidden="true"></i>
+                    援手社区
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html"><i class="fas fa-home"></i> 首页</a></li>
+                    <li><a href="#map"><i class="fas fa-map-marked-alt"></i> 实时地图</a></li>
+                    <li><a href="#stats"><i class="fas fa-chart-bar"></i> 区域统计</a></li>
+                    <li><a href="#zones"><i class="fas fa-fire"></i> 热门区域</a></li>
+                    <li><a href="#features"><i class="fas fa-cogs"></i> 地图功能</a></li>
+                    <li><a href="login.html" class="btn btn-primary"><i class="fas fa-user-circle"></i> 登录查看</a></li>
+                </ul>
+                <button class="mobile-menu" aria-label="切换菜单" aria-expanded="false">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 主内容区域 -->
+    <main id="main-content">
+        <!-- 地图概览 -->
+        <section class="map-overview">
+            <div class="container">
+                <h1>石家庄市实时求助地图</h1>
+                <p>可视化查看石家庄市周边的求助需求，快速定位可提供帮助的位置，让援助更加精准高效。</p>
+                <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                    <a href="#map" class="btn btn-primary" style="background: white; color: #1cc88a; font-weight: 700; padding: 18px 40px; font-size: 18px;">
+                        查看实时地图 <i class="fas fa-map-marked-alt"></i>
+                    </a>
+                    <a href="post-help.html" class="btn btn-outline" style="background: transparent; border-color: white; color: white; padding: 18px 40px; font-size: 18px;">
+                        发布位置求助 <i class="fas fa-bullhorn"></i>
+                    </a>
+                </div>
+                <div class="video-stats" style="margin-top: 60px; color: white;">
+                    <div class="stat">
+                        <span class="stat-number" style="color: white;">247</span>
+                        <span class="stat-label">实时求助</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" style="color: white;">15分钟</span>
+                        <span class="stat-label">平均响应</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" style="color: white;">89%</span>
+                        <span class="stat-label">市内覆盖</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 实时地图 -->
+        <section class="live-map-container" id="map">
+            <div class="map-header">
+                <div class="map-title">
+                    <h2>石家庄市实时求助分布</h2>
+                    <p>地图上的标记点代表实时求助位置，点击标记查看详情</p>
+                </div>
+                <div class="map-controls">
+                    <button class="map-refresh" id="refresh-map">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>刷新地图</span>
+                    </button>
+                    <button class="btn btn-primary" onclick="window.location.href='post-help.html'">
+                        <i class="fas fa-plus-circle"></i> 发布求助
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Leaflet地图容器 -->
+            <div id="shijiazhuang-map"></div>
+            
+            <!-- 地图侧边栏 -->
+            <div class="map-sidebar" id="map-sidebar">
+                <button class="sidebar-toggle" id="sidebar-toggle">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                
+                <h3>求助筛选</h3>
+                <div class="sidebar-content">
+                    <div class="help-filter">
+                        <h4 class="filter-title">求助类型</h4>
+                        <div class="filter-options">
+                            <div class="filter-option">
+                                <input type="checkbox" id="emergency-help" checked>
+                                <label for="emergency-help">
+                                    <span class="priority-dot emergency-dot"></span>
+                                    <span>紧急求助</span>
+                                </label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="high-help" checked>
+                                <label for="high-help">
+                                    <span class="priority-dot high-dot"></span>
+                                    <span>高优先级</span>
+                                </label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="medium-help" checked>
+                                <label for="medium-help">
+                                    <span class="priority-dot medium-dot"></span>
+                                    <span>中等优先级</span>
+                                </label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="low-help">
+                                <label for="low-help">
+                                    <span class="priority-dot low-dot"></span>
+                                    <span>低优先级</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="distance-slider">
+                            <div class="slider-label">
+                                <span>距离筛选</span>
+                                <span class="slider-value" id="distance-value">5公里</span>
+                            </div>
+                            <input type="range" min="1" max="20" value="5" class="range-slider" id="distance-slider">
+                        </div>
+                    </div>
+                    
+                    <div class="help-list">
+                        <h4>附近求助列表</h4>
+                        <!-- 求助项将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 区域统计 -->
+        <section class="area-stats" id="stats">
+            <div class="container">
+                <div class="section-title">
+                    <h2>石家庄市求助统计</h2>
+                    <p>基于实时数据的区域求助统计分析</p>
+                </div>
+                
+                <div class="stats-container">
+                    <!-- 统计1 -->
+                    <div class="stat-card">
+                        <div class="stat-icon">📍</div>
+                        <div class="stat-value" id="active-helps">247</div>
+                        <div class="stat-label">实时求助数量</div>
+                        <div class="stat-trend">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>比昨日 +12%</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 统计2 -->
+                    <div class="stat-card">
+                        <div class="stat-icon">🚨</div>
+                        <div class="stat-value" id="emergency-helps">42</div>
+                        <div class="stat-label">紧急求助</div>
+                        <div class="stat-trend">
+                            <i class="fas fa-arrow-down"></i>
+                            <span>比昨日 -8%</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 统计3 -->
+                    <div class="stat-card">
+                        <div class="stat-icon">🤝</div>
+                        <div class="stat-value" id="active-volunteers">1,248</div>
+                        <div class="stat-label">活跃志愿者</div>
+                        <div class="stat-trend">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>比昨日 +5%</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 统计4 -->
+                    <div class="stat-card">
+                        <div class="stat-icon">⚡</div>
+                        <div class="stat-value" id="avg-response">15<span style="font-size: 24px;">分钟</span></div>
+                        <div class="stat-label">平均响应时间</div>
+                        <div class="stat-trend">
+                            <i class="fas fa-arrow-down"></i>
+                            <span>比上周快18%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-50">
+                    <a href="#" class="btn btn-outline" style="padding: 12px 40px;">
+                        <i class="fas fa-download"></i> 下载详细统计数据
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 热门求助区域 -->
+        <section class="hot-zones" id="zones">
+            <div class="container">
+                <div class="section-title">
+                    <h2>热门求助区域</h2>
+                    <p>石家庄市求助需求集中的区域</p>
+                </div>
+                
+                <div class="zones-grid">
+                    <!-- 区域1 -->
+                    <div class="zone-card">
+                        <div class="zone-header">
+                            <div class="zone-name">长安区</div>
+                            <div class="zone-address">石家庄市中心区域</div>
+                        </div>
+                        <div class="zone-content">
+                            <div class="zone-stats">
+                                <div class="zone-stat">
+                                    <div class="zone-stat-value">68</div>
+                                    <div class="zone-stat-label">实时求助</div>
+                                </div>
+                                <div class="zone-stat">
+                                    <div class="zone-stat-value">12</div>
+                                    <div class="zone-stat-label">紧急求助</div>
+                                </div>
+                                <div class="zone-stat">
+                                    <div class="zone-stat-value">89%</div>
+                                    <div class="zone-stat-label">解决率</div>
+                                </div>
+                            </div>
+                            <p style="color: var(--gray-color); font-size: 14px; line-height: 1.6;">
+                                石家庄市中心区域，人口密集，求助需求多样化，以生活帮助和医疗健康类为主。
+                            </p>
+                            <div class="zone-help-types">
+                                <span class="help-type-tag">生活帮助</span>
+                                <span class="help-type-tag">医疗健康</span>
+                                <span class="help-type-tag">教育辅导</span>
+                                <span class="help-type-tag">紧急求助</span>
+                            </div>
+                            <div class="text-center mt-20">
+                                <button class="btn btn-outline" onclick="focusOnArea('长安区')" style="padding: 8px 25px; font-size: 14px;">
+                                    <i class="fas fa-search-location"></i> 查看此区域
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 区域2 -->
+                    <div class="zone-card">
+                        <div class="zone-header">
+                            <div class="zone-name">桥西区</div>
+                            <div class="zone-address">石家庄市西部区域</div>
+                        </div>
+                        <div class="zone-content">
+                            <div class="zone-stats">
+                                <div class="zone-stat">
+                                    <div class="zone-stat-value">54</div>
+                                    <div class="zone-stat-label">实时求助</div>
+                                </div>
+                                <div class="zone-stat">
+                                    <div class="zone-stat-value">8</div>
+                                    <div class="zone-stat-label">紧急求助</div>
+                                </div>
+                                <div class="zone-stat">
+                                    <div class="zone-stat-value">92%</div>
+                                    <div class="zone-stat-label">解决率</div>
+                                </div>
+                            </div>
+                            <p style="color: var(--gray-color); font-size: 14px; line-height: 1.6;">
+                                石家庄市老城区，老年人口较多，助老服务和医疗健康类求助需求突出。
+                            </p>
+                            <div class="zone-help-types">
+                                <span class="help-type-tag">助老服务</span>
+                                <span class="help-type-tag">医疗健康</span>
+                                <span class="help-type-tag">技术维修</span>
+                                <span class="help-type-tag">日常购物</span>
+                            </div>
+                            <div class="text-center mt-20">
+                                <button class="btn btn-outline" onclick="focusOnArea('桥西区')" style="padding: 8px 25px; font-size: 14px;">
+                                    <i class="fas fa-search-location"></i> 查看此区域
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 区域3 -->
+                    <div class="zone-card">
+                        <div class="zone-header">
+                            <div class="zone-name">裕华区</div>
+                            <div class="zone-address">石家庄市东南区域</div>
+                        </div>
+                        <div class="zone-content">
+                            <div class="zone-stats">
+                                <div class="zone-stat">
+                                    <div class="zone-stat-value">47</div>
+                                    <div class="zone-stat-label">实时求助</div>
+                                </div>
+                                <div class="zone-stat">
+                                    <div class="zone-stat-value">6</div>
+                                    <div class="zone-stat-label">紧急求助</div>
+                                </div>
+                                <div class="zone-stat">
+                                    <div class="zone-stat-value">94%</div>
+                                    <div class="zone-stat-label">解决率</div>
+                                </div>
+                            </div>
+                            <p style="color: var(--gray-color); font-size: 14px; line-height: 1.6;">
+                                新兴住宅区集中，年轻家庭较多，教育辅导和家庭服务类求助需求显著。
+                            </p>
+                            <div class="zone-help-types">
+                                <span class="help-type-tag">教育辅导</span>
+                                <span class="help-type-tag">家庭服务</span>
+                                <span class="help-type-tag">技术维修</span>
+                                <span class="help-type-tag">宠物照看</span>
+                            </div>
+                            <div class="text-center mt-20">
+                                <button class="btn btn-outline" onclick="focusOnArea('裕华区')" style="padding: 8px 25px; font-size: 14px;">
+                                    <i class="fas fa-search-location"></i> 查看此区域
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 地图功能 -->
+        <section class="map-features" id="features">
+            <div class="container">
+                <div class="section-title">
+                    <h2>地图可视化功能</h2>
+                    <p>丰富的地图功能，让援助更加精准高效</p>
+                </div>
+                
+                <div class="features-container">
+                    <!-- 功能1 -->
+                    <div class="feature-item">
+                        <div class="feature-icon">📍</div>
+                        <h3 class="feature-title">实时位置标记</h3>
+                        <p class="feature-description">实时显示石家庄市范围内的求助位置，不同颜色标记代表不同紧急程度，一目了然。</p>
+                    </div>
+                    
+                    <!-- 功能2 -->
+                    <div class="feature-item">
+                        <div class="feature-icon">🎯</div>
+                        <h3 class="feature-title">精准距离计算</h3>
+                        <p class="feature-description">自动计算求助者与志愿者的距离，智能推荐最近的志愿者，减少响应时间。</p>
+                    </div>
+                    
+                    <!-- 功能3 -->
+                    <div class="feature-item">
+                        <div class="feature-icon">🗺️</div>
+                        <h3 class="feature-title">区域热度分析</h3>
+                        <p class="feature-description">可视化展示不同区域的求助密度，帮助志愿者了解需求分布，合理规划援助路线。</p>
+                    </div>
+                    
+                    <!-- 功能4 -->
+                    <div class="feature-item">
+                        <div class="feature-icon">🔔</div>
+                        <h3 class="feature-title">实时通知提醒</h3>
+                        <p class="feature-description">当附近出现紧急求助时，系统自动向附近志愿者推送通知，确保快速响应。</p>
+                    </div>
+                    
+                    <!-- 功能5 -->
+                    <div class="feature-item">
+                        <div class="feature-icon">📊</div>
+                        <h3 class="feature-title">数据统计分析</h3>
+                        <p class="feature-description">提供区域求助统计数据，帮助公益组织和政府了解需求分布，优化资源配置。</p>
+                    </div>
+                    
+                    <!-- 功能6 -->
+                    <div class="feature-item">
+                        <div class="feature-icon">🚗</div>
+                        <h3 class="feature-title">路线规划导航</h3>
+                        <p class="feature-description">集成导航功能，为志愿者规划最佳路线，节省时间，提高援助效率。</p>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-50">
+                    <a href="post-help.html" class="btn btn-primary" style="padding: 18px 50px; font-size: 18px;">
+                        <i class="fas fa-map-marker-alt"></i> 在地图上发布求助
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 底部 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>地图可视化</h3>
+                    <ul class="footer-links">
+                        <li><a href="#map"><i class="fas fa-chevron-right"></i> 实时地图</a></li>
+                        <li><a href="#stats"><i class="fas fa-chevron-right"></i> 区域统计</a></li>
+                        <li><a href="#zones"><i class="fas fa-chevron-right"></i> 热门区域</a></li>
+                        <li><a href="#features"><i class="fas fa-chevron-right"></i> 地图功能</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>核心功能</h3>
+                    <ul class="footer-links">
+                        <li><a href="intelligent-matching.html"><i class="fas fa-chevron-right"></i> 智能匹配系统</a></li>
+                        <li><a href="secure-communication.html"><i class="fas fa-chevron-right"></i> 安全沟通平台</a></li>
+                        <li><a href="credit-rating.html"><i class="fas fa-chevron-right"></i> 信用评价系统</a></li>
+                        <li><a href="transparent-tracking.html"><i class="fas fa-chevron-right"></i> 透明追踪系统</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>帮助中心</h3>
+                    <ul class="footer-links">
+                        <li><a href="how-to-get-help.html"><i class="fas fa-chevron-right"></i> 如何求助</a></li>
+                        <li><a href="become-volunteer.html"><i class="fas fa-chevron-right"></i> 成为志愿者</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> 常见问题</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> 用户协议</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>联系我们</h3>
+                    <ul class="footer-links footer-contact">
+                        <li><i class="fas fa-envelope"></i> 邮箱：2639687821@qq.com</li>
+                        <li><i class="fas fa-phone-alt"></i> 电话：15612140351</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 地址：河北科技大学</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 援手社区 - 综合性社会援助平台 版权所有 | 冀ICP备12345678号</p>
+                <p class="mt-20">让每一份善意都有回响，让每一次求助都有回应</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="main.js"></script>
+    <script>
+        // 石家庄市地图坐标 (中心点)
+        const shijiazhuangCenter = [38.0428, 114.5149];
+        
+        // 模拟求助数据
+        const helpData = [
+            {
+                id: 1,
+                title: "独居老人送餐",
+                type: "生活帮助",
+                priority: "emergency",
+                location: [38.0528, 114.5149],
+                address: "长安区中山东路",
+                description: "78岁独居老人，行动不便，需要每日送餐服务",
+                distance: "1.2km",
+                time: "15分钟前",
+                volunteer: "李女士"
+            },
+            {
+                id: 2,
+                title: "学生数学辅导",
+                type: "教育辅导",
+                priority: "high",
+                location: [38.0328, 114.5249],
+                address: "桥西区师范街",
+                description: "初中生数学学习困难，需要每周2次辅导",
+                distance: "2.5km",
+                time: "30分钟前",
+                volunteer: "张老师"
+            },
+            {
+                id: 3,
+                title: "家电维修",
+                type: "技术维修",
+                priority: "medium",
+                location: [38.0428, 114.5049],
+                address: "裕华区建华南大街",
+                description: "洗衣机故障无法使用，需要专业维修",
+                distance: "1.8km",
+                time: "1小时前",
+                volunteer: "王师傅"
+            },
+            {
+                id: 4,
+                title: "陪同就医",
+                type: "医疗健康",
+                priority: "emergency",
+                location: [38.0628, 114.5149],
+                address: "新华区和平西路",
+                description: "骨折术后复查，需要陪同前往医院",
+                distance: "3.2km",
+                time: "45分钟前",
+                volunteer: "赵护士"
+            },
+            {
+                id: 5,
+                title: "宠物照看",
+                type: "生活帮助",
+                priority: "medium",
+                location: [38.0428, 114.5349],
+                address: "长安区体育北大街",
+                description: "出差一周，需要照看猫咪",
+                distance: "2.1km",
+                time: "2小时前",
+                volunteer: "孙小姐"
+            },
+            {
+                id: 6,
+                title: "法律咨询",
+                type: "专业咨询",
+                priority: "high",
+                location: [38.0228, 114.5149],
+                address: "桥西区裕华西路",
+                description: "劳动合同纠纷咨询",
+                distance: "4.5km",
+                time: "3小时前",
+                volunteer: "刘律师"
+            },
+            {
+                id: 7,
+                title: "紧急药品配送",
+                type: "医疗健康",
+                priority: "emergency",
+                location: [38.0528, 114.4949],
+                address: "裕华区翟营南大街",
+                description: "高血压药物用完，急需配送",
+                distance: "1.5km",
+                time: "10分钟前",
+                volunteer: "周医生"
+            },
+            {
+                id: 8,
+                title: "电脑维修",
+                type: "技术维修",
+                priority: "medium",
+                location: [38.0328, 114.5049],
+                address: "新华区中华北大街",
+                description: "电脑无法开机，工作文件急需恢复",
+                distance: "2.8km",
+                time: "1.5小时前",
+                volunteer: "吴工程师"
+            }
+        ];
+        
+        // 区域中心点
+        const areaCenters = {
+            '长安区': [38.0528, 114.5149],
+            '桥西区': [38.0328, 114.5249],
+            '裕华区': [38.0428, 114.5049]
+        };
+        
+        // 初始化地图
+        let map;
+        let markers = [];
+        let currentFilters = {
+            emergency: true,
+            high: true,
+            medium: true,
+            low: false,
+            distance: 5
+        };
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化地图
+            initMap();
+            
+            // 添加标记点
+            addMarkers();
+            
+            // 初始化侧边栏
+            initSidebar();
+            
+            // 初始化筛选器
+            initFilters();
+            
+            // 初始化统计数据
+            initStats();
+            
+            // 刷新地图按钮
+            const refreshBtn = document.getElementById('refresh-map');
+            refreshBtn.addEventListener('click', function() {
+                refreshMap();
+            });
+            
+            // 响应式：移动设备默认关闭侧边栏
+            if (window.innerWidth <= 1200) {
+                document.getElementById('map-sidebar').classList.remove('open');
+            }
+        });
+        
+        // 初始化地图
+        function initMap() {
+            map = L.map('shijiazhuang-map').setView(shijiazhuangCenter, 12);
+            
+            // 添加地图底图（使用OpenStreetMap）
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                maxZoom: 18
+            }).addTo(map);
+            
+            // 添加石家庄市轮廓（简化版）
+            const shijiazhuangBounds = [
+                [38.12, 114.38],
+                [37.96, 114.65]
+            ];
+            
+            // 添加边界矩形
+            L.rectangle(shijiazhuangBounds, {
+                color: '#1cc88a',
+                weight: 2,
+                fillOpacity: 0.05,
+                fillColor: '#1cc88a'
+            }).addTo(map).bindPopup('石家庄市辖区');
+        }
+        
+        // 添加标记点
+        function addMarkers() {
+            // 清除现有标记
+            markers.forEach(marker => map.removeLayer(marker));
+            markers = [];
+            
+            // 添加新标记
+            helpData.forEach(help => {
+                // 检查是否符合筛选条件
+                if (!currentFilters[help.priority]) return;
+                
+                // 创建自定义标记
+                const markerIcon = L.divIcon({
+                    className: 'custom-marker',
+                    html: createMarkerHTML(help),
+                    iconSize: [40, 40],
+                    iconAnchor: [20, 40]
+                });
+                
+                // 添加标记
+                const marker = L.marker(help.location, { icon: markerIcon }).addTo(map);
+                
+                // 添加弹出窗口
+                const popupContent = createPopupContent(help);
+                marker.bindPopup(popupContent);
+                
+                // 点击标记时在侧边栏显示详情
+                marker.on('click', function() {
+                    showHelpDetails(help);
+                });
+                
+                markers.push(marker);
+            });
+            
+            // 更新求助列表
+            updateHelpList();
+        }
+        
+        // 创建标记HTML
+        function createMarkerHTML(help) {
+            let icon, pulseClass = '';
+            
+            switch(help.priority) {
+                case 'emergency':
+                    icon = '🚨';
+                    pulseClass = 'emergency-marker';
+                    break;
+                case 'high':
+                    icon = '⚠️';
+                    pulseClass = 'high-marker';
+                    break;
+                case 'medium':
+                    icon = '🔧';
+                    pulseClass = 'medium-marker';
+                    break;
+                default:
+                    icon = '❓';
+                    pulseClass = 'low-marker';
+            }
+            
+            return `
+                <div class="${pulseClass}">
+                    <div class="marker-pulse"></div>
+                    ${icon}
+                </div>
+            `;
+        }
+        
+        // 创建弹出窗口内容
+        function createPopupContent(help) {
+            let priorityText, priorityClass;
+            
+            switch(help.priority) {
+                case 'emergency':
+                    priorityText = '紧急求助';
+                    priorityClass = 'emergency-priority';
+                    break;
+                case 'high':
+                    priorityText = '高优先级';
+                    priorityClass = 'high-priority';
+                    break;
+                case 'medium':
+                    priorityText = '中等优先级';
+                    priorityClass = 'medium-priority';
+                    break;
+                default:
+                    priorityText = '低优先级';
+                    priorityClass = 'low-priority';
+            }
+            
+            return `
+                <div class="popup-content">
+                    <div class="help-header">
+                        <h4 class="help-title">${help.title}</h4>
+                        <span class="help-priority ${priorityClass}">${priorityText}</span>
+                    </div>
+                    <div class="help-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>${help.address}</span>
+                    </div>
+                    <p class="help-description">${help.description}</p>
+                    <div class="help-footer">
+                        <div class="help-distance">
+                            <i class="fas fa-walking"></i>
+                            <span>距离：${help.distance}</span>
+                        </div>
+                        <div class="help-time">
+                            <i class="far fa-clock"></i>
+                            <span>${help.time}</span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 15px; display: flex; gap: 10px;">
+                        <button class="btn btn-primary" style="padding: 8px 15px; font-size: 12px;" onclick="window.location.href='post-help.html?id=${help.id}'">
+                            <i class="fas fa-info-circle"></i> 查看详情
+                        </button>
+                        <button class="btn btn-outline" style="padding: 8px 15px; font-size: 12px;" onclick="window.location.href='login.html'">
+                            <i class="fas fa-hands-helping"></i> 立即帮助
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // 初始化侧边栏
+        function initSidebar() {
+            const sidebarToggle = document.getElementById('sidebar-toggle');
+            const sidebar = document.getElementById('map-sidebar');
+            
+            sidebarToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('open');
+                
+                // 更新图标
+                const icon = sidebarToggle.querySelector('i');
+                if (sidebar.classList.contains('open')) {
+                    icon.className = 'fas fa-chevron-right';
+                } else {
+                    icon.className = 'fas fa-chevron-left';
+                }
+            });
+        }
+        
+        // 初始化筛选器
+        function initFilters() {
+            // 优先级筛选
+            const priorityFilters = document.querySelectorAll('.help-filter input[type="checkbox"]');
+            priorityFilters.forEach(filter => {
+                filter.addEventListener('change', function() {
+                    const priority = this.id.replace('-help', '');
+                    currentFilters[priority] = this.checked;
+                    addMarkers();
+                });
+            });
+            
+            // 距离筛选
+            const distanceSlider = document.getElementById('distance-slider');
+            const distanceValue = document.getElementById('distance-value');
+            
+            distanceSlider.addEventListener('input', function() {
+                const value = this.value;
+                distanceValue.textContent = `${value}公里`;
+                currentFilters.distance = parseInt(value);
+                updateHelpList();
+            });
+        }
+        
+        // 更新求助列表
+        function updateHelpList() {
+            const helpList = document.querySelector('.help-list');
+            let filteredHelps = helpData.filter(help => currentFilters[help.priority]);
+            
+            // 按距离筛选（这里简化处理，实际应该计算真实距离）
+            filteredHelps = filteredHelps.slice(0, 5); // 只显示前5个
+            
+            // 生成HTML
+            let html = '<h4>附近求助列表</h4>';
+            
+            if (filteredHelps.length === 0) {
+                html += '<p style="color: var(--gray-color); text-align: center; padding: 20px;">暂无符合条件的求助</p>';
+            } else {
+                filteredHelps.forEach(help => {
+                    let priorityClass, priorityText;
+                    
+                    switch(help.priority) {
+                        case 'emergency':
+                            priorityClass = 'emergency';
+                            priorityText = '紧急';
+                            break;
+                        case 'high':
+                            priorityClass = 'high';
+                            priorityText = '高';
+                            break;
+                        case 'medium':
+                            priorityClass = 'medium';
+                            priorityText = '中';
+                            break;
+                        default:
+                            priorityClass = 'low';
+                            priorityText = '低';
+                    }
+                    
+                    html += `
+                        <div class="help-item ${priorityClass}" onclick="showHelpDetails(${help.id})">
+                            <div class="help-header">
+                                <h4 class="help-title">${help.title}</h4>
+                                <span class="help-priority ${priorityClass}-priority">${priorityText}</span>
+                            </div>
+                            <div class="help-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>${help.address}</span>
+                            </div>
+                            <p class="help-description">${help.description}</p>
+                            <div class="help-footer">
+                                <div class="help-distance">
+                                    <i class="fas fa-walking"></i>
+                                    <span>${help.distance}</span>
+                                </div>
+                                <div class="help-time">
+                                    <i class="far fa-clock"></i>
+                                    <span>${help.time}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            
+            helpList.innerHTML = html;
+        }
+        
+        // 显示求助详情
+        function showHelpDetails(helpId) {
+            // 如果是数字ID，找到对应的求助对象
+            let help;
+            if (typeof helpId === 'number') {
+                help = helpData.find(h => h.id === helpId);
+            } else {
+                help = helpId;
+            }
+            
+            if (!help) return;
+            
+            // 在地图上高亮显示该标记
+            markers.forEach(marker => {
+                const markerLatLng = marker.getLatLng();
+                if (markerLatLng.lat === help.location[0] && markerLatLng.lng === help.location[1]) {
+                    marker.openPopup();
+                }
+            });
+            
+            // 移动地图到该位置
+            map.setView(help.location, 15);
+            
+            // 在移动设备上打开侧边栏
+            if (window.innerWidth <= 1200) {
+                document.getElementById('map-sidebar').classList.add('open');
+            }
+        }
+        
+        // 初始化统计数据
+        function initStats() {
+            // 实时更新统计数据
+            setInterval(() => {
+                // 模拟数据变化
+                const activeHelps = document.getElementById('active-helps');
+                const currentValue = parseInt(activeHelps.textContent);
+                const newValue = Math.max(200, Math.min(300, currentValue + Math.floor(Math.random() * 5) - 2));
+                activeHelps.textContent = newValue;
+                
+                const emergencyHelps = document.getElementById('emergency-helps');
+                const emergencyValue = parseInt(emergencyHelps.textContent);
+                const newEmergencyValue = Math.max(30, Math.min(50, emergencyValue + Math.floor(Math.random() * 3) - 1));
+                emergencyHelps.textContent = newEmergencyValue;
+            }, 5000);
+        }
+        
+        // 刷新地图
+        function refreshMap() {
+            const refreshBtn = document.getElementById('refresh-map');
+            refreshBtn.classList.add('refreshing');
+            
+            // 模拟刷新过程
+            setTimeout(() => {
+                // 重新添加标记（模拟新数据）
+                addMarkers();
+                
+                // 更新统计数据
+                initStats();
+                
+                refreshBtn.classList.remove('refreshing');
+                
+                // 显示刷新成功消息
+                showNotification('地图数据已更新', 'success');
+            }, 1500);
+        }
+        
+        // 聚焦到特定区域
+        function focusOnArea(areaName) {
+            const center = areaCenters[areaName];
+            if (center) {
+                map.setView(center, 13);
+                
+                // 显示区域名称
+                showNotification(`已聚焦到${areaName}`, 'info');
+            }
+        }
+        
+        // 显示通知
+        function showNotification(message, type) {
+            // 创建通知元素
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'info-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            // 添加到页面
+            document.body.appendChild(notification);
+            
+            // 显示通知
+            setTimeout(() => {
+                notification.style.opacity = '1';
+                notification.style.transform = 'translateY(0)';
+            }, 10);
+            
+            // 3秒后移除
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateY(-20px)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+            
+            // 添加样式
+            const style = document.createElement('style');
+            style.textContent = `
+                .notification {
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: white;
+                    padding: 15px 25px;
+                    border-radius: 12px;
+                    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+                    z-index: 9999;
+                    opacity: 0;
+                    transform: translateY(-20px);
+                    transition: all 0.3s ease;
+                    max-width: 300px;
+                }
+                .notification.success {
+                    border-left: 4px solid #1cc88a;
+                }
+                .notification.info {
+                    border-left: 4px solid #36b9cc;
+                }
+                .notification i {
+                    font-size: 18px;
+                }
+                .notification.success i {
+                    color: #1cc88a;
+                }
+                .notification.info i {
+                    color: #36b9cc;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    </script>
+</body>
+</html>

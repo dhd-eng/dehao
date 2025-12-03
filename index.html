@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="援手社区 - 连接需要帮助的人与愿意提供帮助的人，打造温暖、可靠、高效的综合性社会援助平台">
+    <meta name="keywords" content="社会援助,志愿者,求助平台,社区互助,公益服务">
+    <title>援手社区 - 综合性社会援助平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="cases.css">
+    <style>
+        /* 视频介绍区块样式 */
+        .video-intro {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .video-intro .container {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .video-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        
+        .video-text h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: var(--dark-color);
+            line-height: 1.3;
+        }
+        
+        .video-text p {
+            font-size: 18px;
+            color: var(--gray-color);
+            margin-bottom: 30px;
+            line-height: 1.7;
+        }
+        
+        .video-text ul {
+            list-style: none;
+            margin-bottom: 40px;
+        }
+        
+        .video-text li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .video-text li i {
+            color: var(--primary-color);
+            margin-right: 12px;
+            margin-top: 5px;
+            font-size: 18px;
+        }
+        
+        .video-player-container {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            transform: perspective(1000px) rotateY(-5deg);
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+            background: #000;
+        }
+        
+        .video-player-container:hover {
+            transform: perspective(1000px) rotateY(0deg);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+        }
+        
+        .video-placeholder {
+            width: 100%;
+            height: 320px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .video-placeholder::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+            opacity: 0.7;
+        }
+        
+        .play-button {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 28px;
+            color: var(--primary-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 2;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .play-button:hover {
+            transform: scale(1.1);
+            background: white;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .play-button i {
+            margin-left: 5px;
+        }
+        
+        .video-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-top: 25px;
+            text-align: center;
+            z-index: 2;
+            position: relative;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .video-duration {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 10px;
+            z-index: 2;
+            position: relative;
+        }
+        
+        .video-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: block;
+            line-height: 1;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: var(--gray-color);
+            margin-top: 8px;
+        }
+        
+        /* 本地视频样式调整 */
+        .local-video {
+            width: 100%;
+            height: 320px;
+            display: block;
+            background-color: #000;
+        }
+        
+        /* 新增：案例详情页面链接样式 */
+        .case-detail-link {
+            display: inline-block;
+            text-decoration: none;
+            color: inherit;
+            width: 100%;
+        }
+        
+        .case-detail-link:hover .case-card {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .case-detail-link:hover h3 {
+            color: var(--primary-color);
+        }
+        
+        /* 地图样式增强 */
+        .map-section {
+            background-color: #f8f9fa;
+            padding: 80px 0;
+        }
+        
+        .map-container {
+            background-color: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            height: 600px;
+            position: relative;
+        }
+        
+        .map-legend {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+        
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .legend-dot.emergency {
+            background-color: #ff4757;
+            box-shadow: 0 0 10px rgba(255, 71, 87, 0.7);
+            animation: pulse 1.5s infinite;
+        }
+        
+        .legend-dot.high-priority {
+            background-color: #ffa502;
+            box-shadow: 0 0 8px rgba(255, 165, 2, 0.5);
+        }
+        
+        .legend-dot.medium-priority {
+            background-color: #2ed573;
+            box-shadow: 0 0 8px rgba(46, 213, 115, 0.5);
+        }
+        
+        .legend-dot.low-priority {
+            background-color: #1e90ff;
+            box-shadow: 0 0 8px rgba(30, 144, 255, 0.5);
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        .interactive-map {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: linear-gradient(135deg, #e0f7fa 0%, #bbdefb 100%);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.8) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.8) 0%, transparent 20%),
+                linear-gradient(to right, #e3f2fd, #f3e5f5);
+        }
+
+
+        
+        .map-point {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            transform: translate(-50%, -50%);
+            padding: 0;
+            background: transparent;
+            z-index: 5;
+        }
+        
+        .map-point[data-type="emergency"] .pulse-ring {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: #ff4757;
+            box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.7);
+            animation: emergency-pulse 1.5s infinite;
+            position: relative;
+        }
+        
+        @keyframes emergency-pulse {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.7);
+            }
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(255, 71, 87, 0);
+            }
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(255, 71, 87, 0);
+            }
+        }
+        
+        .map-point[data-type="high-priority"] .pulse-ring {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background-color: #ffa502;
+            box-shadow: 0 0 5px rgba(255, 165, 2, 0.7);
+            position: relative;
+        }
+        
+        .map-point[data-type="medium-priority"] .pulse-ring {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #2ed573;
+            box-shadow: 0 0 5px rgba(46, 213, 115, 0.7);
+            position: relative;
+        }
+        
+        .map-point[data-type="low-priority"] .pulse-ring {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #1e90ff;
+            box-shadow: 0 0 5px rgba(30, 144, 255, 0.7);
+            position: relative;
+        }
+        
+        .map-point .point-content {
+            display: none;
+            position: absolute;
+            top: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            width: 220px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            z-index: 20;
+            text-align: left;
+        }
+        
+        .map-point:hover .point-content {
+            display: block;
+        }
+        
+        .point-content h4 {
+            margin: 0 0 8px 0;
+            font-size: 16px;
+            color: var(--dark-color);
+        }
+        
+        .point-content p {
+            margin: 0 0 5px 0;
+            font-size: 14px;
+            color: var(--gray-color);
+        }
+        
+        .point-content .btn {
+            margin-top: 10px;
+        }
+        
+        /* 地图上的小区标记 */
+        .neighborhood {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 14px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+        
+        .neighborhood.residential {
+            background: rgba(255, 255, 255, 0.95);
+            border-left: 4px solid #4a6bff;
+        }
+        
+        .neighborhood.commercial {
+            background: rgba(255, 255, 255, 0.95);
+            border-left: 4px solid #ffa502;
+        }
+        
+        .neighborhood.park {
+            background: rgba(255, 255, 255, 0.95);
+            border-left: 4px solid #2ed573;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .video-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .video-text h2 {
+                font-size: 30px;
+            }
+            
+            .video-player-container {
+                transform: none;
+                max-width: 600px;
+                margin: 0 auto;
+            }
+            
+            .video-player-container:hover {
+                transform: translateY(-5px);
+            }
+            
+            .map-container {
+                height: 500px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .video-intro {
+                padding: 60px 0;
+            }
+            
+            .video-text h2 {
+                font-size: 26px;
+            }
+            
+            .video-placeholder, .local-video {
+                height: 250px;
+            }
+            
+            .play-button {
+                width: 70px;
+                height: 70px;
+                font-size: 24px;
+            }
+            
+            .video-stats {
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+            
+            .map-container {
+                height: 400px;
+            }
+            
+            .map-legend {
+                top: 10px;
+                left: 10px;
+                padding: 10px 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .video-text h2 {
+                font-size: 24px;
+            }
+            
+            .video-placeholder, .local-video {
+                height: 200px;
+            }
+            
+            .play-button {
+                width: 60px;
+                height: 60px;
+                font-size: 20px;
+            }
+            
+            .video-title {
+                font-size: 18px;
+            }
+            
+            .map-container {
+                height: 350px;
+            }
+        }
+        
+        /* 新增：自动播放时的样式 */
+        .video-player-container.auto-play {
+            transform: perspective(1000px) rotateY(0deg);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- 跳过导航链接（辅助功能） -->
+    <a href="#main-content" class="sr-only">跳过导航</a>
+    
+    <!-- 导航栏 -->
+    <header>
+        <div class="container">
+            <nav class="navbar" aria-label="主导航">
+                <div class="logo">
+                    <i class="fas fa-hands-helping" aria-hidden="true"></i>
+                    援手社区
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#home"><i class="fas fa-home"></i> 首页</a></li>
+                    <li><a href="#features"><i class="fas fa-cogs"></i> 功能</a></li>
+                    <li><a href="#cases"><i class="fas fa-images"></i> 案例展示</a></li>
+                    <li><a href="#about"><i class="fas fa-users"></i> 关于我们</a></li>
+                    <!-- 修改这里：将锚点链接改为文件链接 -->
+                    <li><a href="how-to-get-help.html"><i class="fas fa-question-circle"></i> 如何求助</a></li>
+                    <!-- 修改这里：将锚点链接改为文件链接 -->
+                    <li><a href="provide-help.html"><i class="fas fa-hands"></i> 提供帮助</a></li>
+                    <li><a href="#contact"><i class="fas fa-phone-alt"></i> 联系我们</a></li>
+                    <li><a href="post-help.html" class="btn btn-secondary"><i class="fas fa-bullhorn"></i> 发布求助</a></li>
+                    <li><a href="login.html" class="btn btn-primary"><i class="fas fa-user-circle"></i> 登录/注册</a></li>
+                </ul>
+                <button class="mobile-menu" aria-label="切换菜单" aria-expanded="false">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 主内容区域 -->
+    <main id="main-content">
+        <!-- 英雄区块 -->
+        <section class="hero" id="home">
+            <div class="container">
+                <h1>连接需要帮助的人与愿意提供帮助的人</h1>
+                <p>打造一个温暖、可靠、高效的在线社区，让每一个遇到困难的人都能及时获得帮助，让每一份善意都能精准送达。</p>
+                <div class="hero-buttons">
+                    <a href="post-help.html" class="btn btn-primary"><i class="fas fa-bullhorn"></i> 发布求助</a>
+                    <a href="login.html" class="btn btn-secondary"><i class="fas fa-hand-holding-heart"></i> 提供帮助</a>
+                    <a href="#video-intro" class="btn btn-outline watch-intro-btn"><i class="fas fa-play-circle"></i> 观看介绍</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 功能区块 -->
+        <section class="section" id="features" aria-labelledby="features-heading">
+            <div class="container">
+                <div class="section-title">
+                    <h2 id="features-heading">核心功能</h2>
+                    <p>通过技术手段连接需要帮助的人与愿意提供帮助的人/机构，降低求助与援助的门槛</p>
+                </div>
+                <div class="features">
+                    <div class="feature-card">
+                        <div class="feature-icon">📝</div>
+                        <h3>便捷发布需求</h3>
+                        <p>简化的求助发布流程，保护隐私，快速获得响应</p>
+                        <a href="post-help.html" class="btn btn-outline" style="margin-top: 15px; padding: 8px 20px; font-size: 14px;">立即发布</a>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔍</div>
+                        <h3>智能匹配系统</h3>
+                        <p>基于地理位置和分类的智能推送，让援助更精准</p>
+						<a href="intelligent-matching.html" class="btn btn-outline" style="margin-top: 15px; padding: 8px 20px; font-size: 14px;">立即匹配</a>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">💬</div>
+                        <h3>安全沟通平台</h3>
+                        <p>保护双方隐私的站内沟通系统，避免信息泄露</p>
+						<a href="secure-communication.html" class="btn btn-outline" style="margin-top: 15px; padding: 8px 20px; font-size: 14px;">点击进入</a>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🏆</div>
+                        <h3>信用评价体系</h3>
+                        <p>双向匿名评价系统，建立用户信任机制</p>
+						<a href="credit-rating.html" class="btn btn-outline" style="margin-top: 15px; padding: 8px 20px; font-size: 14px;">我要评价</a>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🧭</div>
+                        <h3>地图可视化</h3>
+                        <p>在地图上直观查看周边的求助信息</p>
+						<a href="map-visualization.html" class="btn btn-outline" style="margin-top: 15px; padding: 8px 20px; font-size: 14px;">查看地图</a>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>透明追踪系统</h3>
+                        <p>公开透明地展示援助过程和成果</p>
+						<a href="transparent-tracking.html" class="btn btn-outline" style="margin-top: 15px; padding: 8px 20px; font-size: 14px;">实时追踪</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 视频介绍区块 -->
+        <section class="video-intro" id="video-intro">
+            <div class="container">
+                <div class="video-content">
+                    <div class="video-text">
+                        <h2>了解援手社区如何运作</h2>
+                        <p>观看这段3分钟的介绍视频，了解我们如何通过技术连接需要帮助的人与愿意提供帮助的人，打造一个温暖、可靠、高效的社会援助平台。</p>
+                        
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> <strong>简化求助流程</strong> - 三步即可发布求助，保护隐私</li>
+                            <li><i class="fas fa-check-circle"></i> <strong>智能匹配系统</strong> - AI算法精准匹配求助者与援助者</li>
+                            <li><i class="fas fa-check-circle"></i> <strong>安全可靠平台</strong> - 保护双方隐私，建立信任机制</li>
+                            <li><i class="fas fa-check-circle"></i> <strong>实时可视化</strong> - 地图展示周边求助需求，快速响应</li>
+                        </ul>
+                        
+                        <div class="video-stats">
+                            <div class="stat">
+                                <span class="stat-number">94.7%</span>
+                                <span class="stat-label">匹配成功率</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">23分钟</span>
+                                <span class="stat-label">平均响应时间</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">1,247次</span>
+                                <span class="stat-label">本周成功匹配</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="video-player-container" id="video-container">
+                        <div class="video-placeholder" id="video-placeholder">
+                            <div class="play-button" id="play-button">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <div class="video-title">援手社区平台介绍</div>
+                            <div class="video-duration">03:25</div>
+                        </div>
+                        
+                        <!-- 本地视频播放器（初始隐藏） -->
+                        <div class="video-player" id="video-player" style="display: none;">
+                            <video 
+                                class="local-video"
+                                id="local-video"
+                                controls
+                                preload="metadata"
+                                poster="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80">
+                                <source src="D:\网站\f571237b0f089a1aff9ca30240c4bd28.mp4" type="video/mp4">
+                                您的浏览器不支持 HTML5 视频播放，请使用现代浏览器观看。
+                            </video>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 实时求助地图 -->
+        <section class="section map-section" aria-labelledby="map-heading">
+            <div class="container">
+                <div class="section-title">
+                    <h2 id="map-heading">实时求助地图</h2>
+                    <p>可视化查看周边求助需求，快速定位可提供帮助的位置</p>
+                </div>
+                <div class="map-container">
+                    <div class="map-legend">
+                        <div class="legend-item">
+                            <span class="legend-dot emergency"></span>
+                            <span>紧急求助</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-dot high-priority"></span>
+                            <span>高优先级</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-dot medium-priority"></span>
+                            <span>中等优先级</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-dot low-priority"></span>
+                            <span>低优先级</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 小区和地标 -->
+                    <div class="neighborhood residential" style="top: 20%; left: 15%;">阳光花园小区</div>
+                    <div class="neighborhood commercial" style="top: 35%; left: 30%;">商业中心</div>
+                    <div class="neighborhood residential" style="top: 50%; left: 20%;">幸福家园</div>
+                    <div class="neighborhood park" style="top: 65%; left: 40%;">人民公园</div>
+                    <div class="neighborhood residential" style="top: 30%; left: 55%;">金色港湾</div>
+                    <div class="neighborhood commercial" style="top: 45%; left: 70%;">购物广场</div>
+                    <div class="neighborhood residential" style="top: 60%; left: 65%;">温馨家园</div>
+                    <div class="neighborhood residential" style="top: 75%; left: 25%;">和谐社区</div>
+                    
+                    <div class="interactive-map" role="application" aria-label="实时求助地图">
+                        <!-- 紧急求助点 -->
+                        <button class="map-point" style="top: 25%; left: 18%;" data-type="emergency" aria-label="独居老人送餐求助点，距离1.2公里">
+                            <div class="pulse-ring"></div>
+                            <div class="point-content">
+                                <h4>独居老人送餐</h4>
+                                <p>阳光花园小区3栋</p>
+                                <p>距离：1.2km</p>
+                                <p>需要：每日午餐送餐</p>
+                                <p>紧急程度：紧急</p>
+                                <p class="mt-20"><a href="post-help.html?case=1" class="btn btn-primary" style="padding: 5px 15px; font-size: 12px;">立即帮助</a></p>
+                            </div>
+                        </button>
+                        
+                        <!-- 高优先级求助点 -->
+                        <button class="map-point" style="top: 40%; left: 32%;" data-type="high-priority" aria-label="学生课业辅导求助点，距离0.8公里">
+                            <div class="pulse-ring"></div>
+                            <div class="point-content">
+                                <h4>学生课业辅导</h4>
+                                <p>商业中心附近</p>
+                                <p>距离：0.8km</p>
+                                <p>需要：数学、英语辅导</p>
+                                <p>紧急程度：高</p>
+                                <p class="mt-20"><a href="post-help.html?case=2" class="btn btn-primary" style="padding: 5px 15px; font-size: 12px;">立即帮助</a></p>
+                            </div>
+                        </button>
+                        
+                        <button class="map-point" style="top: 55%; left: 25%;" data-type="high-priority" aria-label="家电维修求助点，距离1.5公里">
+                            <div class="pulse-ring"></div>
+                            <div class="point-content">
+                                <h4>家电维修</h4>
+                                <p>幸福家园5单元</p>
+                                <p>距离：1.5km</p>
+                                <p>需要：洗衣机维修</p>
+                                <p>紧急程度：高</p>
+                                <p class="mt-20"><a href="post-help.html?case=3" class="btn btn-primary" style="padding: 5px 15px; font-size: 12px;">立即帮助</a></p>
+                            </div>
+                        </button>
+                        
+                        <!-- 中等优先级求助点 -->
+                        <button class="map-point" style="top: 70%; left: 45%;" data-type="medium-priority" aria-label="陪同就医求助点，距离2.3公里">
+                            <div class="pulse-ring"></div>
+                            <div class="point-content">
+                                <h4>陪同就医</h4>
+                                <p>人民公园附近</p>
+                                <p>距离：2.3km</p>
+                                <p>需要：陪同老人医院复查</p>
+                                <p>紧急程度：中</p>
+                                <p class="mt-20"><a href="post-help.html?case=4" class="btn btn-primary" style="padding: 5px 15px; font-size: 12px;">立即帮助</a></p>
+                            </div>
+                        </button>
+                        
+                        <button class="map-point" style="top: 35%; left: 58%;" data-type="medium-priority" aria-label="宠物照看求助点，距离3.1公里">
+                            <div class="pulse-ring"></div>
+                            <div class="point-content">
+                                <h4>宠物照看</h4>
+                                <p>金色港湾小区</p>
+                                <p>距离：3.1km</p>
+                                <p>需要：出差期间照看宠物狗</p>
+                                <p>紧急程度：中</p>
+                                <p class="mt-20"><a href="post-help.html?case=5" class="btn btn-primary" style="padding: 5px 15px; font-size: 12px;">立即帮助</a></p>
+                            </div>
+                        </button>
+                        
+                        <!-- 低优先级求助点 -->
+                        <button class="map-point" style="top: 50%; left: 73%;" data-type="low-priority" aria-label="社区清洁活动，距离4.2公里">
+                            <div class="pulse-ring"></div>
+                            <div class="point-content">
+                                <h4>社区清洁</h4>
+                                <p>购物广场附近</p>
+                                <p>距离：4.2km</p>
+                                <p>需要：周末社区清洁志愿者</p>
+                                <p>紧急程度：低</p>
+                                <p class="mt-20"><a href="post-help.html?case=6" class="btn btn-primary" style="padding: 5px 15px; font-size: 12px;">立即帮助</a></p>
+                            </div>
+                        </button>
+                        
+                        <button class="map-point" style="top: 65%; left: 68%;" data-type="low-priority" aria-label="图书捐赠活动，距离3.8公里">
+                            <div class="pulse-ring"></div>
+                            <div class="point-content">
+                                <h4>图书捐赠</h4>
+                                <p>温馨家园社区中心</p>
+                                <p>距离：3.8km</p>
+                                <p>需要：整理捐赠图书</p>
+                                <p>紧急程度：低</p>
+                                <p class="mt-20"><a href="post-help.html?case=7" class="btn btn-primary" style="padding: 5px 15px; font-size: 12px;">立即帮助</a></p>
+                            </div>
+                        </button>
+                        
+                        <button class="map-point" style="top: 80%; left: 28%;" data-type="medium-priority" aria-label="家庭辅导求助点，距离2.7公里">
+                            <div class="pulse-ring"></div>
+                            <div class="point-content">
+                                <h4>家庭作业辅导</h4>
+                                <p>和谐社区2栋</p>
+                                <p>距离：2.7km</p>
+                                <p>需要：小学生作业辅导</p>
+                                <p>紧急程度：中</p>
+                                <p class="mt-20"><a href="post-help.html?case=8" class="btn btn-primary" style="padding: 5px 15px; font-size: 12px;">立即帮助</a></p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="text-center mt-30">
+                        <a href="post-help.html" class="btn btn-primary">
+                            <i class="fas fa-plus-circle"></i> 发布新求助
+                        </a>
+                        <a href="map-visualization.html" class="btn btn-outline" style="margin-left: 15px;">
+                            <i class="fas fa-expand"></i> 查看完整地图
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 真实案例展示区域 -->
+        <section class="section case-studies" id="cases" aria-labelledby="cases-heading">
+            <div class="container">
+                <div class="section-title">
+                    <h2 id="cases-heading">真实案例展示</h2>
+                    <p>见证援手社区如何改变生活，每一个成功案例都是我们前行的动力</p>
+                </div>
+                
+                <!-- 案例筛选标签 -->
+                <div class="case-filter mb-40">
+                    <div class="filter-tags">
+                        <button class="filter-tag active" data-filter="all">全部案例</button>
+                        <button class="filter-tag" data-filter="completed">已完成</button>
+                        <button class="filter-tag" data-filter="in-progress">进行中</button>
+                        <button class="filter-tag" data-filter="elderly">助老服务</button>
+                        <button class="filter-tag" data-filter="education">教育帮扶</button>
+                        <button class="filter-tag" data-filter="disaster">灾后援助</button>
+                    </div>
+                </div>
+                
+                <div class="cases-grid">
+                    <!-- 案例1 -->
+                    <a href="case-detail-1.html" class="case-detail-link">
+                        <article class="case-card" data-category="elderly completed">
+                            <div class="case-image">
+                                <span class="case-tag completed"><i class="fas fa-star"></i> 已完成</span>
+                                <div class="case-category">助老服务</div>
+                                <img src="D:\网站\关爱独居老人照片.png" 
+                                     alt="志愿者为独居老人送去生活物资并亲切交流" 
+                                     loading="lazy">
+                            </div>
+                            <div class="case-content">
+                                <h3>「银龄关怀」独居老人长期帮扶项目</h3>
+                                <div class="case-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>北京市朝阳区阳光花园小区</span>
+                                </div>
+                                <p class="case-description">
+                                    78岁的王奶奶子女常年在外工作，独自生活存在诸多不便。通过援手社区，志愿者小李与王奶奶结对，建立每周三次的上门服务机制。半年时间里，小李累计为老人采购生活物资48次，提供健康监测服务24次，陪伴聊天时长超过200小时，显著提升了老人的生活质量与心理健康。
+                                </p>
+                                <div class="case-stats">
+                                    <div class="case-stat-item">
+                                        <i class="fas fa-calendar-check"></i>
+                                        <div>
+                                            <div class="stat-label">持续时间</div>
+                                            <div class="stat-value">6个月</div>
+                                        </div>
+                                    </div>
+                                    <div class="case-stat-item">
+                                        <i class="fas fa-user-friends"></i>
+                                        <div>
+                                            <div class="stat-label">服务次数</div>
+                                            <div class="stat-value">72次</div>
+                                        </div>
+                                    </div>
+                                    <div class="case-stat-item">
+                                        <i class="fas fa-heart"></i>
+                                        <div>
+                                            <div class="stat-label">满意度</div>
+                                            <div class="stat-value">100%</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="case-testimonial">
+                                    <p class="testimonial-text">"感谢小李和援手社区，让我感受到了家人般的温暖。"</p>
+                                    <p class="testimonial-author">—— 王奶奶</p>
+                                </div>
+                                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                                    <span class="btn btn-primary" style="flex: 1;">
+                                        <i class="fas fa-book-open"></i> 查看详情
+                                    </span>
+                                    <span class="btn btn-outline" style="flex: 1;">
+                                        <i class="fas fa-hands-helping"></i> 类似求助
+                                    </span>
+                                </div>
+                            </div>
+                        </article>
+                    </a>
+
+                    <!-- 案例2 -->
+                    <a href="case-detail-2.html" class="case-detail-link">
+                        <article class="case-card" data-category="education in-progress">
+                            <div class="case-image">
+                                <span class="case-tag in-progress"><i class="fas fa-spinner fa-spin"></i> 进行中</span>
+                                <div class="case-category">教育帮扶</div>
+                                <img src="D:\网站\平台分配辅导学生照片.webp" 
+                                     alt="大学生志愿者为贫困学生提供一对一辅导" 
+                                     loading="lazy">
+                            </div>
+                            <div class="case-content">
+                                <h3>「成长护航」贫困学生学业提升计划</h3>
+                                <div class="case-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>河北省保定市幸福家园社区</span>
+                                </div>
+                                <p class="case-description">
+                                    初中生小明因家庭经济困难无法承担课外辅导费用。通过援手社区的精准匹配，清华大学数学系学生小张为他提供每周3次的一对一在线辅导。项目实施3个月以来，小明的数学成绩从65分提升至89分，更重要的是建立了学习自信心和良好的学习习惯。
+                                </p>
+                                <div class="case-stats">
+                                    <div class="case-stat-item">
+                                        <i class="fas fa-chart-line"></i>
+                                        <div>
+                                            <div class="stat-label">成绩提升</div>
+                                            <div class="stat-value">+37%</div>
+                                        </div>
+                                    </div>
+                                    <div class="case-stat-item">
+                                        <i class="fas fa-clock"></i>
+                                        <div>
+                                            <div class="stat-label">累计学时</div>
+                                            <div class="stat-value">48小时</div>
+                                        </div>
+                                    </div>
+                                    <div class="case-stat-item">
+                                        <i class="fas fa-book"></i>
+                                        <div>
+                                            <div class="stat-label">辅导课程</div>
+                                            <div class="stat-value">36节</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="progress-indicator">
+                                    <div class="progress-info">
+                                        <span>项目进度</span>
+                                        <span>75%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 75%"></div>
+                                    </div>
+                                </div>
+                                <div class="case-testimonial">
+                                    <p class="testimonial-text">"张老师不仅教我数学，还教会我学习方法，现在我对学习充满了信心。"</p>
+                                    <p class="testimonial-author">—— 小明同学</p>
+                                </div>
+                                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                                    <span class="btn btn-secondary" style="flex: 1;">
+                                        <i class="fas fa-heart"></i> 支持该项目
+                                    </span>
+                                    <span class="btn btn-outline" style="flex: 1;">
+                                        <i class="fas fa-graduation-cap"></i> 教育求助
+                                    </span>
+                                </div>
+                            </div>
+                        </article>
+                    </a>
+
+                    <!-- 案例3 -->
+                    <a href="case-detail-3.html" class="case-detail-link">
+                        <article class="case-card" data-category="disaster completed">
+                            <div class="case-image">
+                                <span class="case-tag completed"><i class="fas fa-check-circle"></i> 已完成</span>
+                                <div class="case-category">灾后援助</div>
+                                <img src="D:\网站\爱心捐赠照片.jpeg" 
+                                     alt="志愿者为受灾家庭搬运救灾物资" 
+                                     loading="lazy">
+                            </div>
+
+                            <div class="case-content">
+                                <h3>「家园重建」火灾受灾家庭紧急援助</h3>
+                                <div class="case-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>山东省青岛市金色港湾小区</span>
+                                </div>
+                                <p class="case-description">
+                                    李女士家因电路老化引发火灾，房屋及财产损失严重。援手社区在24小时内启动紧急援助程序，通过线上募捐平台和线下物资收集点，48小时内筹集善款32,500元，各类生活物资158件，并组织15名志愿者协助清理和修缮工作。目前房屋已完全修复，家庭生活恢复正常。
+                                </p>
+                                <div class="case-stats">
+                                    <div class="case-stat-item">
+                                        <i class="fas fa-users"></i>
+                                        <div>
+                                            <div class="stat-label">参与者</div>
+                                            <div class="stat-value">127人</div>
+                                        </div>
+                                    </div>
+                                    <div class="case-stat-item">
+                                        <i class="fas fa-money-bill-wave"></i>
+                                        <div>
+                                            <div class="stat-label">筹集金额</div>
+                                            <div class="stat-value">¥32,500</div>
+                                        </div>
+                                    </div>
+                                    <div class="case-stat-item">
+                                        <i class="fas fa-box"></i>
+                                        <div>
+                                            <div class="stat-label">物资数量</div>
+                                            <div class="stat-value">158件</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="case-impact">
+                                    <div class="impact-item">
+                                        <i class="fas fa-home"></i>
+                                        <span>房屋修复完成</span>
+                                    </div>
+                                    <div class="impact-item">
+                                        <i class="fas fa-smile"></i>
+                                        <span>家庭生活恢复</span>
+                                    </div>
+                                    <div class="impact-item">
+                                        <i class="fas fa-shield-alt"></i>
+                                        <span>安全隐患消除</span>
+                                    </div>
+                                </div>
+                                <div class="case-testimonial">
+                                    <p class="testimonial-text">"在最困难的时候，是援手社区和爱心人士给了我们希望和力量。"</p>
+                                    <p class="testimonial-author">—— 李女士一家</p>
+                                </div>
+                                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                                    <span class="btn btn-primary" style="flex: 1;">
+                                        <i class="fas fa-share-alt"></i> 分享故事
+                                    </span>
+                                    <span class="btn btn-outline" style="flex: 1;">
+                                        <i class="fas fa-fire-extinguisher"></i> 紧急求助
+                                    </span>
+                                </div>
+                            </div>
+                        </article>
+                    </a>
+                </div>
+
+                <!-- 查看更多案例 -->
+                <div class="text-center mt-50">
+                    <a href="all-cases.html" class="btn btn-outline" style="padding: 15px 40px;">
+                        <i class="fas fa-plus-circle"></i> 查看更多成功案例
+                    </a>
+                    <a href="post-help.html" class="btn btn-primary" style="padding: 15px 40px; margin-left: 15px;">
+                        <i class="fas fa-bullhorn"></i> 我也要发布求助
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 用户角色区块 -->
+        <section class="section user-roles" id="about" aria-labelledby="roles-heading">
+            <div class="container">
+                <div class="section-title">
+                    <h2 id="roles-heading">为不同用户提供解决方案</h2>
+                    <p>我们关注每一位用户的核心需求，打造个性化的援助体验</p>
+                </div>
+                <div class="roles">
+                    <div class="role-card">
+                        <div class="role-icon">🙋</div>
+                        <h3>求助者</h3>
+                        <p>便捷发布需求，操作简单，保护隐私，快速获得响应</p>
+                        <a href="post-help.html" class="btn btn-primary mt-20">发布求助 <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                    <div class="role-card">
+                        <div class="role-icon">🤝</div>
+                        <h3>个人援助者</h3>
+                        <p>发现真实需求，便捷提供帮助，看到自己的帮助产生效果</p>
+                        <a href="login.html" class="btn btn-primary mt-20">成为志愿者 <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                    <div class="role-card">
+                        <div class="role-icon">🏢</div>
+                        <h3>公益组织/商家</h3>
+                        <p>高效科学管理求助信息，精准匹配资源，扩大影响力</p>
+                        <a href="login.html" class="btn btn-primary mt-20">加入合作 <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 智能匹配系统 -->
+        <section class="section dashboard-section" aria-labelledby="dashboard-heading">
+            <div class="container">
+                <div class="section-title">
+                    <h2 id="dashboard-heading">智能匹配系统</h2>
+                    <p>基于AI算法精准匹配求助者与援助者，提升援助效率</p>
+                </div>
+                
+                <div class="dashboard-cards">
+                    <div class="stat-card gradient-1">
+                        <div class="stat-icon">⚡</div>
+                        <h3>匹配成功率</h3>
+                        <div class="stat-value">94.7%</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 94.7%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card gradient-2">
+                        <div class="stat-icon">⏱️</div>
+                        <h3>平均响应时间</h3>
+                        <div class="stat-value">23分钟</div>
+                        <div class="trend-up">比上月快18%</div>
+                    </div>
+                    
+                    <div class="stat-card gradient-3">
+                        <div class="stat-icon">🤝</div>
+                        <h3>本周成功匹配</h3>
+                        <div class="stat-value">1,247次</div>
+                        <div class="trend-up">+12% 增长</div>
+                    </div>
+                </div>
+                
+                <div class="match-visualization">
+                    <div class="visualization-title">
+                        <h4>实时匹配流</h4>
+                        <div class="live-indicator">
+                            <span class="live-dot"></span>
+                            <span>实时更新</span>
+                        </div>
+                    </div>
+                    <div class="match-stream">
+                        <div class="text-center">
+                            <i class="fas fa-random" style="font-size: 50px; color: #ddd; margin-bottom: 15px;"></i>
+                            <p>实时显示最近的援助匹配</p>
+                            <p style="font-size: 14px; color: #aaa; margin-top: 10px;">每5秒更新一次数据</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-30">
+                    <a href="post-help.html" class="btn btn-primary" style="padding: 15px 40px;">
+                        <i class="fas fa-magic"></i> 体验智能匹配
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 志愿者技能认证 -->
+        <section class="section certification-section" aria-labelledby="certification-heading">
+            <div class="container">
+                <div class="section-title">
+                    <h2 id="certification-heading">志愿者技能认证</h2>
+                    <p>专业认证的志愿者，确保援助质量与安全</p>
+                </div>
+                
+                <div class="cert-badges">
+                    <div class="badge-card">
+                        <div class="badge-icon medical">🏥</div>
+                        <div class="badge-content">
+                            <h4>医疗急救认证</h4>
+                            <p>124人已通过认证，可提供专业医疗帮助</p>
+                        </div>
+                        <div class="verify-tag">已验证</div>
+                    </div>
+                    
+                    <div class="badge-card">
+                        <div class="badge-icon education">📚</div>
+                        <div class="badge-content">
+                            <h4>教育辅导认证</h4>
+                            <p>367名教师/大学生志愿者，专业教学能力</p>
+                        </div>
+                        <div class="verify-tag">已验证</div>
+                    </div>
+                    
+                    <div class="badge-card">
+                        <div class="badge-icon tech">💻</div>
+                        <div class="badge-content">
+                            <h4>技术支持认证</h4>
+                            <p>89名技术专家，解决各类技术问题</p>
+                        </div>
+                        <div class="verify-tag">已验证</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA区块 -->
+        <section class="cta" aria-labelledby="cta-heading">
+            <div class="container">
+                <h2 id="cta-heading">加入援手社区，让善意流动</h2>
+                <p>无论您是需要帮助还是愿意提供帮助，援手社区都为您搭建了一个温暖、可靠、高效的平台。立即加入我们，成为改变的一部分！</p>
+                <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                    <a href="post-help.html" class="btn btn-primary" style="background: white; color: var(--primary-color); font-weight: 700; padding: 15px 40px; font-size: 18px;">发布求助 <i class="fas fa-bullhorn"></i></a>
+                    <a href="become-volunteer.html" class="btn btn-secondary" style="background: white; color: var(--secondary-color); font-weight: 700; padding: 15px 40px; font-size: 18px;">成为志愿者 <i class="fas fa-hand-holding-heart"></i></a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 智能聊天助手 -->
+    <div class="ai-assistant" role="dialog" aria-labelledby="assistant-title">
+        <div class="assistant-header">
+            <div class="assistant-avatar">
+                <span>🤖</span>
+            </div>
+            <div class="assistant-info">
+                <h5 id="assistant-title">援手小助手</h5>
+                <p>智能匹配 | 24小时在线</p>
+            </div>
+            <button class="minimize-btn" aria-label="最小化聊天助手">−</button>
+        </div>
+        
+        <div class="chat-messages">
+            <div class="message assistant">
+                您好！我是援手智能助手，可以帮您快速发布求助或匹配志愿者。请问有什么可以帮助您的吗？
+            </div>
+        </div>
+        
+        <div class="quick-actions">
+            <button class="quick-btn" data-action="emergency" onclick="window.location.href='post-help.html'"><i class="fas fa-exclamation-circle"></i> 发布求助</button>
+            <button class="quick-btn" data-action="volunteer" onclick="window.location.href='login.html'"><i class="fas fa-hands"></i> 成为志愿者</button>
+            <button class="quick-btn" data-action="donate"><i class="fas fa-donate"></i> 我要捐赠</button>
+        </div>
+    </div>
+
+    <!-- 底部 -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>关于我们</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> 项目愿景</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> 团队介绍</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> 媒体报道</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> 加入我们</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>帮助中心</h3>
+                    <ul class="footer-links">
+                        <li><a href="post-help.html"><i class="fas fa-chevron-right"></i> 如何发布求助</a></li>
+                        <li><a href="how-to-get-help.html"><i class="fas fa-chevron-right"></i> 如何获取帮助</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> 常见问题</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> 用户协议</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>合作伙伴</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> 公益组织</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> 企业CSR</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> 政府机构</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> 加入合作</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>联系我们</h3>
+                    <ul class="footer-links footer-contact">
+                        <li><i class="fas fa-envelope"></i> 邮箱：2639687821@qq.com</li>
+                        <li><i class="fas fa-phone-alt"></i> 电话：15612140351</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 地址：河北科技大学</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 援手社区 - 综合性社会援助平台 版权所有 | 冀ICP备12345678号</p>
+                <p class="mt-20">让每一份善意都有回响，让每一次求助都有回应</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+        // 视频播放功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const playButton = document.getElementById('play-button');
+            const videoPlaceholder = document.getElementById('video-placeholder');
+            const videoPlayer = document.getElementById('video-player');
+            const videoElement = document.getElementById('local-video');
+            const watchIntroBtn = document.querySelector('.watch-intro-btn');
+            const videoContainer = document.getElementById('video-container');
+            
+            // 播放视频的函数
+            function playVideo() {
+                // 显示视频播放器，隐藏占位符
+                videoPlaceholder.style.display = 'none';
+                videoPlayer.style.display = 'block';
+                
+                // 播放本地视频
+                if (videoElement) {
+                    videoElement.play().catch(function(error) {
+                        console.error("视频播放失败:", error);
+                        // 如果自动播放失败，显示错误信息
+                        videoPlayer.innerHTML = `
+                            <div style="color: white; text-align: center; padding: 50px 20px;">
+                                <i class="fas fa-exclamation-triangle" style="font-size: 40px; margin-bottom: 20px;"></i>
+                                <h3>视频播放失败</h3>
+                                <p>无法播放视频文件，请检查文件路径或使用现代浏览器。</p>
+                                <p>视频路径: D:\网站\f571237b0f089a1aff9ca30240c4bd28.mp4</p>
+                                <button onclick="location.reload()" class="btn btn-primary" style="margin-top: 20px;">刷新页面</button>
+                            </div>
+                        `;
+                    });
+                }
+                
+                // 添加自动播放样式
+                videoContainer.classList.add('auto-play');
+            }
+            
+            // 点击播放按钮播放视频
+            if (playButton && videoPlaceholder && videoPlayer) {
+                playButton.addEventListener('click', function() {
+                    playVideo();
+                });
+            }
+            
+            // 点击"观看介绍"按钮跳转并自动播放视频
+            if (watchIntroBtn) {
+                watchIntroBtn.addEventListener('click', function(e) {
+                    // 阻止默认的锚点跳转行为
+                    e.preventDefault();
+                    
+                    // 平滑滚动到视频区块
+                    document.getElementById('video-intro').scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                    
+                    // 延迟播放视频，确保滚动完成
+                    setTimeout(function() {
+                        playVideo();
+                    }, 800);
+                });
+            }
+            
+            // 检查URL哈希，如果是#video-intro则自动播放视频
+            if (window.location.hash === '#video-intro') {
+                // 延迟以确保页面加载完成
+                setTimeout(function() {
+                    document.getElementById('video-intro').scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                    
+                    setTimeout(function() {
+                        playVideo();
+                    }, 1000);
+                }, 500);
+            }
+            
+            // 修改智能聊天助手的快速操作按钮功能
+            const aiAssistant = document.querySelector('.ai-assistant');
+            
+            if (aiAssistant) {
+                // 修改快速操作按钮的点击事件
+                document.querySelectorAll('.quick-btn[data-action="emergency"]').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        window.location.href = 'post-help.html';
+                    });
+                });
+                
+                document.querySelectorAll('.quick-btn[data-action="volunteer"]').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        window.location.href = 'login.html';
+                    });
+                });
+            }
+            
+            // 视频播放错误处理
+            if (videoElement) {
+                videoElement.addEventListener('error', function(e) {
+                    console.error('视频加载错误:', e);
+                    // 显示用户友好的错误信息
+                    videoPlayer.innerHTML = `
+                        <div style="color: white; text-align: center; padding: 50px 20px; background: #333;">
+                            <i class="fas fa-exclamation-triangle" style="font-size: 40px; margin-bottom: 20px; color: #ff6b6b;"></i>
+                            <h3>无法加载视频</h3>
+                            <p>请检查视频文件路径是否正确，或确保视频文件存在。</p>
+                            <p style="font-size: 12px; opacity: 0.7; margin-top: 10px;">文件路径: D:\网站\f571237b0f089a1aff9ca30240c4bd28.mp4</p>
+                            <button onclick="location.reload()" class="btn btn-primary" style="margin-top: 20px;">重新加载</button>
+                        </div>
+                    `;
+                });
+                
+                // 视频加载成功时的处理
+                videoElement.addEventListener('loadeddata', function() {
+                    console.log('视频加载成功');
+                });
+            }
+            
+            // 地图点点击事件
+            document.querySelectorAll('.map-point').forEach(point => {
+                point.addEventListener('click', function() {
+                    const pointType = this.getAttribute('data-type');
+                    const pointLabel = this.getAttribute('aria-label');
+                    
+                    // 在实际应用中，这里可以跳转到具体的求助详情页面
+                    // 现在我们先显示一个提示
+                    alert(`您点击了：${pointLabel}\n\n系统将为您跳转到该求助的详细信息页面。`);
+                });
+            });
+            
+            // 案例筛选功能
+            const filterTags = document.querySelectorAll('.filter-tag');
+            const caseCards = document.querySelectorAll('.case-card');
+            
+            filterTags.forEach(tag => {
+                tag.addEventListener('click', function() {
+                    // 移除所有标签的active类
+                    filterTags.forEach(t => t.classList.remove('active'));
+                    // 为当前点击的标签添加active类
+                    this.classList.add('active');
+                    
+                    const filterValue = this.getAttribute('data-filter');
+                    
+                    // 显示/隐藏案例卡片
+                    caseCards.forEach(card => {
+                        if (filterValue === 'all') {
+                            card.style.display = 'block';
+                        } else {
+                            const categories = card.getAttribute('data-category').split(' ');
+                            if (categories.includes(filterValue)) {
+                                card.style.display = 'block';
+                            } else {
+                                card.style.display = 'none';
+                            }
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

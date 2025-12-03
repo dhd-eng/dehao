@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="安全沟通平台 - 保护求助者与援助者隐私，提供端到端加密的安全沟通环境">
+    <meta name="keywords" content="安全沟通,隐私保护,端到端加密,安全通信,信息安全">
+    <title>安全沟通平台 - 援手社区</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 平台概览 */
+        .platform-overview {
+            background: linear-gradient(135deg, #1a2980 0%, #26d0ce 100%);
+            color: white;
+            padding: 120px 0 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .platform-overview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+            opacity: 0.1;
+        }
+        
+        .platform-overview h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .platform-overview p {
+            font-size: 20px;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            position: relative;
+            line-height: 1.6;
+        }
+        
+        /* 安全特性 */
+        .security-features {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border-top: 5px solid #1a2980;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+        
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #1a2980, #26d0ce);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto 25px;
+        }
+        
+        .feature-title {
+            font-size: 22px;
+            color: var(--dark-color);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .feature-description {
+            color: var(--gray-color);
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+        
+        .security-level {
+            display: inline-block;
+            background: #e3f2fd;
+            color: #1a2980;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+        
+        /* 加密技术 */
+        .encryption-tech {
+            padding: 80px 0;
+        }
+        
+        .encryption-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            margin-top: 50px;
+            align-items: center;
+        }
+        
+        .encryption-visual {
+            background: linear-gradient(135deg, #1a2980 0%, #26d0ce 100%);
+            border-radius: 20px;
+            padding: 40px;
+            color: white;
+            text-align: center;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .encryption-visual::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+            opacity: 0.1;
+        }
+        
+        .encryption-steps {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin: 40px 0;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .encryption-step {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .step-circle {
+            width: 50px;
+            height: 50px;
+            background: white;
+            color: #1a2980;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0 auto 15px;
+        }
+        
+        .step-text {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .encryption-arrow {
+            font-size: 24px;
+            color: white;
+            margin: 0 10px;
+            align-self: center;
+        }
+        
+        .encryption-info {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .encryption-list {
+            list-style: none;
+            margin: 30px 0;
+        }
+        
+        .encryption-list li {
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+        
+        .encryption-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .encryption-list i {
+            color: #1a2980;
+            margin-right: 15px;
+            font-size: 18px;
+        }
+        
+        /* 隐私保护 */
+        .privacy-protection {
+            padding: 80px 0;
+            background: var(--light-color);
+        }
+        
+        .privacy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .privacy-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+        
+        .privacy-icon {
+            width: 70px;
+            height: 70px;
+            background: #e3f2fd;
+            color: #1a2980;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin: 0 auto 25px;
+        }
+        
+        .privacy-title {
+            font-size: 20px;
+            color: var(--dark-color);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .privacy-description {
+            color: var(--gray-color);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+        
+        /* 沟通工具演示 */
+        .communication-demo {
+            padding: 80px 0;
+        }
+        
+        .demo-container {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+        }
+        
+        .demo-header {
+            background: linear-gradient(135deg, #1a2980 0%, #26d0ce 100%);
+            color: white;
+            padding: 25px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .chat-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .chat-avatar {
+            width: 50px;
+            height: 50px;
+            background: white;
+            color: #1a2980;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .security-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .chat-messages {
+            height: 400px;
+            padding: 30px;
+            overflow-y: auto;
+            background: #f5f7fa;
+        }
+        
+        .message {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+        
+        .message.sent {
+            flex-direction: row-reverse;
+        }
+        
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #ddd;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .message-content {
+            max-width: 70%;
+            background: white;
+            border-radius: 18px;
+            padding: 15px 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+        
+        .message.sent .message-content {
+            background: #1a2980;
+            color: white;
+        }
+        
+        .message-text {
+            line-height: 1.5;
+        }
+        
+        .message-time {
+            font-size: 12px;
+            color: #999;
+            margin-top: 8px;
+            text-align: right;
+        }
+        
+        .message.sent .message-time {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .encryption-notice {
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        /* 安全标准 */
+        .security-standards {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+        
+        .standards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .standard-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+        
+        .standard-icon {
+            width: 80px;
+            height: 80px;
+            background: #e3f2fd;
+            color: #1a2980;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto 25px;
+        }
+        
+        .standard-title {
+            font-size: 18px;
+            color: var(--dark-color);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .standard-description {
+            color: var(--gray-color);
+            line-height: 1.6;
+            font-size: 14px;
+        }
+        
+        /* 用户控制 */
+        .user-controls {
+            padding: 80px 0;
+        }
+        
+        .controls-container {
+            max-width: 800px;
+            margin: 50px auto 0;
+            background: white;
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .control-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .control-item:last-child {
+            border-bottom: none;
+        }
+        
+        .control-info h4 {
+            margin: 0 0 8px;
+            color: var(--dark-color);
+        }
+        
+        .control-info p {
+            margin: 0;
+            color: var(--gray-color);
+            font-size: 14px;
+        }
+        
+        .control-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+        
+        .control-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #1a2980;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .encryption-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .encryption-visual {
+                height: 350px;
+            }
+            
+            .controls-container {
+                padding: 30px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .platform-overview {
+                padding: 80px 0 60px;
+            }
+            
+            .platform-overview h1 {
+                font-size: 36px;
+            }
+            
+            .security-features {
+                padding: 60px 0;
+            }
+            
+            .features-grid {
+                gap: 30px;
+            }
+            
+            .feature-card {
+                padding: 30px 20px;
+            }
+            
+            .encryption-steps {
+                flex-direction: column;
+                gap: 30px;
+            }
+            
+            .encryption-arrow {
+                transform: rotate(90deg);
+                margin: 10px 0;
+            }
+            
+            .chat-messages {
+                height: 350px;
+                padding: 20px;
+            }
+            
+            .message-content {
+                max-width: 85%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .platform-overview h1 {
+                font-size: 28px;
+            }
+            
+            .platform-overview p {
+                font-size: 16px;
+            }
+            
+            .feature-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 24px;
+            }
+            
+            .feature-title {
+                font-size: 20px;
+            }
+            
+            .demo-header {
+                padding: 20px;
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .controls-container {
+                padding: 25px 20px;
+            }
+            
+            .control-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 跳过导航链接（辅助功能） -->
+    <a href="#main-content" class="sr-only">跳过导航</a>
+    
+    <!-- 导航栏 -->
+    <header>
+        <div class="container">
+            <nav class="navbar" aria-label="主导航">
+                <div class="logo">
+                    <i class="fas fa-hands-helping" aria-hidden="true"></i>
+                    援手社区
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html"><i class="fas fa-home"></i> 首页</a></li>
+                    <li><a href="#features"><i class="fas fa-shield-alt"></i> 安全特性</a></li>
+                    <li><a href="#encryption"><i class="fas fa-lock"></i> 加密技术</a></li>
+                    <li><a href="#privacy"><i class="fas fa-user-secret"></i> 隐私保护</a></li>
+                    <li><a href="#demo"><i class="fas fa-comments"></i> 沟通演示</a></li>
+                    <li><a href="#standards"><i class="fas fa-certificate"></i> 安全标准</a></li>
+                    <li><a href="#controls"><i class="fas fa-sliders-h"></i> 用户控制</a></li>
+                    <li><a href="login.html" class="btn btn-primary"><i class="fas fa-user-circle"></i> 登录体验</a></li>
+                </ul>
+                <button class="mobile-menu" aria-label="切换菜单" aria-expanded="false">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 主内容区域 -->
+    <main id="main-content">
+        <!-- 平台概览 -->
+        <section class="platform-overview">
+            <div class="container">
+                <h1>安全沟通平台</h1>
+                <p>采用端到端加密技术，保护求助者与援助者之间的所有通信内容，确保隐私安全，让每一次沟通都安心无忧。</p>
+                <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                    <a href="#demo" class="btn btn-primary" style="background: white; color: #1a2980; font-weight: 700; padding: 18px 40px; font-size: 18px;">
+                        查看沟通演示 <i class="fas fa-comments"></i>
+                    </a>
+                    <a href="post-help.html" class="btn btn-outline" style="background: transparent; border-color: white; color: white; padding: 18px 40px; font-size: 18px;">
+                        开始安全沟通 <i class="fas fa-lock"></i>
+                    </a>
+                </div>
+                <div class="video-stats" style="margin-top: 60px; color: white;">
+                    <div class="stat">
+                        <span class="stat-number" style="color: white;">端到端</span>
+                        <span class="stat-label">加密技术</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" style="color: white;">零知识</span>
+                        <span class="stat-label">隐私保护</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" style="color: white;">100%</span>
+                        <span class="stat-label">通信安全</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 安全特性 -->
+        <section class="security-features" id="features">
+            <div class="container">
+                <div class="section-title">
+                    <h2>核心安全特性</h2>
+                    <p>全方位保护您的沟通隐私与信息安全</p>
+                </div>
+                
+                <div class="features-grid">
+                    <!-- 特性1 -->
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3 class="feature-title">端到端加密</h3>
+                        <p class="feature-description">所有消息在发送前加密，只有接收方可以解密，平台无法读取任何通信内容，确保绝对隐私。</p>
+                        <span class="security-level">军事级加密</span>
+                    </div>
+                    
+                    <!-- 特性2 -->
+                    <div class="feature-card">
+                        <div class="feature-icon">👁️</div>
+                        <h3 class="feature-title">匿名沟通</h3>
+                        <p class="feature-description">可选择隐藏真实身份，使用临时昵称沟通。系统不存储真实姓名和联系方式，保护用户隐私。</p>
+                        <span class="security-level">隐私保护</span>
+                    </div>
+                    
+                    <!-- 特性3 -->
+                    <div class="feature-card">
+                        <div class="feature-icon">⏱️</div>
+                        <h3 class="feature-title">消息自动销毁</h3>
+                        <p class="feature-description">可设置消息阅读后自动销毁时间，从24小时到7天不等。销毁后无法恢复，防止信息泄露。</p>
+                        <span class="security-level">临时存储</span>
+                    </div>
+                    
+                    <!-- 特性4 -->
+                    <div class="feature-card">
+                        <div class="feature-icon">📱</div>
+                        <h3 class="feature-title">设备安全</h3>
+                        <p class="feature-description">支持设备锁定、指纹/面部识别解锁。异地登录提醒，防止账户被盗用或被他人查看。</p>
+                        <span class="security-level">设备级保护</span>
+                    </div>
+                    
+                    <!-- 特性5 -->
+                    <div class="feature-card">
+                        <div class="feature-icon">🚫</div>
+                        <h3 class="feature-title">防截屏保护</h3>
+                        <p class="feature-description">启用防截屏功能后，对方无法截屏保存聊天内容。截屏时会收到通知，防止信息被非法保存。</p>
+                        <span class="security-level">内容保护</span>
+                    </div>
+                    
+                    <!-- 特性6 -->
+                    <div class="feature-card">
+                        <div class="feature-icon">📞</div>
+                        <h3 class="feature-title">安全语音/视频</h3>
+                        <p class="feature-description">支持加密语音和视频通话，通话内容同样端到端加密，确保实时沟通的安全性。</p>
+                        <span class="security-level">实时加密</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 加密技术 -->
+        <section class="encryption-tech" id="encryption">
+            <div class="container">
+                <div class="section-title">
+                    <h2>端到端加密技术</h2>
+                    <p>采用行业领先的加密算法，确保通信内容只有发送方和接收方可以读取</p>
+                </div>
+                
+                <div class="encryption-container">
+                    <div class="encryption-visual">
+                        <h3 style="color: white; margin-bottom: 30px;">加密过程可视化</h3>
+                        <div class="encryption-steps">
+                            <div class="encryption-step">
+                                <div class="step-circle">1</div>
+                                <div class="step-text">发送方设备加密</div>
+                            </div>
+                            <div class="encryption-arrow">→</div>
+                            <div class="encryption-step">
+                                <div class="step-circle">2</div>
+                                <div class="step-text">加密传输</div>
+                            </div>
+                            <div class="encryption-arrow">→</div>
+                            <div class="encryption-step">
+                                <div class="step-circle">3</div>
+                                <div class="step-text">接收方设备解密</div>
+                            </div>
+                        </div>
+                        <p style="margin-top: 30px; font-size: 14px; opacity: 0.9;">
+                            平台服务器仅传递加密数据，无法解密查看内容
+                        </p>
+                    </div>
+                    
+                    <div class="encryption-info">
+                        <h3>加密技术细节</h3>
+                        <p style="color: var(--gray-color); margin-top: 15px; line-height: 1.7;">
+                            我们采用Signal协议作为基础加密协议，这是目前最安全的端到端加密协议之一，被WhatsApp、Facebook Messenger等主流应用采用。
+                        </p>
+                        
+                        <ul class="encryption-list">
+                            <li>
+                                <i class="fas fa-key"></i>
+                                <div>
+                                    <strong>双棘轮算法</strong><br>
+                                    <span style="font-size: 14px; color: var(--gray-color);">每次发送消息都使用新密钥，前向保密性极强</span>
+                                </div>
+                            </li>
+                            <li>
+                                <i class="fas fa-fingerprint"></i>
+                                <div>
+                                    <strong>完美前向保密</strong><br>
+                                    <span style="font-size: 14px; color: var(--gray-color);">即使单个消息密钥泄露，也不会影响其他消息安全</span>
+                                </div>
+                            </li>
+                            <li>
+                                <i class="fas fa-shield-alt"></i>
+                                <div>
+                                    <strong>后向保密性</strong><br>
+                                    <span style="font-size: 14px; color: var(--gray-color);">新设备加入时，无法解密之前的任何消息</span>
+                                </div>
+                            </li>
+                            <li>
+                                <i class="fas fa-user-check"></i>
+                                <div>
+                                    <strong>身份验证</strong><br>
+                                    <span style="font-size: 14px; color: var(--gray-color);">通过安全号码验证，防止中间人攻击</span>
+                                </div>
+                            </li>
+                        </ul>
+                        
+                        <div style="background: #e3f2fd; padding: 20px; border-radius: 12px; margin-top: 30px;">
+                            <h4 style="color: #1a2980; margin-bottom: 10px;">技术认证</h4>
+                            <p style="font-size: 14px; color: #1a2980; margin: 0;">
+                                <i class="fas fa-check-circle"></i> 已通过第三方安全审计
+                                <i class="fas fa-check-circle" style="margin-left: 20px;"></i> 符合GDPR数据保护标准
+                                <i class="fas fa-check-circle" style="margin-left: 20px;"></i> 遵循中国网络安全法
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 隐私保护 -->
+        <section class="privacy-protection" id="privacy">
+            <div class="container">
+                <div class="section-title">
+                    <h2>隐私保护措施</h2>
+                    <p>多层次隐私保护，确保您的个人信息安全</p>
+                </div>
+                
+                <div class="privacy-grid">
+                    <!-- 措施1 -->
+                    <div class="privacy-card">
+                        <div class="privacy-icon">📱</div>
+                        <h3 class="privacy-title">最小化数据收集</h3>
+                        <p class="privacy-description">仅收集必要信息，不要求提供身份证号、详细住址等敏感信息。可选择匿名使用。</p>
+                    </div>
+                    
+                    <!-- 措施2 -->
+                    <div class="privacy-card">
+                        <div class="privacy-icon">🗑️</div>
+                        <h3 class="privacy-title">数据自动清理</h3>
+                        <p class="privacy-description">求助完成后，相关通信记录在指定时间后自动清理。用户也可手动立即删除。</p>
+                    </div>
+                    
+                    <!-- 措施3 -->
+                    <div class="privacy-card">
+                        <div class="privacy-icon">👥</div>
+                        <h3 class="privacy-title">通信隔离</h3>
+                        <p class="privacy-description">每次求助生成独立通信频道，求助结束后频道关闭，无法继续联系。</p>
+                    </div>
+                    
+                    <!-- 措施4 -->
+                    <div class="privacy-card">
+                        <div class="privacy-icon">📍</div>
+                        <h3 class="privacy-title">地理位置模糊</h3>
+                        <p class="privacy-description">仅显示大致区域（如距离1.2km），不显示具体地址，防止位置信息泄露。</p>
+                    </div>
+                    
+                    <!-- 措施5 -->
+                    <div class="privacy-card">
+                        <div class="privacy-icon">📊</div>
+                        <h3 class="privacy-title">匿名化分析</h3>
+                        <p class="privacy-description">平台数据分析完全匿名化，无法关联到具体个人，保护用户行为隐私。</p>
+                    </div>
+                    
+                    <!-- 措施6 -->
+                    <div class="privacy-card">
+                        <div class="privacy-icon">🔍</div>
+                        <h3 class="privacy-title">透明数据政策</h3>
+                        <p class="privacy-description">清晰说明数据收集和使用方式，用户随时可查看、导出或删除个人数据。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 沟通工具演示 -->
+        <section class="communication-demo" id="demo">
+            <div class="container">
+                <div class="section-title">
+                    <h2>安全沟通演示</h2>
+                    <p>体验我们安全沟通平台的实际界面与功能</p>
+                </div>
+                
+                <div class="demo-container">
+                    <div class="demo-header">
+                        <div class="chat-info">
+                            <div class="chat-avatar">👨‍🦳</div>
+                            <div>
+                                <h4 style="margin: 0; color: white;">与王奶奶的沟通</h4>
+                                <p style="margin: 5px 0 0; font-size: 14px; opacity: 0.9;">独居老人送餐帮助 · 距离1.2km</p>
+                            </div>
+                        </div>
+                        <div class="security-badge">
+                            <i class="fas fa-lock"></i>
+                            <span>端到端加密 · 安全连接</span>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-messages">
+                        <!-- 收到的消息 -->
+                        <div class="message received">
+                            <div class="message-avatar">👨‍🦳</div>
+                            <div class="message-content">
+                                <div class="message-text">小李你好，我是王奶奶。今天下午能帮我买点菜吗？家里没菜了。</div>
+                                <div class="message-time">14:20</div>
+                            </div>
+                        </div>
+                        
+                        <!-- 发送的消息 -->
+                        <div class="message sent">
+                            <div class="message-avatar">🙋</div>
+                            <div class="message-content">
+                                <div class="message-text">王奶奶您好！可以的，我大概4点左右过去。您需要买些什么菜？</div>
+                                <div class="message-time">14:22</div>
+                            </div>
+                        </div>
+                        
+                        <!-- 收到的消息 -->
+                        <div class="message received">
+                            <div class="message-avatar">👨‍🦳</div>
+                            <div class="message-content">
+                                <div class="message-text">谢谢小李！想要西红柿2斤、鸡蛋一盒、白菜一颗，还有一点猪肉。</div>
+                                <div class="message-time">14:23</div>
+                            </div>
+                        </div>
+                        
+                        <!-- 发送的消息 -->
+                        <div class="message sent">
+                            <div class="message-avatar">🙋</div>
+                            <div class="message-content">
+                                <div class="message-text">好的，记下了。还需要其他东西吗？比如水果或者日常用品？</div>
+                                <div class="message-time">14:24</div>
+                            </div>
+                        </div>
+                        
+                        <!-- 收到的消息 -->
+                        <div class="message received">
+                            <div class="message-avatar">👨‍🦳</div>
+                            <div class="message-content">
+                                <div class="message-text">不用了，这些就够了。太感谢你了！对了，我有高血压，猪肉要瘦一点的。</div>
+                                <div class="message-time">14:25</div>
+                            </div>
+                        </div>
+                        
+                        <!-- 发送的消息 -->
+                        <div class="message sent">
+                            <div class="message-avatar">🙋</div>
+                            <div class="message-content">
+                                <div class="message-text">明白，我会注意的。4点左右到您家，到时候联系您。保重身体！</div>
+                                <div class="message-time">14:26</div>
+                                <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.2); font-size: 12px;">
+                                    <i class="fas fa-lock"></i> 此消息已加密，24小时后自动销毁
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 加密通知 -->
+                        <div class="encryption-notice">
+                            <i class="fas fa-shield-alt" style="color: #1a2980;"></i>
+                            <span>此对话受端到端加密保护。只有您和对方可以读取这些消息。</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-40">
+                    <a href="post-help.html" class="btn btn-primary" style="padding: 15px 40px;">
+                        <i class="fas fa-comment-dots"></i> 开始安全沟通
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 安全标准 -->
+        <section class="security-standards" id="standards">
+            <div class="container">
+                <div class="section-title">
+                    <h2>遵循的安全标准</h2>
+                    <p>符合国际和国内多项安全与隐私保护标准</p>
+                </div>
+                
+                <div class="standards-grid">
+                    <div class="standard-card">
+                        <div class="standard-icon">🌐</div>
+                        <h3 class="standard-title">GDPR合规</h3>
+                        <p class="standard-description">遵循欧盟通用数据保护条例，保障用户数据权利，包括被遗忘权、数据可携权等。</p>
+                    </div>
+                    
+                    <div class="standard-card">
+                        <div class="standard-icon">🇨🇳</div>
+                        <h3 class="standard-title">网络安全法</h3>
+                        <p class="standard-description">严格遵守中国网络安全法要求，数据存储于境内服务器，依法保护用户信息安全。</p>
+                    </div>
+                    
+                    <div class="standard-card">
+                        <div class="standard-icon">🔐</div>
+                        <h3 class="standard-title">ISO 27001</h3>
+                        <p class="standard-description">信息安全管理体系认证，建立完善的信息安全管理制度和流程。</p>
+                    </div>
+                    
+                    <div class="standard-card">
+                        <div class="standard-icon">📜</div>
+                        <h3 class="standard-title">SOC 2 Type II</h3>
+                        <p class="standard-description">服务组织控制报告，证明平台在安全性、可用性、处理完整性方面达到标准。</p>
+                    </div>
+                    
+                    <div class="standard-card">
+                        <div class="standard-icon">🛡️</div>
+                        <h3 class="standard-title">CCPA合规</h3>
+                        <p class="standard-description">符合加州消费者隐私法案，保障用户知情权、访问权和删除权等。</p>
+                    </div>
+                    
+                    <div class="standard-card">
+                        <div class="standard-icon">⚖️</div>
+                        <h3 class="standard-title">个人信息保护法</h3>
+                        <p class="standard-description">遵循中国个人信息保护法，明确个人信息处理规则，保障用户权益。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 用户控制 -->
+        <section class="user-controls" id="controls">
+            <div class="container">
+                <div class="section-title">
+                    <h2>用户隐私控制</h2>
+                    <p>您完全控制自己的隐私设置，随时调整安全参数</p>
+                </div>
+                
+                <div class="controls-container">
+                    <!-- 控制项1 -->
+                    <div class="control-item">
+                        <div class="control-info">
+                            <h4>消息自动销毁</h4>
+                            <p>设置消息阅读后自动销毁的时间</p>
+                        </div>
+                        <div>
+                            <select class="form-select" style="min-width: 150px; padding: 10px 15px;">
+                                <option value="24h">24小时后</option>
+                                <option value="3d">3天后</option>
+                                <option value="7d" selected>7天后</option>
+                                <option value="30d">30天后</option>
+                                <option value="never">永不销毁</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- 控制项2 -->
+                    <div class="control-item">
+                        <div class="control-info">
+                            <h4>防截屏保护</h4>
+                            <p>启用后，对方无法截屏保存聊天内容</p>
+                        </div>
+                        <div>
+                            <label class="control-switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- 控制项3 -->
+                    <div class="control-item">
+                        <div class="control-info">
+                            <h4>匿名模式</h4>
+                            <p>隐藏真实姓名，使用临时昵称沟通</p>
+                        </div>
+                        <div>
+                            <label class="control-switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- 控制项4 -->
+                    <div class="control-item">
+                        <div class="control-info">
+                            <h4>地理位置模糊</h4>
+                            <p>仅显示大概距离，不显示具体位置</p>
+                        </div>
+                        <div>
+                            <label class="control-switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- 控制项5 -->
+                    <div class="control-item">
+                        <div class="control-info">
+                            <h4>设备锁定</h4>
+                            <p>启用指纹/面部识别解锁应用</p>
+                        </div>
+                        <div>
+                            <label class="control-switch">
+                                <input type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- 控制项6 -->
+                    <div class="control-item">
+                        <div class="control-info">
+                            <h4>异地登录提醒</h4>
+                            <p>在新设备登录时发送通知</p>
+                        </div>
+                        <div>
+                            <label class="control-switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- 控制项7 -->
+                    <div class="control-item">
+                        <div class="control-info">
+                            <h4>数据导出与删除</h4>
+                            <p>随时导出或永久删除您的个人数据</p>
+                        </div>
+                        <div>
+                            <button class="btn btn-outline" style="padding: 8px 20px; margin-right: 10px;">导出数据</button>
+                            <button class="btn btn-outline" style="padding: 8px 20px; border-color: #ff6b6b; color: #ff6b6b;">删除数据</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-50">
+                    <a href="login.html" class="btn btn-primary" style="padding: 18px 50px; font-size: 18px;">
+                        <i class="fas fa-user-shield"></i> 登录管理隐私设置
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 底部 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>安全沟通平台</h3>
+                    <ul class="footer-links">
+                        <li><a href="#features"><i class="fas fa-chevron-right"></i> 安全特性</a></li>
+                        <li><a href="#encryption"><i class="fas fa-chevron-right"></i> 加密技术</a></li>
+                        <li><a href="#privacy"><i class="fas fa-chevron-right"></i> 隐私保护</a></li>
+                        <li><a href="#demo"><i class="fas fa-chevron-right"></i> 沟通演示</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>核心功能</h3>
+                    <ul class="footer-links">
+                        <li><a href="intelligent-matching.html"><i class="fas fa-chevron-right"></i> 智能匹配系统</a></li>
+                        <li><a href="credit-rating.html"><i class="fas fa-chevron-right"></i> 信用评价系统</a></li>
+                        <li><a href="map-visualization.html"><i class="fas fa-chevron-right"></i> 地图可视化</a></li>
+                        <li><a href="transparent-tracking.html"><i class="fas fa-chevron-right"></i> 透明追踪系统</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>帮助中心</h3>
+                    <ul class="footer-links">
+                        <li><a href="how-to-get-help.html"><i class="fas fa-chevron-right"></i> 如何求助</a></li>
+                        <li><a href="become-volunteer.html"><i class="fas fa-chevron-right"></i> 成为志愿者</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> 常见问题</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> 用户协议</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>联系我们</h3>
+                    <ul class="footer-links footer-contact">
+                        <li><i class="fas fa-envelope"></i> 邮箱：2639687821@qq.com</li>
+                        <li><i class="fas fa-phone-alt"></i> 电话：15612140351</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 地址：河北科技大学</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 援手社区 - 综合性社会援助平台 版权所有 | 冀ICP备12345678号</p>
+                <p class="mt-20">让每一份善意都有回响，让每一次求助都有回应</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+        // 聊天模拟
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatMessages = document.querySelector('.chat-messages');
+            if (chatMessages) {
+                // 初始滚动到底部
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                // 模拟新消息
+                setTimeout(() => {
+                    const newMessage = document.createElement('div');
+                    newMessage.className = 'message received';
+                    newMessage.innerHTML = `
+                        <div class="message-avatar">👨‍🦳</div>
+                        <div class="message-content">
+                            <div class="message-text">小李你真好，社区有你们这样的志愿者真是我们的福气。</div>
+                            <div class="message-time">刚刚</div>
+                        </div>
+                    `;
+                    chatMessages.appendChild(newMessage);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }, 3000);
+            }
+            
+            // 隐私控制开关
+            const switches = document.querySelectorAll('.control-switch input');
+            switches.forEach(switchEl => {
+                switchEl.addEventListener('change', function() {
+                    const label = this.parentElement.querySelector('.slider');
+                    if (this.checked) {
+                        console.log(`开关 ${this.parentElement.previousElementSibling.querySelector('h4').textContent} 已启用`);
+                    } else {
+                        console.log(`开关 ${this.parentElement.previousElementSibling.querySelector('h4').textContent} 已禁用`);
+                    }
+                });
+            });
+            
+            // 导出数据按钮
+            document.querySelector('.btn[style*="导出数据"]').addEventListener('click', function() {
+                alert('数据导出功能正在准备中，我们将通过电子邮件向您发送数据导出链接。');
+            });
+            
+            // 删除数据按钮
+            document.querySelector('.btn[style*="删除数据"]').addEventListener('click', function() {
+                if (confirm('警告：此操作将永久删除您的所有个人数据，包括求助记录、沟通记录等。此操作不可撤销。确定要继续吗？')) {
+                    alert('删除请求已提交。我们的团队将在3个工作日内处理您的请求，并通过电子邮件确认。');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

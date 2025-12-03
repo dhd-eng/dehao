@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="银龄关怀 - 独居老人长期帮扶项目详情，见证援手社区如何通过志愿者结对帮扶，改善独居老人的生活质量与心理健康">
+    <meta name="keywords" content="独居老人帮扶,助老服务,社区关怀,志愿者服务,老年关爱">
+    <title>银龄关怀 - 独居老人长期帮扶项目 | 援手社区</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 案例详情页面特有样式 */
+        .case-detail-header {
+            background: linear-gradient(135deg, rgba(74, 107, 255, 0.9), rgba(108, 92, 231, 0.9));
+            color: white;
+            padding: 80px 0 60px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .case-detail-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1579600161224-cac5a2971069?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+            opacity: 0.2;
+            z-index: 1;
+        }
+        
+        .case-detail-header .container {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .case-breadcrumb {
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        
+        .case-breadcrumb a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+        }
+        
+        .case-breadcrumb a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+        
+        .case-breadcrumb span {
+            color: rgba(255, 255, 255, 0.8);
+            margin: 0 8px;
+        }
+        
+        .case-header-content {
+            max-width: 800px;
+        }
+        
+        .case-title {
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+        
+        .case-subtitle {
+            font-size: 20px;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+        
+        .case-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .case-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .case-meta-item i {
+            font-size: 20px;
+        }
+        
+        .case-tag {
+            display: inline-block;
+            padding: 8px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            font-weight: 600;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        /* 案例内容 */
+        .case-detail-content {
+            padding: 80px 0;
+        }
+        
+        .case-main {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 50px;
+        }
+        
+        .case-sidebar {
+            background-color: #f8f9fa;
+            border-radius: 12px;
+            padding: 30px;
+            height: fit-content;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .sidebar-section {
+            margin-bottom: 35px;
+        }
+        
+        .sidebar-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--dark-color);
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        .stats-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .stat-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 13px;
+            color: var(--gray-color);
+        }
+        
+        .volunteer-card {
+            display: flex;
+            align-items: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .volunteer-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .volunteer-info h4 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+        }
+        
+        .volunteer-info p {
+            margin: 0;
+            font-size: 14px;
+            color: var(--gray-color);
+        }
+        
+        .case-section {
+            margin-bottom: 60px;
+        }
+        
+        .case-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--dark-color);
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 5px;
+            background: var(--primary-color);
+            border-radius: 5px;
+        }
+        
+        .case-image-large {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .case-image-large img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .case-text {
+            line-height: 1.8;
+            color: var(--gray-color);
+            margin-bottom: 25px;
+        }
+        
+        .case-text p {
+            margin-bottom: 20px;
+        }
+        
+        .case-text ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .case-text li {
+            margin-bottom: 10px;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(74, 107, 255, 0.05), rgba(108, 92, 231, 0.05));
+            border-left: 4px solid var(--primary-color);
+            padding: 25px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+        
+        .highlight-box p {
+            margin: 0;
+            font-style: italic;
+            font-size: 18px;
+            color: var(--dark-color);
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: var(--primary-color);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+        }
+        
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -36px;
+            top: 5px;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px var(--primary-color);
+        }
+        
+        .timeline-date {
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        
+        .timeline-content h4 {
+            margin: 0 0 10px 0;
+            font-size: 18px;
+        }
+        
+        .timeline-content p {
+            margin: 0;
+            color: var(--gray-color);
+            line-height: 1.6;
+        }
+        
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+        
+        .impact-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .impact-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .impact-icon {
+            font-size: 40px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+        
+        .impact-card h4 {
+            margin: 0 0 15px 0;
+            font-size: 18px;
+        }
+        
+        .impact-card p {
+            margin: 0;
+            color: var(--gray-color);
+            line-height: 1.6;
+        }
+        
+        .testimonial-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            position: relative;
+            margin-top: 40px;
+        }
+        
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: -30px;
+            left: 30px;
+            font-size: 100px;
+            color: var(--primary-color);
+            opacity: 0.2;
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+        
+        .testimonial-text {
+            font-size: 18px;
+            line-height: 1.7;
+            color: var(--dark-color);
+            margin-bottom: 25px;
+            font-style: italic;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .author-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            margin-right: 15px;
+        }
+        
+        .author-info h4 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+        }
+        
+        .author-info p {
+            margin: 0;
+            color: var(--gray-color);
+            font-size: 14px;
+        }
+        
+        .case-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 50px;
+            flex-wrap: wrap;
+        }
+        
+        /* 相关案例 */
+        .related-cases {
+            padding: 60px 0;
+            background-color: #f8f9fa;
+        }
+        
+        .cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .case-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .case-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+        }
+        
+        .case-card-image {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .case-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .case-card:hover .case-card-image img {
+            transform: scale(1.05);
+        }
+        
+        .case-card-content {
+            padding: 25px;
+        }
+        
+        .case-card-content h3 {
+            margin: 0 0 15px 0;
+            font-size: 18px;
+            line-height: 1.4;
+        }
+        
+        .case-card-content p {
+            color: var(--gray-color);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .case-main {
+                grid-template-columns: 1fr;
+            }
+            
+            .case-title {
+                font-size: 36px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .case-detail-header {
+                padding: 60px 0 40px;
+            }
+            
+            .case-title {
+                font-size: 30px;
+            }
+            
+            .case-subtitle {
+                font-size: 18px;
+            }
+            
+            .case-meta {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .section-title {
+                font-size: 24px;
+            }
+            
+            .cases-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .case-actions {
+                flex-direction: column;
+            }
+            
+            .case-actions .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .case-title {
+                font-size: 26px;
+            }
+            
+            .case-image-large img {
+                height: 250px;
+            }
+            
+            .stats-box {
+                grid-template-columns: 1fr;
+            }
+            
+            .impact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 跳过导航链接（辅助功能） -->
+    <a href="#main-content" class="sr-only">跳过导航</a>
+    
+    <!-- 导航栏 -->
+    <header>
+        <div class="container">
+            <nav class="navbar" aria-label="主导航">
+                <div class="logo">
+                    <i class="fas fa-hands-helping" aria-hidden="true"></i>
+                    援手社区
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html"><i class="fas fa-home"></i> 首页</a></li>
+                    <li><a href="index.html#features"><i class="fas fa-cogs"></i> 功能</a></li>
+                    <li><a href="index.html#cases" class="active"><i class="fas fa-images"></i> 案例展示</a></li>
+                    <li><a href="index.html#about"><i class="fas fa-users"></i> 关于我们</a></li>
+                    <li><a href="how-to-get-help.html"><i class="fas fa-question-circle"></i> 如何求助</a></li>
+                    <li><a href="provide-help.html"><i class="fas fa-hands"></i> 提供帮助</a></li>
+                    <li><a href="index.html#contact"><i class="fas fa-phone-alt"></i> 联系我们</a></li>
+                    <li><a href="post-help.html" class="btn btn-secondary"><i class="fas fa-bullhorn"></i> 发布求助</a></li>
+                    <li><a href="login.html" class="btn btn-primary"><i class="fas fa-user-circle"></i> 登录/注册</a></li>
+                </ul>
+                <button class="mobile-menu" aria-label="切换菜单" aria-expanded="false">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 主内容区域 -->
+    <main id="main-content">
+        <!-- 案例头部 -->
+        <section class="case-detail-header">
+            <div class="container">
+                <div class="case-breadcrumb">
+                    <a href="index.html">首页</a> <span>/</span>
+                    <a href="index.html#cases">案例展示</a> <span>/</span>
+                    <span>银龄关怀项目</span>
+                </div>
+                <div class="case-header-content">
+                    <h1 class="case-title">「银龄关怀」独居老人长期帮扶项目</h1>
+                    <p class="case-subtitle">通过志愿者结对帮扶，改善独居老人的生活质量与心理健康，构建社区关爱网络</p>
+                    
+                    <div class="case-meta">
+                        <div class="case-meta-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>北京市朝阳区阳光花园小区</span>
+                        </div>
+                        <div class="case-meta-item">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>2024年3月 - 2024年9月 (6个月)</span>
+                        </div>
+                        <div class="case-meta-item">
+                            <i class="fas fa-users"></i>
+                            <span>1对1结对帮扶</span>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <span class="case-tag" style="background: rgba(255, 255, 255, 0.2);">助老服务</span>
+                        <span class="case-tag" style="background: rgba(255, 255, 255, 0.2);">已完成</span>
+                        <span class="case-tag" style="background: rgba(255, 255, 255, 0.2);">长期帮扶</span>
+                        <span class="case-tag" style="background: rgba(255, 255, 255, 0.2);">社区关怀</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 案例详情内容 -->
+        <section class="case-detail-content">
+            <div class="container">
+                <div class="case-main">
+                    <div class="case-content">
+                        <!-- 案例大图 -->
+                        <div class="case-image-large">
+                            <img src="D:\网站\关爱独居老人照片.png" alt="志愿者小李与王奶奶亲切交谈，王奶奶脸上洋溢着幸福的笑容">
+                        </div>
+                        
+                        <!-- 项目概述 -->
+                        <div class="case-section">
+                            <h2 class="section-title">项目概述</h2>
+                            <div class="case-text">
+                                <p>「银龄关怀」独居老人长期帮扶项目是援手社区发起的重点助老服务项目，旨在通过志愿者与独居老人一对一结对的方式，为社区内缺乏家庭照护的老年人提供长期、稳定、多元化的支持服务。</p>
+                                
+                                <p>本项目以78岁的王奶奶为服务对象，她因子女常年在外工作而独自生活。通过援手社区平台匹配，志愿者小李与王奶奶成功结对，开启了为期6个月的帮扶计划。项目涵盖了生活照料、健康监测、情感陪伴、紧急援助等多个方面，显著提升了老人的生活质量与心理健康。</p>
+                                
+                                <div class="highlight-box">
+                                    <p>"我们不仅帮助老人解决生活困难，更重要的是给予他们情感上的支持和陪伴，让他们感受到社会的温暖和关爱。"</p>
+                                </div>
+                                
+                                <p>通过系统化的服务设计和精细化的过程管理，本项目探索出了一套可复制、可持续的社区独居老人帮扶模式，为类似服务提供了宝贵经验。</p>
+                            </div>
+                        </div>
+                        
+                        <!-- 时间线 -->
+                        <div class="case-section">
+                            <h2 class="section-title">帮扶时间线</h2>
+                            <div class="timeline">
+                                <div class="timeline-item">
+                                    <div class="timeline-date">2024年3月10日</div>
+                                    <div class="timeline-content">
+                                        <h4>项目启动与匹配</h4>
+                                        <p>王奶奶通过援手社区发布求助信息，系统智能匹配到志愿者小李。双方首次见面，了解彼此需求与情况，制定个性化帮扶计划。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-date">2024年3月-4月</div>
+                                    <div class="timeline-content">
+                                        <h4>建立信任与常规服务</h4>
+                                        <p>小李每周三次上门服务，内容包括采购生活物资、简单家务协助和健康监测。双方逐渐建立信任关系，王奶奶开始敞开心扉分享生活点滴。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-date">2024年5月</div>
+                                    <div class="timeline-content">
+                                        <h4>深入情感陪伴</h4>
+                                        <p>在基本生活需求得到满足后，帮扶重点转向情感陪伴。小李开始记录王奶奶的人生故事，陪她回忆往昔，显著改善了老人的情绪状态。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-date">2024年6月</div>
+                                    <div class="timeline-content">
+                                        <h4>健康危机应对</h4>
+                                        <p>王奶奶突发轻度感冒，小李及时发现并陪同就医，购买药品，每日监测体温，直至完全康复。这次事件增强了双方的信任与依赖。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-date">2024年7月-8月</div>
+                                    <div class="timeline-content">
+                                        <h4>社交拓展与能力提升</h4>
+                                        <p>小李协助王奶奶学习使用智能手机与子女视频通话，并鼓励她参加社区老年活动，拓展社交圈子，增强社会参与感。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-date">2024年9月15日</div>
+                                    <div class="timeline-content">
+                                        <h4>项目总结与持续关怀</h4>
+                                        <p>6个月帮扶期结束，王奶奶子女返乡。项目总结评估显示服务满意度100%。小李与王奶奶约定保持每月至少一次联系，延续这份特殊的情谊。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 项目成果 -->
+                        <div class="case-section">
+                            <h2 class="section-title">项目成果</h2>
+                            <div class="impact-grid">
+                                <div class="impact-card">
+                                    <div class="impact-icon"><i class="fas fa-shopping-cart"></i></div>
+                                    <h4>生活物资采购</h4>
+                                    <p>累计完成48次生活物资采购，确保老人日常生活所需得到及时满足。</p>
+                                </div>
+                                
+                                <div class="impact-card">
+                                    <div class="impact-icon"><i class="fas fa-heartbeat"></i></div>
+                                    <h4>健康监测</h4>
+                                    <p>定期进行24次健康监测，及时发现并处理健康问题，建立健康档案。</p>
+                                </div>
+                                
+                                <div class="impact-card">
+                                    <div class="impact-icon"><i class="fas fa-clock"></i></div>
+                                    <h4>陪伴时间</h4>
+                                    <p>累计陪伴时间超过200小时，有效缓解老人的孤独感和焦虑情绪。</p>
+                                </div>
+                                
+                                <div class="impact-card">
+                                    <div class="impact-icon"><i class="fas fa-smile"></i></div>
+                                    <h4>心理状态改善</h4>
+                                    <p>通过心理评估量表测量，王奶奶的抑郁指数从中度降至正常范围。</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 感言 -->
+                        <div class="case-section">
+                            <h2 class="section-title">感言与反馈</h2>
+                            <div class="testimonial-card">
+                                <p class="testimonial-text">小李就像我的亲孙子一样，每周都来看我，帮我买东西，陪我聊天。这半年来，我的生活发生了很大变化，以前总觉得孤独，现在每天都盼着小李来。他不仅帮我解决了生活上的困难，更重要的是给了我精神上的支持。感谢援手社区，让我在晚年还能感受到这样的温暖。</p>
+                                
+                                <div class="testimonial-author">
+                                    <div class="author-avatar">王</div>
+                                    <div class="author-info">
+                                        <h4>王奶奶</h4>
+                                        <p>78岁，项目服务对象</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="testimonial-card">
+                                <p class="testimonial-text">参与这个项目对我来说是一次宝贵的人生经历。最初我只是想帮助一位独居老人，但在这个过程中，我从王奶奶身上学到了很多人生智慧。看到她从孤独沉默到开朗健谈，我深刻体会到了陪伴的力量。援手社区的平台让我能够将自己的时间和爱心转化为实实在在的帮助，这种成就感是无可替代的。</p>
+                                
+                                <div class="testimonial-author">
+                                    <div class="author-avatar">李</div>
+                                    <div class="author-info">
+                                        <h4>小李 (志愿者)</h4>
+                                        <p>25岁，项目志愿者</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 行动号召 -->
+                        <div class="case-actions">
+                            <a href="post-help.html" class="btn btn-primary">
+                                <i class="fas fa-bullhorn"></i> 发布类似求助
+                            </a>
+                            <a href="provide-help.html" class="btn btn-secondary">
+                                <i class="fas fa-hands-helping"></i> 成为助老志愿者
+                            </a>
+                            <a href="#" class="btn btn-outline">
+                                <i class="fas fa-share-alt"></i> 分享这个案例
+                            </a>
+                            <!-- 修改了返回案例列表的链接，指向首页的案例展示部分 -->
+                            <a href="index.html#cases" class="btn btn-outline">
+                                <i class="fas fa-arrow-left"></i> 返回案例列表
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- 侧边栏 -->
+                    <aside class="case-sidebar">
+                        <div class="sidebar-section">
+                            <h3 class="sidebar-title">项目数据</h3>
+                            <div class="stats-box">
+                                <div class="stat-item">
+                                    <div class="stat-value">6个月</div>
+                                    <div class="stat-label">持续时间</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">72次</div>
+                                    <div class="stat-label">服务次数</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">200+小时</div>
+                                    <div class="stat-label">陪伴时长</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">100%</div>
+                                    <div class="stat-label">满意度</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="sidebar-section">
+                            <h3 class="sidebar-title">主要志愿者</h3>
+                            <div class="volunteer-card">
+                                <div class="volunteer-avatar">李</div>
+                                <div class="volunteer-info">
+                                    <h4>小李</h4>
+                                    <p>25岁，公司职员</p>
+                                    <p>志愿服务时长：180小时</p>
+                                </div>
+                            </div>
+                            <p style="font-size: 14px; color: var(--gray-color); margin-top: 10px;">小李是一名热心的年轻志愿者，有丰富的社区服务经验，特别关注老年人群体。</p>
+                        </div>
+                        
+                        <div class="sidebar-section">
+                            <h3 class="sidebar-title">服务内容</h3>
+                            <ul style="list-style: none; padding: 0;">
+                                <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">
+                                    <i class="fas fa-check" style="color: var(--primary-color); position: absolute; left: 0;"></i>
+                                    生活物资采购
+                                </li>
+                                <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">
+                                    <i class="fas fa-check" style="color: var(--primary-color); position: absolute; left: 0;"></i>
+                                    健康监测与陪伴就医
+                                </li>
+                                <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">
+                                    <i class="fas fa-check" style="color: var(--primary-color); position: absolute; left: 0;"></i>
+                                    情感陪伴与心理支持
+                                </li>
+                                <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">
+                                    <i class="fas fa-check" style="color: var(--primary-color); position: absolute; left: 0;"></i>
+                                    简单家务协助
+                                </li>
+                                <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">
+                                    <i class="fas fa-check" style="color: var(--primary-color); position: absolute; left: 0;"></i>
+                                    紧急情况响应
+                                </li>
+                                <li style="padding-left: 20px; position: relative;">
+                                    <i class="fas fa-check" style="color: var(--primary-color); position: absolute; left: 0;"></i>
+                                    社交拓展支持
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="sidebar-section">
+                            <h3 class="sidebar-title">项目支持</h3>
+                            <p style="font-size: 14px; color: var(--gray-color); margin-bottom: 15px;">本项目得到以下单位支持：</p>
+                            <ul style="list-style: none; padding: 0;">
+                                <li style="margin-bottom: 8px;">
+                                    <i class="fas fa-building" style="color: var(--primary-color); margin-right: 8px;"></i>
+                                    朝阳区民政局
+                                </li>
+                                <li style="margin-bottom: 8px;">
+                                    <i class="fas fa-heart" style="color: var(--primary-color); margin-right: 8px;"></i>
+                                    阳光社区基金会
+                                </li>
+                                <li>
+                                    <i class="fas fa-store" style="color: var(--primary-color); margin-right: 8px;"></i>
+                                    爱心超市
+                                </li>
+                            </ul>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </section>
+
+        <!-- 相关案例 -->
+        <section class="related-cases">
+            <div class="container">
+                <div class="section-title">
+                    <h2>相关案例</h2>
+                    <p>了解更多类似的社区帮扶项目</p>
+                </div>
+                
+                <div class="cases-grid">
+                    <article class="case-card">
+                        <a href="case-detail-2.html" style="text-decoration: none; color: inherit;">
+                            <div class="case-card-image">
+                                <img src="D:\网站\平台分配辅导学生照片.webp" alt="大学生志愿者为贫困学生提供一对一辅导">
+                            </div>
+                            <div class="case-card-content">
+                                <h3>「成长护航」贫困学生学业提升计划</h3>
+                                <p>为家庭经济困难的初中生提供一对一学业辅导，3个月内数学成绩提升37%，建立学习自信心。</p>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span class="case-tag" style="background: rgba(74, 107, 255, 0.1); color: var(--primary-color); font-size: 12px; padding: 4px 12px;">教育帮扶</span>
+                                    <span style="font-size: 14px; color: var(--gray-color);">进行中</span>
+                                </div>
+                            </div>
+                        </a>
+                    </article>
+                    
+                    <article class="case-card">
+                        <a href="case-detail-3.html" style="text-decoration: none; color: inherit;">
+                            <div class="case-card-image">
+                                <img src="D:\网站\爱心捐赠照片.jpeg" alt="志愿者为受灾家庭搬运救灾物资">
+                            </div>
+                            <div class="case-card-content">
+                                <h3>「家园重建」火灾受灾家庭紧急援助</h3>
+                                <p>为火灾受灾家庭提供紧急援助，48小时内筹集32,500元善款和158件物资，组织志愿者协助重建。</p>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span class="case-tag" style="background: rgba(74, 107, 255, 0.1); color: var(--primary-color); font-size: 12px; padding: 4px 12px;">灾后援助</span>
+                                    <span style="font-size: 14px; color: var(--gray-color);">已完成</span>
+                                </div>
+                            </div>
+                        </a>
+                    </article>
+                    
+                    <article class="case-card">
+                        <a href="#" style="text-decoration: none; color: inherit;">
+                            <div class="case-card-image">
+                                <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="志愿者为视障人士提供出行帮助">
+                            </div>
+                            <div class="case-card-content">
+                                <h3>「光明之路」视障人士出行帮扶项目</h3>
+                                <p>为社区视障人士提供定期出行陪伴服务，帮助他们参与社会活动，提升生活品质。</p>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span class="case-tag" style="background: rgba(74, 107, 255, 0.1); color: var(--primary-color); font-size: 12px; padding: 4px 12px;">残障支持</span>
+                                    <span style="font-size: 14px; color: var(--gray-color);">进行中</span>
+                                </div>
+                            </div>
+                        </a>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 智能聊天助手 -->
+    <div class="ai-assistant" role="dialog" aria-labelledby="assistant-title">
+        <div class="assistant-header">
+            <div class="assistant-avatar">
+                <span>🤖</span>
+            </div>
+            <div class="assistant-info">
+                <h5 id="assistant-title">援手小助手</h5>
+                <p>智能匹配 | 24小时在线</p>
+            </div>
+            <button class="minimize-btn" aria-label="最小化聊天助手">−</button>
+        </div>
+        
+        <div class="chat-messages">
+            <div class="message assistant">
+                您好！我正在查看「银龄关怀」项目详情。如果您也想参与类似的助老服务或需要帮助，请随时告诉我。
+            </div>
+        </div>
+        
+        <div class="quick-actions">
+            <button class="quick-btn" data-action="elderly-help" onclick="window.location.href='post-help.html?category=elderly'"><i class="fas fa-user-friends"></i> 发布助老求助</button>
+            <button class="quick-btn" data-action="volunteer" onclick="window.location.href='login.html'"><i class="fas fa-hands"></i> 成为志愿者</button>
+            <button class="quick-btn" data-action="donate" onclick="window.location.href='#'"><i class="fas fa-donate"></i> 支持助老项目</button>
+        </div>
+    </div>
+
+    <!-- 底部 -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>关于我们</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> 项目愿景</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> 团队介绍</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> 媒体报道</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> 加入我们</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>帮助中心</h3>
+                    <ul class="footer-links">
+                        <li><a href="post-help.html"><i class="fas fa-chevron-right"></i> 如何发布求助</a></li>
+                        <li><a href="how-to-get-help.html"><i class="fas fa-chevron-right"></i> 如何获取帮助</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> 常见问题</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> 用户协议</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>合作伙伴</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> 公益组织</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> 企业CSR</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> 政府机构</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> 加入合作</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>联系我们</h3>
+                    <ul class="footer-links footer-contact">
+                        <li><i class="fas fa-envelope"></i> 邮箱：2639687821@qq.com</li>
+                        <li><i class="fas fa-phone-alt"></i> 电话：15612140351</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 地址：河北科技大学</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 援手社区 - 综合性社会援助平台 版权所有 | 冀ICP备12345678号</p>
+                <p class="mt-20">让每一份善意都有回响，让每一次求助都有回应</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+        // 案例详情页面特有脚本
+        document.addEventListener('DOMContentLoaded', function() {
+            // 智能聊天助手按钮功能
+            const aiAssistant = document.querySelector('.ai-assistant');
+            
+            if (aiAssistant) {
+                document.querySelectorAll('.quick-btn[data-action="elderly-help"]').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        window.location.href = 'post-help.html?category=elderly';
+                    });
+                });
+                
+                document.querySelectorAll('.quick-btn[data-action="volunteer"]').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        window.location.href = 'login.html';
+                    });
+                });
+            }
+            
+            // 分享功能
+            const shareButtons = document.querySelectorAll('.btn-outline[href="#"]');
+            shareButtons.forEach(btn => {
+                if (btn.textContent.includes('分享')) {
+                    btn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        if (navigator.share) {
+                            navigator.share({
+                                title: '银龄关怀 - 独居老人长期帮扶项目',
+                                text: '看看援手社区如何帮助独居老人改善生活质量与心理健康',
+                                url: window.location.href
+                            });
+                        } else {
+                            // 后备方案：复制链接到剪贴板
+                            navigator.clipboard.writeText(window.location.href).then(() => {
+                                alert('链接已复制到剪贴板！您可以粘贴分享给朋友。');
+                            });
+                        }
+                    });
+                }
+            });
+            
+            // 返回顶部按钮
+            const backToTopBtn = document.createElement('button');
+            backToTopBtn.innerHTML = '<i class="fas fa-chevron-up"></i>';
+            backToTopBtn.className = 'back-to-top';
+            backToTopBtn.style.cssText = `
+                position: fixed;
+                bottom: 30px;
+                right: 30px;
+                width: 50px;
+                height: 50px;
+                background: var(--primary-color);
+                color: white;
+                border: none;
+                border-radius: 50%;
+                font-size: 20px;
+                cursor: pointer;
+                box-shadow: 0 5px 15px rgba(74, 107, 255, 0.3);
+                z-index: 1000;
+                display: none;
+                transition: all 0.3s ease;
+            `;
+            document.body.appendChild(backToTopBtn);
+            
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 500) {
+                    backToTopBtn.style.display = 'flex';
+                    backToTopBtn.style.alignItems = 'center';
+                    backToTopBtn.style.justifyContent = 'center';
+                } else {
+                    backToTopBtn.style.display = 'none';
+                }
+            });
+            
+            // 页面加载动画
+            const fadeInElements = document.querySelectorAll('.case-section, .case-sidebar, .related-cases');
+            fadeInElements.forEach((el, index) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                
+                setTimeout(() => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, 100 + index * 100);
+            });
+        });
+    </script>
+</body>
+</html>

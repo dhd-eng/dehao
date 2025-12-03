@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="信用评价系统 - 双向匿名评价，建立用户信任机制，保障援助质量与安全">
+    <meta name="keywords" content="信用评价,信任机制,用户评分,双向评价,信誉体系">
+    <title>信用评价系统 - 援手社区</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 系统概览 */
+        .rating-overview {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 120px 0 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .rating-overview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+            opacity: 0.1;
+        }
+        
+        .rating-overview h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .rating-overview p {
+            font-size: 20px;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            position: relative;
+            line-height: 1.6;
+        }
+        
+        /* 评价机制 */
+        .rating-mechanism {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+        
+        .mechanism-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+        
+        .mechanism-step {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .mechanism-step:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+        
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto 25px;
+        }
+        
+        .step-title {
+            font-size: 22px;
+            color: var(--dark-color);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .step-description {
+            color: var(--gray-color);
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+        
+        .mechanism-features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .mechanism-feature {
+            background: #f8f9fa;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            color: #f5576c;
+        }
+        
+        /* 评价维度 */
+        .rating-dimensions {
+            padding: 80px 0;
+        }
+        
+        .dimensions-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            margin-top: 50px;
+            align-items: center;
+        }
+        
+        .dimensions-chart {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .dimension-item {
+            margin-bottom: 30px;
+        }
+        
+        .dimension-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .dimension-name {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .dimension-weight {
+            color: #f5576c;
+            font-weight: 700;
+        }
+        
+        .dimension-bar {
+            height: 12px;
+            background: #f0f0f0;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .dimension-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            border-radius: 6px;
+        }
+        
+        .dimension-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .dimension-icon {
+            width: 50px;
+            height: 50px;
+            background: #f8f9fa;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #f5576c;
+        }
+        
+        /* 评价展示 */
+        .rating-display {
+            padding: 80px 0;
+            background: var(--light-color);
+        }
+        
+        .rating-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .rating-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+        
+        .rating-score {
+            font-size: 48px;
+            font-weight: 700;
+            color: #f5576c;
+            margin-bottom: 20px;
+        }
+        
+        .rating-stars {
+            margin-bottom: 25px;
+        }
+        
+        .rating-star {
+            color: #ffc107;
+            font-size: 20px;
+            margin: 0 2px;
+        }
+        
+        .rating-details {
+            margin-top: 30px;
+        }
+        
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-label {
+            color: var(--gray-color);
+        }
+        
+        .detail-value {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        /* 双向评价 */
+        .bidirectional-rating {
+            padding: 80px 0;
+        }
+        
+        .bidirectional-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+        
+        .rating-side {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+        
+        .rating-side.volunteer {
+            border-top: 5px solid #f5576c;
+        }
+        
+        .rating-side.helper {
+            border-top: 5px solid #36b9cc;
+        }
+        
+        .side-icon {
+            width: 80px;
+            height: 80px;
+            background: #f8f9fa;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto 25px;
+        }
+        
+        .volunteer .side-icon {
+            color: #f5576c;
+        }
+        
+        .helper .side-icon {
+            color: #36b9cc;
+        }
+        
+        .rating-form {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+        }
+        
+        .rating-criteria {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .criterion-item {
+            text-align: center;
+        }
+        
+        .criterion-stars {
+            margin-top: 15px;
+        }
+        
+        .criterion-star {
+            font-size: 24px;
+            color: #ddd;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            margin: 0 5px;
+        }
+        
+        .criterion-star.active {
+            color: #ffc107;
+        }
+        
+        /* 信用等级 */
+        .credit-levels {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+        
+        .levels-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .level-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .level-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .level-badge {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto 25px;
+            color: white;
+        }
+        
+        .level-1 .level-badge { background: linear-gradient(135deg, #f5576c, #f093fb); }
+        .level-2 .level-badge { background: linear-gradient(135deg, #36b9cc, #4e54c8); }
+        .level-3 .level-badge { background: linear-gradient(135deg, #1cc88a, #36b9cc); }
+        .level-4 .level-badge { background: linear-gradient(135deg, #f6c23e, #f093fb); }
+        .level-5 .level-badge { background: linear-gradient(135deg, #4e54c8, #1cc88a); }
+        
+        .level-title {
+            font-size: 20px;
+            color: var(--dark-color);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .level-requirements {
+            list-style: none;
+            margin: 25px 0;
+        }
+        
+        .level-requirements li {
+            padding: 8px 0;
+            font-size: 14px;
+            color: var(--gray-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .level-requirements i {
+            color: #f5576c;
+        }
+        
+        /* 申诉机制 */
+        .appeal-mechanism {
+            padding: 80px 0;
+        }
+        
+        .appeal-container {
+            max-width: 800px;
+            margin: 50px auto 0;
+            background: white;
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .appeal-steps {
+            margin: 40px 0;
+        }
+        
+        .appeal-step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 40px;
+        }
+        
+        .appeal-number {
+            width: 40px;
+            height: 40px;
+            background: #f5576c;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+        
+        .appeal-content h4 {
+            margin: 0 0 10px;
+            color: var(--dark-color);
+        }
+        
+        .appeal-content p {
+            color: var(--gray-color);
+            line-height: 1.7;
+            margin: 0;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .dimensions-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .rating-form {
+                padding: 30px;
+            }
+            
+            .rating-criteria {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .rating-overview {
+                padding: 80px 0 60px;
+            }
+            
+            .rating-overview h1 {
+                font-size: 36px;
+            }
+            
+            .rating-mechanism {
+                padding: 60px 0;
+            }
+            
+            .mechanism-steps {
+                gap: 30px;
+            }
+            
+            .mechanism-step {
+                padding: 30px 20px;
+            }
+            
+            .bidirectional-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .rating-criteria {
+                grid-template-columns: 1fr;
+            }
+            
+            .appeal-container {
+                padding: 30px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .rating-overview h1 {
+                font-size: 28px;
+            }
+            
+            .rating-overview p {
+                font-size: 16px;
+            }
+            
+            .step-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 24px;
+            }
+            
+            .step-title {
+                font-size: 20px;
+            }
+            
+            .rating-score {
+                font-size: 36px;
+            }
+            
+            .level-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 跳过导航链接（辅助功能） -->
+    <a href="#main-content" class="sr-only">跳过导航</a>
+    
+    <!-- 导航栏 -->
+    <header>
+        <div class="container">
+            <nav class="navbar" aria-label="主导航">
+                <div class="logo">
+                    <i class="fas fa-hands-helping" aria-hidden="true"></i>
+                    援手社区
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html"><i class="fas fa-home"></i> 首页</a></li>
+                    <li><a href="#mechanism"><i class="fas fa-cogs"></i> 评价机制</a></li>
+                    <li><a href="#dimensions"><i class="fas fa-chart-pie"></i> 评价维度</a></li>
+                    <li><a href="#display"><i class="fas fa-star"></i> 信用展示</a></li>
+                    <li><a href="#bidirectional"><i class="fas fa-exchange-alt"></i> 双向评价</a></li>
+                    <li><a href="#levels"><i class="fas fa-medal"></i> 信用等级</a></li>
+                    <li><a href="#appeal"><i class="fas fa-gavel"></i> 申诉机制</a></li>
+                    <li><a href="login.html" class="btn btn-primary"><i class="fas fa-user-circle"></i> 查看我的信用</a></li>
+                </ul>
+                <button class="mobile-menu" aria-label="切换菜单" aria-expanded="false">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 主内容区域 -->
+    <main id="main-content">
+        <!-- 系统概览 -->
+        <section class="rating-overview">
+            <div class="container">
+                <h1>信用评价系统</h1>
+                <p>双向匿名评价机制，建立用户信任体系，保障援助质量与安全，让每一份善意都得到公正的认可。</p>
+                <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                    <a href="#display" class="btn btn-primary" style="background: white; color: #f5576c; font-weight: 700; padding: 18px 40px; font-size: 18px;">
+                        查看信用展示 <i class="fas fa-star"></i>
+                    </a>
+                    <a href="login.html" class="btn btn-outline" style="background: transparent; border-color: white; color: white; padding: 18px 40px; font-size: 18px;">
+                        查看我的信用 <i class="fas fa-user-circle"></i>
+                    </a>
+                </div>
+                <div class="video-stats" style="margin-top: 60px; color: white;">
+                    <div class="stat">
+                        <span class="stat-number" style="color: white;">4.8</span>
+                        <span class="stat-label">平均评分</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" style="color: white;">98.3%</span>
+                        <span class="stat-label">好评率</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" style="color: white;">12.7万</span>
+                        <span class="stat-label">评价总数</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 评价机制 -->
+        <section class="rating-mechanism" id="mechanism">
+            <div class="container">
+                <div class="section-title">
+                    <h2>双向匿名评价机制</h2>
+                    <p>公正、客观、匿名的评价系统，保障双方权益</p>
+                </div>
+                
+                <div class="mechanism-steps">
+                    <!-- 步骤1 -->
+                    <div class="mechanism-step">
+                        <div class="step-icon">🤝</div>
+                        <h3 class="step-title">援助完成触发</h3>
+                        <p class="step-description">当求助状态标记为"已完成"后，系统自动向求助者和志愿者发送评价邀请，确保评价基于实际服务体验。</p>
+                        <div class="mechanism-features">
+                            <span class="mechanism-feature">状态触发</span>
+                            <span class="mechanism-feature">自动邀请</span>
+                            <span class="mechanism-feature">7天有效期</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 步骤2 -->
+                    <div class="mechanism-step">
+                        <div class="step-icon">👤</div>
+                        <h3 class="step-title">双向匿名评价</h3>
+                        <p class="step-description">求助者和志愿者互相进行匿名评价，评价内容对双方可见，但评价者身份隐藏，确保评价真实性。</p>
+                        <div class="mechanism-features">
+                            <span class="mechanism-feature">双向评价</span>
+                            <span class="mechanism-feature">身份隐藏</span>
+                            <span class="mechanism-feature">真实反馈</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 步骤3 -->
+                    <div class="mechanism-step">
+                        <div class="step-icon">⚖️</div>
+                        <h3 class="step-title">智能评分计算</h3>
+                        <p class="step-description">系统综合多维度评价、历史记录、评价时效性等因素，智能计算信用分数，避免恶意评分影响。</p>
+                        <div class="mechanism-features">
+                            <span class="mechanism-feature">多维计算</span>
+                            <span class="mechanism-feature">权重调整</span>
+                            <span class="mechanism-feature">异常过滤</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 步骤4 -->
+                    <div class="mechanism-step">
+                        <div class="step-icon">🛡️</div>
+                        <h3 class="step-title">申诉与调解</h3>
+                        <p class="step-description">对不公正评价可提起申诉，平台客服介入调查核实。恶意评价将被删除，并影响评价者信用。</p>
+                        <div class="mechanism-features">
+                            <span class="mechanism-feature">申诉机制</span>
+                            <span class="mechanism-feature">客服介入</span>
+                            <span class="mechanism-feature">恶意惩罚</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 评价维度 -->
+        <section class="rating-dimensions" id="dimensions">
+            <div class="container">
+                <div class="section-title">
+                    <h2>多维度评价体系</h2>
+                    <p>从多个角度全面评估服务质量，确保评价的全面性与公正性</p>
+                </div>
+                
+                <div class="dimensions-container">
+                    <div class="dimensions-chart">
+                        <h3>评价维度与权重</h3>
+                        <p style="color: var(--gray-color); margin-top: 10px; margin-bottom: 30px;">各维度根据求助类型动态调整权重</p>
+                        
+                        <!-- 维度1 -->
+                        <div class="dimension-item">
+                            <div class="dimension-header">
+                                <div class="dimension-name">
+                                    <i class="fas fa-clock"></i>
+                                    <span>响应及时性</span>
+                                </div>
+                                <div class="dimension-weight">25%</div>
+                            </div>
+                            <div class="dimension-bar">
+                                <div class="dimension-fill" style="width: 25%"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- 维度2 -->
+                        <div class="dimension-item">
+                            <div class="dimension-header">
+                                <div class="dimension-name">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>服务质量</span>
+                                </div>
+                                <div class="dimension-weight">30%</div>
+                            </div>
+                            <div class="dimension-bar">
+                                <div class="dimension-fill" style="width: 30%"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- 维度3 -->
+                        <div class="dimension-item">
+                            <div class="dimension-header">
+                                <div class="dimension-name">
+                                    <i class="fas fa-comments"></i>
+                                    <span>沟通态度</span>
+                                </div>
+                                <div class="dimension-weight">20%</div>
+                            </div>
+                            <div class="dimension-bar">
+                                <div class="dimension-fill" style="width: 20%"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- 维度4 -->
+                        <div class="dimension-item">
+                            <div class="dimension-header">
+                                <div class="dimension-name">
+                                    <i class="fas fa-handshake"></i>
+                                    <span>可靠性</span>
+                                </div>
+                                <div class="dimension-weight">15%</div>
+                            </div>
+                            <div class="dimension-bar">
+                                <div class="dimension-fill" style="width: 15%"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- 维度5 -->
+                        <div class="dimension-item">
+                            <div class="dimension-header">
+                                <div class="dimension-name">
+                                    <i class="fas fa-user-check"></i>
+                                    <span>专业性</span>
+                                </div>
+                                <div class="dimension-weight">10%</div>
+                            </div>
+                            <div class="dimension-bar">
+                                <div class="dimension-fill" style="width: 10%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3>各维度说明</h3>
+                        <div class="dimension-info" style="margin-top: 30px;">
+                            <div class="dimension-icon">⏱️</div>
+                            <div>
+                                <h4 style="margin: 0 0 10px;">响应及时性</h4>
+                                <p style="color: var(--gray-color); margin: 0; line-height: 1.6;">从接单到提供服务的响应速度，包括沟通响应和实际到达时间。紧急求助此权重更高。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="dimension-info" style="margin-top: 30px;">
+                            <div class="dimension-icon">✅</div>
+                            <div>
+                                <h4 style="margin: 0 0 10px;">服务质量</h4>
+                                <p style="color: var(--gray-color); margin: 0; line-height: 1.6;">实际援助效果和质量，是否满足求助需求，服务是否专业到位。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="dimension-info" style="margin-top: 30px;">
+                            <div class="dimension-icon">💬</div>
+                            <div>
+                                <h4 style="margin: 0 0 10px;">沟通态度</h4>
+                                <p style="color: var(--gray-color); margin: 0; line-height: 1.6;">沟通中的礼貌程度、耐心程度和同理心，是否尊重对方感受。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="dimension-info" style="margin-top: 30px;">
+                            <div class="dimension-icon">🤝</div>
+                            <div>
+                                <h4 style="margin: 0 0 10px;">可靠性</h4>
+                                <p style="color: var(--gray-color); margin: 0; line-height: 1.6;">是否遵守承诺，按时完成服务，过程中是否有意外变动或取消。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 评价展示 -->
+        <section class="rating-display" id="display">
+            <div class="container">
+                <div class="section-title">
+                    <h2>信用展示与查询</h2>
+                    <p>透明展示用户信用信息，帮助双方建立信任</p>
+                </div>
+                
+                <div class="rating-cards">
+                    <!-- 志愿者信用展示 -->
+                    <div class="rating-card">
+                        <div class="rating-score">4.9</div>
+                        <div class="rating-stars">
+                            <i class="fas fa-star rating-star"></i>
+                            <i class="fas fa-star rating-star"></i>
+                            <i class="fas fa-star rating-star"></i>
+                            <i class="fas fa-star rating-star"></i>
+                            <i class="fas fa-star-half-alt rating-star"></i>
+                        </div>
+                        <h3>志愿者信用展示</h3>
+                        <p style="color: var(--gray-color); margin-top: 10px;">李女士 · 助老服务志愿者</p>
+                        
+                        <div class="rating-details">
+                            <div class="detail-item">
+                                <span class="detail-label">服务次数</span>
+                                <span class="detail-value">72次</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">服务时长</span>
+                                <span class="detail-value">128小时</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">好评率</span>
+                                <span class="detail-value">100%</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">信用等级</span>
+                                <span class="detail-value" style="color: #1cc88a;">卓越 (Lv.5)</span>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 30px;">
+                            <a href="#" class="btn btn-outline" style="padding: 10px 25px;">
+                                <i class="fas fa-eye"></i> 查看详细评价
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- 求助者信用展示 -->
+                    <div class="rating-card">
+                        <div class="rating-score">4.7</div>
+                        <div class="rating-stars">
+                            <i class="fas fa-star rating-star"></i>
+                            <i class="fas fa-star rating-star"></i>
+                            <i class="fas fa-star rating-star"></i>
+                            <i class="fas fa-star rating-star"></i>
+                            <i class="far fa-star rating-star"></i>
+                        </div>
+                        <h3>求助者信用展示</h3>
+                        <p style="color: var(--gray-color); margin-top: 10px;">王先生 · 3次求助记录</p>
+                        
+                        <div class="rating-details">
+                            <div class="detail-item">
+                                <span class="detail-label">求助次数</span>
+                                <span class="detail-value">3次</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">评价及时性</span>
+                                <span class="detail-value">100%</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">描述准确性</span>
+                                <span class="detail-value">4.8</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">信用等级</span>
+                                <span class="detail-value" style="color: #36b9cc;">优秀 (Lv.4)</span>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 30px;">
+                            <a href="#" class="btn btn-outline" style="padding: 10px 25px;">
+                                <i class="fas fa-eye"></i> 查看详细评价
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- 组织信用展示 -->
+                    <div class="rating-card">
+                        <div class="rating-score">4.8</div>
+                        <div class="rating-stars">
+                            <i class="fas fa-star rating-star"></i>
+                            <i class="fas fa-star rating-star"></i>
+                            <i class="fas fa-star rating-star"></i>
+                            <i class="fas fa-star rating-star"></i>
+                            <i class="far fa-star rating-star"></i>
+                        </div>
+                        <h3>组织信用展示</h3>
+                        <p style="color: var(--gray-color); margin-top: 10px;">阳光公益 · 合作组织</p>
+                        
+                        <div class="rating-details">
+                            <div class="detail-item">
+                                <span class="detail-label">服务项目</span>
+                                <span class="detail-value">12个</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">志愿者数</span>
+                                <span class="detail-value">48人</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">成功率</span>
+                                <span class="detail-value">98.5%</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">信用等级</span>
+                                <span class="detail-value" style="color: #4e54c8;">良好 (Lv.3)</span>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 30px;">
+                            <a href="#" class="btn btn-outline" style="padding: 10px 25px;">
+                                <i class="fas fa-eye"></i> 查看详细评价
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-50">
+                    <a href="login.html" class="btn btn-primary" style="padding: 15px 40px;">
+                        <i class="fas fa-search"></i> 查询用户信用
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 双向评价 -->
+        <section class="bidirectional-rating" id="bidirectional">
+            <div class="container">
+                <div class="section-title">
+                    <h2>双向评价流程</h2>
+                    <p>求助者与志愿者互相评价，建立完整的信任闭环</p>
+                </div>
+                
+                <div class="bidirectional-container">
+                    <!-- 志愿者评价求助者 -->
+                    <div class="rating-side volunteer">
+                        <div class="side-icon">🙋</div>
+                        <h3>志愿者评价求助者</h3>
+                        <p style="color: var(--gray-color); margin-top: 15px; line-height: 1.7;">志愿者可以评价求助者的：需求描述准确性、沟通配合度、评价及时性等。</p>
+                        <div style="margin-top: 25px; text-align: left;">
+                            <h4>评价维度：</h4>
+                            <ul style="list-style: none; margin-top: 15px;">
+                                <li style="padding: 8px 0; display: flex; align-items: center; gap: 10px;">
+                                    <i class="fas fa-check-circle" style="color: #f5576c;"></i>
+                                    <span>需求描述准确性</span>
+                                </li>
+                                <li style="padding: 8px 0; display: flex; align-items: center; gap: 10px;">
+                                    <i class="fas fa-check-circle" style="color: #f5576c;"></i>
+                                    <span>沟通配合度</span>
+                                </li>
+                                <li style="padding: 8px 0; display: flex; align-items: center; gap: 10px;">
+                                    <i class="fas fa-check-circle" style="color: #f5576c;"></i>
+                                    <span>评价及时性</span>
+                                </li>
+                                <li style="padding: 8px 0; display: flex; align-items: center; gap: 10px;">
+                                    <i class="fas fa-check-circle" style="color: #f5576c;"></i>
+                                    <span>尊重与礼貌</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- 求助者评价志愿者 -->
+                    <div class="rating-side helper">
+                        <div class="side-icon">👨‍🦳</div>
+                        <h3>求助者评价志愿者</h3>
+                        <p style="color: var(--gray-color); margin-top: 15px; line-height: 1.7;">求助者可以评价志愿者的：响应及时性、服务质量、沟通态度、专业性等。</p>
+                        <div style="margin-top: 25px; text-align: left;">
+                            <h4>评价维度：</h4>
+                            <ul style="list-style: none; margin-top: 15px;">
+                                <li style="padding: 8px 0; display: flex; align-items: center; gap: 10px;">
+                                    <i class="fas fa-check-circle" style="color: #36b9cc;"></i>
+                                    <span>响应及时性</span>
+                                </li>
+                                <li style="padding: 8px 0; display: flex; align-items: center; gap: 10px;">
+                                    <i class="fas fa-check-circle" style="color: #36b9cc;"></i>
+                                    <span>服务质量</span>
+                                </li>
+                                <li style="padding: 8px 0; display: flex; align-items: center; gap: 10px;">
+                                    <i class="fas fa-check-circle" style="color: #36b9cc;"></i>
+                                    <span>沟通态度</span>
+                                </li>
+                                <li style="padding: 8px 0; display: flex; align-items: center; gap: 10px;">
+                                    <i class="fas fa-check-circle" style="color: #36b9cc;"></i>
+                                    <span>专业能力</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="rating-form">
+                    <h3 style="text-align: center; margin-bottom: 30px;">模拟评价体验</h3>
+                    
+                    <div class="rating-criteria">
+                        <!-- 响应及时性 -->
+                        <div class="criterion-item">
+                            <h4>响应及时性</h4>
+                            <div class="criterion-stars" data-criterion="responsiveness">
+                                <i class="fas fa-star criterion-star" data-value="1"></i>
+                                <i class="fas fa-star criterion-star" data-value="2"></i>
+                                <i class="fas fa-star criterion-star" data-value="3"></i>
+                                <i class="fas fa-star criterion-star" data-value="4"></i>
+                                <i class="fas fa-star criterion-star" data-value="5"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- 服务质量 -->
+                        <div class="criterion-item">
+                            <h4>服务质量</h4>
+                            <div class="criterion-stars" data-criterion="quality">
+                                <i class="fas fa-star criterion-star" data-value="1"></i>
+                                <i class="fas fa-star criterion-star" data-value="2"></i>
+                                <i class="fas fa-star criterion-star" data-value="3"></i>
+                                <i class="fas fa-star criterion-star" data-value="4"></i>
+                                <i class="fas fa-star criterion-star" data-value="5"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- 沟通态度 -->
+                        <div class="criterion-item">
+                            <h4>沟通态度</h4>
+                            <div class="criterion-stars" data-criterion="communication">
+                                <i class="fas fa-star criterion-star" data-value="1"></i>
+                                <i class="fas fa-star criterion-star" data-value="2"></i>
+                                <i class="fas fa-star criterion-star" data-value="3"></i>
+                                <i class="fas fa-star criterion-star" data-value="4"></i>
+                                <i class="fas fa-star criterion-star" data-value="5"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- 可靠性 -->
+                        <div class="criterion-item">
+                            <h4>可靠性</h4>
+                            <div class="criterion-stars" data-criterion="reliability">
+                                <i class="fas fa-star criterion-star" data-value="1"></i>
+                                <i class="fas fa-star criterion-star" data-value="2"></i>
+                                <i class="fas fa-star criterion-star" data-value="3"></i>
+                                <i class="fas fa-star criterion-star" data-value="4"></i>
+                                <i class="fas fa-star criterion-star" data-value="5"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 40px; text-align: center;">
+                        <button id="submit-rating" class="btn btn-primary" style="padding: 12px 40px;">
+                            <i class="fas fa-paper-plane"></i> 提交评价
+                        </button>
+                        <p style="font-size: 14px; color: var(--gray-color); margin-top: 15px;">
+                            <i class="fas fa-info-circle"></i> 评价完全匿名，双方可见内容但不可见评价者身份
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 信用等级 -->
+        <section class="credit-levels" id="levels">
+            <div class="container">
+                <div class="section-title">
+                    <h2>信用等级体系</h2>
+                    <p>根据信用分数划分等级，不同等级享有不同权益</p>
+                </div>
+                
+                <div class="levels-container">
+                    <!-- 等级1 -->
+                    <div class="level-card level-1">
+                        <div class="level-badge">Lv.1</div>
+                        <h3 class="level-title">入门</h3>
+                        <p style="color: var(--gray-color); font-size: 14px;">0-200信用分</p>
+                        
+                        <ul class="level-requirements">
+                            <li><i class="fas fa-check"></i> 完成1次服务或求助</li>
+                            <li><i class="fas fa-check"></i> 获得1次评价</li>
+                            <li><i class="fas fa-check"></i> 基础平台功能</li>
+                        </ul>
+                        
+                        <div style="margin-top: 25px;">
+                            <span class="mechanism-feature" style="background: #f5576c; color: white;">新用户</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 等级2 -->
+                    <div class="level-card level-2">
+                        <div class="level-badge">Lv.2</div>
+                        <h3 class="level-title">良好</h3>
+                        <p style="color: var(--gray-color); font-size: 14px;">201-400信用分</p>
+                        
+                        <ul class="level-requirements">
+                            <li><i class="fas fa-check"></i> 完成5次服务或求助</li>
+                            <li><i class="fas fa-check"></i> 平均评分≥4.0</li>
+                            <li><i class="fas fa-check"></i> 优先匹配机会</li>
+                        </ul>
+                        
+                        <div style="margin-top: 25px;">
+                            <span class="mechanism-feature" style="background: #36b9cc; color: white;">活跃用户</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 等级3 -->
+                    <div class="level-card level-3">
+                        <div class="level-badge">Lv.3</div>
+                        <h3 class="level-title">优秀</h3>
+                        <p style="color: var(--gray-color); font-size: 14px;">401-600信用分</p>
+                        
+                        <ul class="level-requirements">
+                            <li><i class="fas fa-check"></i> 完成15次服务或求助</li>
+                            <li><i class="fas fa-check"></i> 平均评分≥4.5</li>
+                            <li><i class="fas fa-check"></i> 专属客服支持</li>
+                        </ul>
+                        
+                        <div style="margin-top: 25px;">
+                            <span class="mechanism-feature" style="background: #1cc88a; color: white;">优秀用户</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 等级4 -->
+                    <div class="level-card level-4">
+                        <div class="level-badge">Lv.4</div>
+                        <h3 class="level-title">卓越</h3>
+                        <p style="color: var(--gray-color); font-size: 14px;">601-800信用分</p>
+                        
+                        <ul class="level-requirements">
+                            <li><i class="fas fa-check"></i> 完成30次服务或求助</li>
+                            <li><i class="fas fa-check"></i> 平均评分≥4.7</li>
+                            <li><i class="fas fa-check"></i> 优先审核权</li>
+                        </ul>
+                        
+                        <div style="margin-top: 25px;">
+                            <span class="mechanism-feature" style="background: #f6c23e; color: white;">卓越用户</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 等级5 -->
+                    <div class="level-card level-5">
+                        <div class="level-badge">Lv.5</div>
+                        <h3 class="level-title">顶级</h3>
+                        <p style="color: var(--gray-color); font-size: 14px;">801-1000信用分</p>
+                        
+                        <ul class="level-requirements">
+                            <li><i class="fas fa-check"></i> 完成50次服务或求助</li>
+                            <li><i class="fas fa-check"></i> 平均评分≥4.8</li>
+                            <li><i class="fas fa-check"></i> 平台合作伙伴</li>
+                        </ul>
+                        
+                        <div style="margin-top: 25px;">
+                            <span class="mechanism-feature" style="background: #4e54c8; color: white;">顶级用户</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-40">
+                    <a href="#" class="btn btn-outline" style="padding: 12px 40px;">
+                        <i class="fas fa-graduation-cap"></i> 查看等级详细规则
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 申诉机制 -->
+        <section class="appeal-mechanism" id="appeal">
+            <div class="container">
+                <div class="section-title">
+                    <h2>评价申诉机制</h2>
+                    <p>公正透明的申诉流程，保障用户权益</p>
+                </div>
+                
+                <div class="appeal-container">
+                    <h3 style="text-align: center; margin-bottom: 30px;">对评价有异议？</h3>
+                    <p style="text-align: center; color: var(--gray-color); line-height: 1.7;">
+                        如果您认为收到的评价不公正、存在恶意或与事实不符，可以通过申诉机制申请重新审核。我们的客服团队将在3个工作日内处理您的申诉。
+                    </p>
+                    
+                    <div class="appeal-steps">
+                        <!-- 步骤1 -->
+                        <div class="appeal-step">
+                            <div class="appeal-number">1</div>
+                            <div class="appeal-content">
+                                <h4>提交申诉申请</h4>
+                                <p>在收到评价的7天内，通过"我的评价"页面提交申诉申请，说明申诉理由并提供相关证据（如聊天记录、照片等）。</p>
+                            </div>
+                        </div>
+                        
+                        <!-- 步骤2 -->
+                        <div class="appeal-step">
+                            <div class="appeal-number">2</div>
+                            <div class="appeal-content">
+                                <h4>客服审核</h4>
+                                <p>平台客服将在3个工作日内审核您的申诉，联系双方了解情况，核实证据，做出初步判断。</p>
+                            </div>
+                        </div>
+                        
+                        <!-- 步骤3 -->
+                        <div class="appeal-step">
+                            <div class="appeal-number">3</div>
+                            <div class="appeal-content">
+                                <h4>调解与判定</h4>
+                                <p>如果需要，客服将进行调解。如确认评价不公，将删除或修改评价；如申诉无理，则维持原评价。</p>
+                            </div>
+                        </div>
+                        
+                        <!-- 步骤4 -->
+                        <div class="appeal-step">
+                            <div class="appeal-number">4</div>
+                            <div class="appeal-content">
+                                <h4>结果通知</h4>
+                                <p>申诉结果将通过站内信和电子邮件通知双方。对判定结果不满意可申请二次复核（需提供新证据）。</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: #f8f9fa; padding: 25px; border-radius: 12px; margin-top: 40px;">
+                        <h4 style="color: var(--dark-color); margin-bottom: 15px;">注意事项</h4>
+                        <ul style="margin: 0; padding-left: 20px; color: var(--gray-color);">
+                            <li style="margin-bottom: 8px;">申诉需在收到评价后7天内提出</li>
+                            <li style="margin-bottom: 8px;">恶意申诉（如提供虚假证据）将扣除信用分</li>
+                            <li style="margin-bottom: 8px;">确认的恶意评价将删除，并处罚评价者</li>
+                            <li>申诉期间评价暂时隐藏，不影响信用分计算</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 40px;">
+                        <a href="login.html" class="btn btn-primary" style="padding: 15px 40px;">
+                            <i class="fas fa-gavel"></i> 提交申诉申请
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 底部 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>信用评价系统</h3>
+                    <ul class="footer-links">
+                        <li><a href="#mechanism"><i class="fas fa-chevron-right"></i> 评价机制</a></li>
+                        <li><a href="#dimensions"><i class="fas fa-chevron-right"></i> 评价维度</a></li>
+                        <li><a href="#display"><i class="fas fa-chevron-right"></i> 信用展示</a></li>
+                        <li><a href="#bidirectional"><i class="fas fa-chevron-right"></i> 双向评价</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>核心功能</h3>
+                    <ul class="footer-links">
+                        <li><a href="intelligent-matching.html"><i class="fas fa-chevron-right"></i> 智能匹配系统</a></li>
+                        <li><a href="secure-communication.html"><i class="fas fa-chevron-right"></i> 安全沟通平台</a></li>
+                        <li><a href="map-visualization.html"><i class="fas fa-chevron-right"></i> 地图可视化</a></li>
+                        <li><a href="transparent-tracking.html"><i class="fas fa-chevron-right"></i> 透明追踪系统</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>帮助中心</h3>
+                    <ul class="footer-links">
+                        <li><a href="how-to-get-help.html"><i class="fas fa-chevron-right"></i> 如何求助</a></li>
+                        <li><a href="become-volunteer.html"><i class="fas fa-chevron-right"></i> 成为志愿者</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> 常见问题</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> 用户协议</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>联系我们</h3>
+                    <ul class="footer-links footer-contact">
+                        <li><i class="fas fa-envelope"></i> 邮箱：2639687821@qq.com</li>
+                        <li><i class="fas fa-phone-alt"></i> 电话：15612140351</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 地址：河北科技大学</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 援手社区 - 综合性社会援助平台 版权所有 | 冀ICP备12345678号</p>
+                <p class="mt-20">让每一份善意都有回响，让每一次求助都有回应</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+        // 星星评分功能
+        document.addEventListener('DOMContentLoaded', function() {
+            // 星星点击事件
+            const starContainers = document.querySelectorAll('.criterion-stars');
+            
+            starContainers.forEach(container => {
+                const stars = container.querySelectorAll('.criterion-star');
+                let selectedValue = 0;
+                
+                stars.forEach(star => {
+                    // 鼠标悬停
+                    star.addEventListener('mouseover', function() {
+                        const value = parseInt(this.getAttribute('data-value'));
+                        highlightStars(stars, value);
+                    });
+                    
+                    // 鼠标离开
+                    container.addEventListener('mouseleave', function() {
+                        highlightStars(stars, selectedValue);
+                    });
+                    
+                    // 点击选择
+                    star.addEventListener('click', function() {
+                        selectedValue = parseInt(this.getAttribute('data-value'));
+                        highlightStars(stars, selectedValue);
+                        console.log(`设置 ${container.getAttribute('data-criterion')} 为 ${selectedValue} 星`);
+                    });
+                });
+                
+                // 初始设置为3星
+                selectedValue = 3;
+                highlightStars(stars, selectedValue);
+            });
+            
+            // 高亮星星函数
+            function highlightStars(stars, value) {
+                stars.forEach(star => {
+                    const starValue = parseInt(star.getAttribute('data-value'));
+                    if (starValue <= value) {
+                        star.classList.add('active');
+                    } else {
+                        star.classList.remove('active');
+                    }
+                });
+            }
+            
+            // 提交评价按钮
+            const submitBtn = document.getElementById('submit-rating');
+            if (submitBtn) {
+                submitBtn.addEventListener('click', function() {
+                    // 收集所有维度的评分
+                    const ratings = {};
+                    starContainers.forEach(container => {
+                        const criterion = container.getAttribute('data-criterion');
+                        const activeStars = container.querySelectorAll('.criterion-star.active');
+                        ratings[criterion] = activeStars.length;
+                    });
+                    
+                    // 显示结果
+                    const totalScore = Object.values(ratings).reduce((a, b) => a + b, 0);
+                    const averageScore = (totalScore / Object.keys(ratings).length).toFixed(1);
+                    
+                    alert(`评价提交成功！\n\n各维度评分：\n响应及时性：${ratings.responsiveness}星\n服务质量：${ratings.quality}星\n沟通态度：${ratings.communication}星\n可靠性：${ratings.reliability}星\n\n平均评分：${averageScore}星\n\n感谢您的评价！`);
+                    
+                    // 重置为3星
+                    starContainers.forEach(container => {
+                        const stars = container.querySelectorAll('.criterion-star');
+                        highlightStars(stars, 3);
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>

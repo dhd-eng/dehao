@@ -1,0 +1,1365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>发布求助 - 援手社区</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 发布求助页面专用样式 */
+        .post-help-container {
+            max-width: 900px;
+            margin: 100px auto 60px;
+            padding: 0 20px;
+        }
+        
+        .post-help-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .post-help-header h1 {
+            font-size: 2.5rem;
+            color: var(--dark-color);
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .post-help-header h1:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--primary-gradient);
+            border-radius: 2px;
+        }
+        
+        .post-help-header p {
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+        
+        .post-help-form {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 40px;
+        }
+        
+        .form-section {
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .form-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .section-title {
+            font-size: 1.4rem;
+            color: var(--dark-color);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title i {
+            color: var(--primary-color);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #555;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .form-label i {
+            color: var(--primary-color);
+        }
+        
+        .required {
+            color: var(--danger-color);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #eaeaea;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: var(--transition);
+            background: #fafafa;
+            font-family: var(--font-main);
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(44, 128, 255, 0.1);
+            outline: none;
+        }
+        
+        .form-control.error {
+            border-color: var(--danger-color);
+        }
+        
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        /* 求助类型选择 */
+        .help-type-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .help-type-option {
+            border: 2px solid #eaeaea;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            background: #fafafa;
+        }
+        
+        .help-type-option:hover {
+            border-color: var(--primary-color);
+            background: var(--primary-light);
+        }
+        
+        .help-type-option.selected {
+            border-color: var(--primary-color);
+            background: var(--primary-light);
+            color: var(--primary-color);
+            box-shadow: 0 5px 15px rgba(44, 128, 255, 0.1);
+        }
+        
+        .help-type-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .help-type-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .help-type-desc {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        /* 紧急程度选择 */
+        .urgency-options {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .urgency-option {
+            flex: 1;
+            min-width: 150px;
+            border: 2px solid #eaeaea;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            background: #fafafa;
+        }
+        
+        .urgency-option:hover {
+            transform: translateY(-3px);
+        }
+        
+        .urgency-option.selected {
+            border-color: var(--primary-color);
+            box-shadow: 0 5px 15px rgba(44, 128, 255, 0.1);
+        }
+        
+        .urgency-option.emergency {
+            border-color: #ffcdd2;
+            background: #ffebee;
+        }
+        
+        .urgency-option.emergency.selected {
+            border-color: var(--danger-color);
+            background: #ffebee;
+            color: var(--danger-color);
+        }
+        
+        .urgency-option.high {
+            border-color: #ffe0b2;
+            background: #fff3e0;
+        }
+        
+        .urgency-option.high.selected {
+            border-color: var(--warning-color);
+            background: #fff3e0;
+            color: var(--warning-color);
+        }
+        
+        .urgency-option.normal {
+            border-color: #c8e6c9;
+            background: #e8f5e9;
+        }
+        
+        .urgency-option.normal.selected {
+            border-color: var(--success-color);
+            background: #e8f5e9;
+            color: var(--success-color);
+        }
+        
+        .urgency-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        /* 地图选择区域 */
+        .location-section {
+            position: relative;
+        }
+        
+        .location-input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .location-input-group input {
+            flex: 1;
+        }
+        
+        .map-preview {
+            height: 200px;
+            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+            border-radius: 8px;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            border: 1px solid #ddd;
+        }
+        
+        .map-marker {
+            width: 24px;
+            height: 24px;
+            background: var(--danger-color);
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(255, 61, 113, 0.7);
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .map-marker:after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 30px;
+            background: var(--danger-color);
+        }
+        
+        /* 图片上传 */
+        .image-upload-area {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 15px;
+        }
+        
+        .image-upload-area:hover {
+            border-color: var(--primary-color);
+            background: #f8f9fa;
+        }
+        
+        .upload-icon {
+            font-size: 48px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .upload-text {
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .upload-note {
+            font-size: 14px;
+            color: #999;
+        }
+        
+        .image-preview-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .image-preview {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            height: 120px;
+        }
+        
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .remove-image {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 24px;
+            height: 24px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        /* 提交按钮区域 */
+        .submit-section {
+            text-align: center;
+            margin-top: 40px;
+        }
+        
+        .submit-btn {
+            padding: 16px 50px;
+            font-size: 18px;
+        }
+        
+        .form-note {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        /* 错误提示 */
+        .error-message {
+            color: var(--danger-color);
+            font-size: 14px;
+            margin-top: 8px;
+            display: none;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .error-message.show {
+            display: flex;
+        }
+        
+        /* 成功提示 */
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            display: none;
+            align-items: center;
+            gap: 15px;
+            font-size: 16px;
+        }
+        
+        .success-message.show {
+            display: flex;
+        }
+        
+        /* 步骤指示器 */
+        .steps-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+            width: 120px;
+        }
+        
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #eaeaea;
+            color: #666;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 10px;
+            transition: var(--transition);
+        }
+        
+        .step.active .step-number {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: 0 5px 15px rgba(44, 128, 255, 0.3);
+        }
+        
+        .step.completed .step-number {
+
+            background: var(--success-color);
+            color: white;
+        }
+        
+        .step-name {
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .step.active .step-name {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .steps-line {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateY(-50%);
+            width: 60%;
+            height: 2px;
+            background: #eaeaea;
+            z-index: 1;
+        }
+        
+        .steps-line-progress {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateY(-50%);
+            height: 2px;
+            background: var(--primary-color);
+            z-index: 1;
+            width: 0;
+            transition: width 0.5s ease;
+        }
+        
+        @media (max-width: 768px) {
+            .post-help-container {
+                margin-top: 80px;
+            }
+            
+            .post-help-form {
+                padding: 25px;
+            }
+            
+            .help-type-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .steps-indicator {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+            
+            .steps-line, .steps-line-progress {
+                display: none;
+            }
+            
+            .step {
+                flex-direction: row;
+                width: 100%;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header>
+        <div class="container">
+            <nav class="navbar" aria-label="主导航">
+                <div class="logo">
+                    <i class="fas fa-hands-helping" aria-hidden="true"></i>
+                    援手社区
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html"><i class="fas fa-home"></i> 首页</a></li>
+                    <li><a href="index.html#features"><i class="fas fa-cogs"></i> 功能</a></li>
+                    <li><a href="index.html#cases"><i class="fas fa-images"></i> 案例展示</a></li>
+                    <li><a href="login.html" class="btn btn-primary"><i class="fas fa-user-circle"></i> 登录/注册</a></li>
+                </ul>
+                <button class="mobile-menu" aria-label="切换菜单" aria-expanded="false">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 发布求助主内容 -->
+    <main class="post-help-container">
+        <!-- 成功提示 -->
+        <div class="success-message" id="success-message">
+            <i class="fas fa-check-circle"></i>
+            <span>求助信息发布成功！我们已开始为您匹配志愿者，请保持联系方式畅通。</span>
+        </div>
+        
+        <!-- 步骤指示器 -->
+        <div class="steps-indicator">
+            <div class="step active">
+                <div class="step-number">1</div>
+                <div class="step-name">填写基本信息</div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-name">描述求助内容</div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-name">确认并发布</div>
+            </div>
+            <div class="steps-line"></div>
+            <div class="steps-line-progress" id="steps-line-progress"></div>
+        </div>
+        
+        <!-- 页面标题 -->
+        <div class="post-help-header">
+            <h1>发布求助信息</h1>
+            <p>请详细描述您的需求，我们将尽快为您匹配合适的志愿者。您的信息将受到严格保护。</p>
+        </div>
+        
+        <!-- 发布求助表单 -->
+        <form class="post-help-form" id="post-help-form">
+            <!-- 基本信息部分 -->
+            <div class="form-section">
+                <h3 class="section-title"><i class="fas fa-user-circle"></i> 基本信息</h3>
+
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="help-title">
+                            <i class="fas fa-heading"></i>
+                            求助标题 <span class="required">*</span>
+                        </label>
+                        <input type="text" id="help-title" class="form-control" placeholder="例如：需要帮忙搬运家具" required>
+                        <div class="error-message" id="title-error">
+                            <i class="fas fa-exclamation-circle"></i>
+                            请输入求助标题
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="contact-name">
+                            <i class="fas fa-user"></i>
+                            联系人 <span class="required">*</span>
+                        </label>
+                        <input type="text" id="contact-name" class="form-control" placeholder="请输入您的姓名" required>
+                        <div class="error-message" id="name-error">
+                            <i class="fas fa-exclamation-circle"></i>
+                            请输入联系人姓名
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="contact-phone">
+                            <i class="fas fa-phone-alt"></i>
+                            联系电话 <span class="required">*</span>
+                        </label>
+                        <input type="tel" id="contact-phone" class="form-control" placeholder="请输入您的手机号码" required>
+                        <div class="error-message" id="phone-error">
+                            <i class="fas fa-exclamation-circle"></i>
+                            请输入有效的手机号码
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="contact-email">
+                            <i class="fas fa-envelope"></i>
+                            电子邮箱
+                        </label>
+                        <input type="email" id="contact-email" class="form-control" placeholder="请输入您的邮箱地址">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 求助类型部分 -->
+            <div class="form-section">
+                <h3 class="section-title"><i class="fas fa-tags"></i> 求助类型 <span class="required">*</span></h3>
+                <p style="color: #666; margin-bottom: 15px;">请选择最符合您需求的求助类型：</p>
+                
+                <div class="help-type-options">
+                    <div class="help-type-option" data-type="daily">
+                        <span class="help-type-icon">🏠</span>
+                        <div class="help-type-name">日常生活</div>
+                        <div class="help-type-desc">购物、送餐、家政等</div>
+                    </div>
+                    
+                    <div class="help-type-option" data-type="medical">
+                        <span class="help-type-icon">🏥</span>
+                        <div class="help-type-name">医疗健康</div>
+                        <div class="help-type-desc">就医陪护、药品配送等</div>
+                    </div>
+                    
+                    <div class="help-type-option" data-type="education">
+                        <span class="help-type-icon">📚</span>
+                        <div class="help-type-name">教育辅导</div>
+                        <div class="help-type-desc">课业辅导、技能培训等</div>
+                    </div>
+                    
+                    <div class="help-type-option" data-type="repair">
+                        <span class="help-type-icon">🔧</span>
+                        <div class="help-type-name">维修维护</div>
+                        <div class="help-type-desc">家电维修、家居维修等</div>
+                    </div>
+                    
+                    <div class="help-type-option" data-type="transport">
+                        <span class="help-type-icon">🚗</span>
+                        <div class="help-type-name">交通出行</div>
+                        <div class="help-type-desc">接送服务、陪同出行等</div>
+                    </div>
+                    
+                    <div class="help-type-option" data-type="other">
+                        <span class="help-type-icon">❓</span>
+                        <div class="help-type-name">其他类型</div>
+                        <div class="help-type-desc">其他未列出的求助</div>
+                    </div>
+                </div>
+                <input type="hidden" id="help-type" required>
+                <div class="error-message" id="type-error">
+                    <i class="fas fa-exclamation-circle"></i>
+                    请选择求助类型
+                </div>
+            </div>
+            
+            <!-- 紧急程度部分 -->
+            <div class="form-section">
+                <h3 class="section-title"><i class="fas fa-exclamation-triangle"></i> 紧急程度 <span class="required">*</span></h3>
+                <p style="color: #666; margin-bottom: 15px;">请根据您的需求紧急程度选择：</p>
+                
+                <div class="urgency-options">
+                    <div class="urgency-option emergency" data-urgency="emergency">
+                        <span class="urgency-icon">🚨</span>
+                        <div class="urgency-name">紧急</div>
+                        <div class="urgency-desc">需要立即帮助</div>
+                    </div>
+                    
+                    <div class="urgency-option high" data-urgency="high">
+                        <span class="urgency-icon">⚠️</span>
+                        <div class="urgency-name">高优先级</div>
+                        <div class="urgency-desc">今天内需要帮助</div>
+                    </div>
+                    
+                    <div class="urgency-option normal" data-urgency="normal">
+                        <span class="urgency-icon">📅</span>
+                        <div class="urgency-name">一般</div>
+                        <div class="urgency-desc">本周内需要帮助</div>
+                    </div>
+                </div>
+                <input type="hidden" id="help-urgency" required>
+                <div class="error-message" id="urgency-error">
+                    <i class="fas fa-exclamation-circle"></i>
+                    请选择紧急程度
+                </div>
+            </div>
+            
+            <!-- 详细描述部分 -->
+            <div class="form-section">
+                <h3 class="section-title"><i class="fas fa-file-alt"></i> 详细描述 <span class="required">*</span></h3>
+                
+                <div class="form-group">
+                    <label class="form-label" for="help-description">
+                        <i class="fas fa-align-left"></i>
+                        详细描述您的需求
+                    </label>
+                    <textarea id="help-description" class="form-control" placeholder="请尽可能详细地描述您的需求，包括：
+• 具体需要什么样的帮助
+• 需要帮助的时间和频率
+• 是否有特殊要求或注意事项
+• 其他相关信息
+
+例如：需要一位志愿者每周一、三、五下午3-5点帮助我85岁的母亲购买生活用品并送到家中。母亲住在3楼没有电梯，需要志愿者有耐心和体力。购物费用由我提前转账给志愿者。" rows="8" required></textarea>
+                    <div class="error-message" id="description-error">
+                        <i class="fas fa-exclamation-circle"></i>
+                        请详细描述您的需求
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="help-time">
+                        <i class="fas fa-clock"></i>
+                        希望获得帮助的时间
+                    </label>
+                    <input type="text" id="help-time" class="form-control" placeholder="例如：本周六上午9-12点，或每周一下午">
+                </div>
+            </div>
+            
+            <!-- 地理位置部分 -->
+            <div class="form-section location-section">
+                <h3 class="section-title"><i class="fas fa-map-marker-alt"></i> 地理位置 <span class="required">*</span></h3>
+                
+                <div class="form-group">
+                    <label class="form-label" for="location-detail">
+                        详细地址
+                    </label>
+                    <div class="location-input-group">
+                        <input type="text" id="location-detail" class="form-control" placeholder="例如：北京市朝阳区建国路88号SOHO现代城A座" required>
+                        <button type="button" class="btn btn-outline" id="detect-location">
+                            <i class="fas fa-location-arrow"></i> 定位
+                        </button>
+                    </div>
+                    <div class="error-message" id="location-error">
+                        <i class="fas fa-exclamation-circle"></i>
+                        请输入详细地址
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">
+                        地图位置（可选）
+                    </label>
+                    <div class="map-preview" id="map-preview">
+                        <div class="map-marker" id="map-marker"></div>
+                        <div id="map-text">点击上方"定位"按钮或在地图上点击设置位置</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 图片上传部分 -->
+            <div class="form-section">
+                <h3 class="section-title"><i class="fas fa-images"></i> 上传图片（可选）</h3>
+                <p style="color: #666; margin-bottom: 15px;">上传相关图片可以帮助志愿者更好地理解您的需求（最多5张）</p>
+                
+                <div class="image-upload-area" id="image-upload-area">
+                    <div class="upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <div class="upload-text">
+                        点击或拖拽上传图片
+                    </div>
+                    <div class="upload-note">
+                        支持 JPG、PNG 格式，每张图片不超过 5MB
+                    </div>
+                    <input type="file" id="image-upload" accept="image/*" multiple style="display: none;">
+                </div>
+                
+                <div class="image-preview-container" id="image-preview-container">
+                    <!-- 图片预览将在这里动态添加 -->
+                </div>
+            </div>
+            
+            <!-- 提交部分 -->
+            <div class="submit-section">
+                <button type="submit" class="btn btn-primary submit-btn" id="submit-btn">
+                    <i class="fas fa-paper-plane"></i>
+                    发布求助信息
+                </button>
+                <div class="form-note">
+                    发布即表示您同意我们的<a href="#">服务条款</a>和<a href="#">隐私政策</a>
+                </div>
+            </div>
+        </form>
+    </main>
+
+    <!-- 智能聊天助手（与首页相同） -->
+    <div class="ai-assistant" role="dialog" aria-labelledby="assistant-title">
+        <div class="assistant-header">
+            <div class="assistant-avatar">
+                <span>🤖</span>
+            </div>
+            <div class="assistant-info">
+                <h5 id="assistant-title">援手小助手</h5>
+                <p>智能匹配 | 24小时在线</p>
+            </div>
+            <button class="minimize-btn" aria-label="最小化聊天助手">−</button>
+        </div>
+        
+        <div class="chat-messages">
+            <div class="message assistant">
+                您好！我是援手智能助手，可以帮您快速发布求助或匹配志愿者。请问有什么可以帮助您的吗？
+            </div>
+        </div>
+        
+        <div class="quick-actions">
+            <button class="quick-btn" data-action="emergency"><i class="fas fa-exclamation-circle"></i> 紧急求助</button>
+            <button class="quick-btn" data-action="volunteer"><i class="fas fa-hands"></i> 成为志愿者</button>
+            <button class="quick-btn" data-action="donate"><i class="fas fa-donate"></i> 我要捐赠</button>
+        </div>
+    </div>
+
+    <script>
+        // 发布求助页面专用JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            // 步骤指示器更新
+            function updateSteps() {
+                const steps = document.querySelectorAll('.step');
+                const lineProgress = document.getElementById('steps-line-progress');
+                
+                // 计算进度条宽度
+                const activeIndex = Array.from(steps).findIndex(step => step.classList.contains('active'));
+                if (activeIndex >= 0) {
+                    const progressWidth = (activeIndex / (steps.length - 1)) * 100;
+                    lineProgress.style.width = progressWidth + '%';
+                }
+            }
+            
+            // 初始化步骤
+            updateSteps();
+            
+            // 求助类型选择
+            const helpTypeOptions = document.querySelectorAll('.help-type-option');
+            const helpTypeInput = document.getElementById('help-type');
+            
+            helpTypeOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    helpTypeOptions.forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    helpTypeInput.value = this.getAttribute('data-type');
+                    hideError('type-error');
+                });
+            });
+            
+            // 紧急程度选择
+            const urgencyOptions = document.querySelectorAll('.urgency-option');
+            const urgencyInput = document.getElementById('help-urgency');
+            
+            urgencyOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    urgencyOptions.forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    urgencyInput.value = this.getAttribute('data-urgency');
+                    hideError('urgency-error');
+                });
+            });
+            
+            // 图片上传功能
+            const imageUploadArea = document.getElementById('image-upload-area');
+            const imageUploadInput = document.getElementById('image-upload');
+            const imagePreviewContainer = document.getElementById('image-preview-container');
+            let uploadedImages = [];
+            
+            imageUploadArea.addEventListener('click', function() {
+                imageUploadInput.click();
+            });
+            
+            // 拖拽上传
+            imageUploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.style.borderColor = 'var(--primary-color)';
+                this.style.background = '#f0f7ff';
+            });
+            
+            imageUploadArea.addEventListener('dragleave', function(e) {
+                e.preventDefault();
+                this.style.borderColor = '#ddd';
+                this.style.background = '';
+            });
+            
+            imageUploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.style.borderColor = '#ddd';
+                this.style.background = '';
+                
+                const files = e.dataTransfer.files;
+                handleImageFiles(files);
+            });
+            
+            imageUploadInput.addEventListener('change', function(e) {
+                const files = e.target.files;
+                handleImageFiles(files);
+            });
+            
+            function handleImageFiles(files) {
+                if (uploadedImages.length + files.length > 5) {
+                    alert('最多只能上传5张图片');
+                    return;
+                }
+                
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    
+                    // 检查文件类型和大小
+                    if (!file.type.match('image.*')) {
+                        alert('请上传图片文件');
+                        continue;
+                    }
+                    
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert('图片大小不能超过5MB');
+                        continue;
+                    }
+                    
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const imageData = {
+                            id: Date.now() + i,
+                            name: file.name,
+                            data: e.target.result
+                        };
+                        
+                        uploadedImages.push(imageData);
+                        renderImagePreview();
+                    };
+                    reader.readAsDataURL(file);
+                }
+                
+                // 重置文件输入，允许重复上传相同文件
+                imageUploadInput.value = '';
+            }
+            
+            function renderImagePreview() {
+                imagePreviewContainer.innerHTML = '';
+                
+                uploadedImages.forEach(image => {
+                    const previewDiv = document.createElement('div');
+                    previewDiv.className = 'image-preview';
+                    previewDiv.innerHTML = `
+                        <img src="${image.data}" alt="${image.name}">
+                        <div class="remove-image" data-id="${image.id}">
+                            <i class="fas fa-times"></i>
+                        </div>
+                    `;
+                    imagePreviewContainer.appendChild(previewDiv);
+                });
+                
+                // 添加删除事件
+                document.querySelectorAll('.remove-image').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = parseInt(this.getAttribute('data-id'));
+                        uploadedImages = uploadedImages.filter(img => img.id !== id);
+                        renderImagePreview();
+                    });
+                });
+            }
+            
+            // 定位功能
+            const detectLocationBtn = document.getElementById('detect-location');
+            const mapPreview = document.getElementById('map-preview');
+            const mapMarker = document.getElementById('map-marker');
+            const mapText = document.getElementById('map-text');
+            
+            detectLocationBtn.addEventListener('click', function() {
+                if (navigator.geolocation) {
+                    detectLocationBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 定位中...';
+                    detectLocationBtn.disabled = true;
+                    
+                    navigator.geolocation.getCurrentPosition(
+                        function(position) {
+                            const lat = position.coords.latitude;
+                            const lng = position.coords.longitude;
+                            
+                            // 模拟获取地址（实际应用中应调用地理编码API）
+                            const mockAddress = "北京市朝阳区建国路88号SOHO现代城附近";
+                            document.getElementById('location-detail').value = mockAddress;
+                            
+                            // 显示地图标记
+                            mapMarker.style.display = 'block';
+                            mapText.style.display = 'none';
+                            mapPreview.style.background = 'linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%)';
+                            
+                            detectLocationBtn.innerHTML = '<i class="fas fa-check-circle"></i> 定位成功';
+                            setTimeout(() => {
+                                detectLocationBtn.innerHTML = '<i class="fas fa-location-arrow"></i> 重新定位';
+                                detectLocationBtn.disabled = false;
+                            }, 2000);
+                            
+                            hideError('location-error');
+                        },
+                        function(error) {
+                            console.error('定位失败:', error);
+                            alert('定位失败，请手动输入地址或检查定位权限');
+                            
+                            detectLocationBtn.innerHTML = '<i class="fas fa-location-arrow"></i> 定位';
+                            detectLocationBtn.disabled = false;
+                        }
+                    );
+                } else {
+                    alert('您的浏览器不支持地理位置功能');
+                }
+            });
+            
+            // 点击地图设置位置
+            mapPreview.addEventListener('click', function(e) {
+                if (e.target === mapPreview || e.target === mapText) {
+                    mapMarker.style.display = 'block';
+                    mapText.style.display = 'none';
+                    mapPreview.style.background = 'linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%)';
+                    
+                    // 移动标记到点击位置
+                    const rect = mapPreview.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    mapMarker.style.left = x + 'px';
+                    mapMarker.style.top = y + 'px';
+                    mapMarker.style.transform = 'translate(-50%, -50%)';
+                }
+            });
+            
+            // 错误显示/隐藏函数
+            function showError(errorId) {
+                const errorElement = document.getElementById(errorId);
+                if (errorElement) {
+                    errorElement.classList.add('show');
+                }
+            }
+            
+            function hideError(errorId) {
+                const errorElement = document.getElementById(errorId);
+                if (errorElement) {
+                    errorElement.classList.remove('show');
+                }
+            }
+            
+            // 表单验证函数
+            function validatePhone(phone) {
+                const re = /^1[3-9]\d{9}$/;
+                return re.test(phone);
+            }
+            
+            function validateEmail(email) {
+                if (!email) return true; // 邮箱可选
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
+            }
+            
+            // 加载状态设置
+            function setLoading(isLoading) {
+                const submitBtn = document.getElementById('submit-btn');
+                if (isLoading) {
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 提交中...';
+                    submitBtn.disabled = true;
+                } else {
+                    submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> 发布求助信息';
+                    submitBtn.disabled = false;
+                }
+            }
+            
+            // 表单提交处理
+            const postHelpForm = document.getElementById('post-help-form');
+            const successMessage = document.getElementById('success-message');
+            
+            postHelpForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                let isValid = true;
+                
+                // 验证标题
+                const title = document.getElementById('help-title');
+                if (!title.value.trim()) {
+                    showError('title-error');
+                    isValid = false;
+                } else {
+                    hideError('title-error');
+                }
+                
+                // 验证联系人
+                const name = document.getElementById('contact-name');
+                if (!name.value.trim()) {
+                    showError('name-error');
+                    isValid = false;
+                } else {
+                    hideError('name-error');
+                }
+                
+                // 验证电话
+                const phone = document.getElementById('contact-phone');
+                if (!validatePhone(phone.value)) {
+                    showError('phone-error');
+                    isValid = false;
+                } else {
+                    hideError('phone-error');
+                }
+                
+                // 验证邮箱
+                const email = document.getElementById('contact-email');
+                if (!validateEmail(email.value)) {
+                    // 邮箱验证错误不阻止提交，因为邮箱是可选的
+                    email.classList.add('error');
+                } else {
+                    email.classList.remove('error');
+                }
+                
+                // 验证求助类型
+                const helpType = document.getElementById('help-type');
+                if (!helpType.value) {
+                    showError('type-error');
+                    isValid = false;
+                } else {
+                    hideError('type-error');
+                }
+                
+                // 验证紧急程度
+                const urgency = document.getElementById('help-urgency');
+                if (!urgency.value) {
+                    showError('urgency-error');
+                    isValid = false;
+                } else {
+                    hideError('urgency-error');
+                }
+                
+                // 验证描述
+                const description = document.getElementById('help-description');
+                if (!description.value.trim() || description.value.trim().length < 20) {
+                    showError('description-error');
+                    isValid = false;
+                } else {
+                    hideError('description-error');
+                }
+                
+                // 验证地址
+                const location = document.getElementById('location-detail');
+                if (!location.value.trim()) {
+                    showError('location-error');
+                    isValid = false;
+                } else {
+                    hideError('location-error');
+                }
+                
+                if (!isValid) {
+                    // 滚动到第一个错误
+                    const firstError = document.querySelector('.error-message.show');
+                    if (firstError) {
+                        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                    return;
+                }
+                
+                // 表单验证通过，模拟提交
+                setLoading(true);
+                
+                // 模拟API调用延迟
+                setTimeout(() => {
+                    setLoading(false);
+                    
+                    // 显示成功消息
+                    successMessage.classList.add('show');
+                    
+                    // 滚动到顶部
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    
+                    // 更新步骤指示器
+                    const steps = document.querySelectorAll('.step');
+                    steps.forEach(step => step.classList.remove('active'));
+                    steps[2].classList.add('active', 'completed');
+                    updateSteps();
+                    
+                    // 重置表单（可选）
+                    // postHelpForm.reset();
+                    // uploadedImages = [];
+                    // renderImagePreview();
+                    
+                    // 模拟跳转（在实际应用中，这里会跳转到求助详情页面）
+                    console.log('求助信息提交成功:', {
+                        title: title.value,
+                        name: name.value,
+                        phone: phone.value,
+                        email: email.value,
+                        type: helpType.value,
+                        urgency: urgency.value,
+                        description: description.value,
+                        location: location.value,
+                        images: uploadedImages.length
+                    });
+                    
+                    // 5秒后隐藏成功消息
+                    setTimeout(() => {
+                        successMessage.classList.remove('show');
+                    }, 5000);
+                    
+                }, 2000);
+            });
+            
+            // 实时验证输入
+            document.querySelectorAll('.form-control').forEach(input => {
+                input.addEventListener('input', function() {
+                    this.classList.remove('error');
+                    
+                    // 移除对应错误消息
+                    const errorId = this.id + '-error';
+                    hideError(errorId);
+                });
+            });
+            
+            // 加载导航栏脚本
+            const mobileMenuBtn = document.querySelector('.mobile-menu');
+            const navLinks = document.querySelector('.nav-links');
+            const menuIcon = mobileMenuBtn?.querySelector('i');
+            
+            if (mobileMenuBtn && navLinks) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    const isExpanded = this.getAttribute('aria-expanded') === 'true' || false;
+                    navLinks.classList.toggle('active');
+                    this.setAttribute('aria-expanded', !isExpanded);
+                    
+                    if (navLinks.classList.contains('active')) {
+                        menuIcon.classList.remove('fa-bars');
+                        menuIcon.classList.add('fa-times');
+                    } else {
+                        menuIcon.classList.remove('fa-times');
+                        menuIcon.classList.add('fa-bars');
+                    }
+                });
+                
+                // 点击导航链接关闭移动端菜单
+                document.querySelectorAll('.nav-links a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        if (window.innerWidth <= 768 && navLinks.classList.contains('active')) {
+                            navLinks.classList.remove('active');
+                            mobileMenuBtn.setAttribute('aria-expanded', 'false');
+                            menuIcon.classList.remove('fa-times');
+                            menuIcon.classList.add('fa-bars');
+                        }
+                    });
+                });
+            }
+            
+            // 智能聊天助手功能
+            const aiAssistant = document.querySelector('.ai-assistant');
+            const minimizeBtn = document.querySelector('.minimize-btn');
+            
+            if (aiAssistant) {
+                // 延迟显示聊天助手
+                setTimeout(() => {
+                    aiAssistant.classList.add('active');
+                }, 2000);
+                
+                // 最小化/恢复聊天助手
+                if (minimizeBtn) {
+                    minimizeBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        aiAssistant.classList.toggle('minimized');
+                        const isMinimized = aiAssistant.classList.contains('minimized');
+                        this.textContent = isMinimized ? '+' : '−';
+                        this.setAttribute('aria-label', isMinimized ? '展开聊天助手' : '最小化聊天助手');
+                    });
+                }
+                
+                // 点击最小化状态恢复
+                aiAssistant.addEventListener('click', function(e) {
+                    if (this.classList.contains('minimized')) {
+                        this.classList.remove('minimized');
+                        minimizeBtn.textContent = '−';
+                        minimizeBtn.setAttribute('aria-label', '最小化聊天助手');
+                    }
+                });
+                
+                // 快速操作按钮
+                document.querySelectorAll('.quick-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const action = this.getAttribute('data-action');
+                        let message = '';
+                        
+                        switch(action) {
+                            case 'emergency':
+                                message = '正在为您跳转到紧急求助页面...';
+                                break;
+                            case 'volunteer':
+                                message = '正在为您跳转到志愿者注册页面...';
+                                window.location.href = 'login.html';
+                                return;
+                            case 'donate':
+                                message = '正在为您跳转到捐赠页面...';
+                                break;
+                        }
+                        
+                        const messagesDiv = document.querySelector('.chat-messages');
+                        if (messagesDiv) {
+                            const newMessage = document.createElement('div');
+                            newMessage.className = 'message assistant';
+                            newMessage.textContent = message;
+                            messagesDiv.appendChild(newMessage);
+                            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                        }
+                    });
+                });
+            }
+            
+            // 导航栏滚动效果
+            const header = document.querySelector('header');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+            
+            // 输入框获取焦点时更新步骤
+            document.querySelectorAll('.form-control, textarea').forEach(input => {
+                input.addEventListener('focus', function() {
+                    // 根据输入框所在的区域更新步骤
+                    const section = this.closest('.form-section');
+                    if (section) {
+                        const sections = document.querySelectorAll('.form-section');
+                        const sectionIndex = Array.from(sections).indexOf(section);
+                        
+                        const steps = document.querySelectorAll('.step');
+                        steps.forEach(step => step.classList.remove('active'));
+                        
+                        if (sectionIndex >= 0 && sectionIndex < steps.length) {
+                            steps[sectionIndex].classList.add('active');
+                            updateSteps();
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

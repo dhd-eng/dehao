@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录/注册 - 援手社区</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="auth.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 背景装饰元素 -->
+    <div class="bg-decoration bg-1"></div>
+    <div class="bg-decoration bg-2"></div>
+    <div class="bg-decoration bg-3"></div>
+    
+    <!-- 导航栏 -->
+    <header>
+        <div class="container">
+            <nav class="navbar" aria-label="主导航">
+                <div class="logo">
+                    <i class="fas fa-hands-helping" aria-hidden="true"></i>
+                    援手社区
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html"><i class="fas fa-home"></i> 首页</a></li>
+                    <li><a href="index.html#features"><i class="fas fa-cogs"></i> 功能</a></li>
+                    <li><a href="index.html#cases"><i class="fas fa-images"></i> 案例展示</a></li>
+                    <li><a href="login.html" class="btn btn-primary"><i class="fas fa-user-circle"></i> 登录/注册</a></li>
+                </ul>
+                <button class="mobile-menu" aria-label="切换菜单" aria-expanded="false">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- 登录注册容器 -->
+    <div class="auth-container">
+        <!-- 品牌展示区 -->
+        <div class="brand-section">
+            <div class="brand-logo">
+                <i class="fas fa-hands-helping"></i>
+                <span>援手社区</span>
+            </div>
+            <p class="brand-description">连接需要帮助的人与愿意提供帮助的人，打造一个温暖、可靠、高效的在线社区，让每一份善意都能精准送达。</p>
+            <ul class="brand-features">
+                <li><i class="fas fa-shield-alt"></i> 安全可靠的援助平台</li>
+                <li><i class="fas fa-bolt"></i> 快速响应的匹配系统</li>
+                <li><i class="fas fa-users"></i> 超过10万注册志愿者</li>
+                <li><i class="fas fa-heart"></i> 成功帮助5万+求助者</li>
+            </ul>
+        </div>
+        
+        <!-- 表单区 -->
+        <div class="form-section">
+            <div class="form-header">
+                <h1>加入援手社区</h1>
+                <p>登录或注册账户，开启您的援助之旅</p>
+            </div>
+            
+            <!-- 标签切换 -->
+            <div class="form-tabs">
+                <div class="tab active" data-tab="login">登录账户</div>
+                <div class="tab" data-tab="register">注册账户</div>
+                <div class="tab-indicator"></div>
+            </div>
+            
+            <!-- 登录表单 -->
+            <form class="auth-form active" id="login-form">
+                <div class="success-message" id="login-success">
+                    <i class="fas fa-check-circle"></i>
+                    <span>登录成功！正在跳转...</span>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="login-email">
+                        <i class="fas fa-envelope"></i>
+                        邮箱地址
+                    </label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-envelope input-icon"></i>
+                        <input type="email" id="login-email" class="form-input" placeholder="请输入您的邮箱地址" required>
+                    </div>
+                    <div class="error-message" id="login-email-error">
+                        <i class="fas fa-exclamation-circle"></i>
+                        请输入有效的邮箱地址
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="login-password">
+                        <i class="fas fa-lock"></i>
+                        密码
+                    </label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" id="login-password" class="form-input" placeholder="请输入您的密码" required>
+                        <i class="fas fa-eye password-toggle" id="login-password-toggle"></i>
+                    </div>
+                    <div class="error-message" id="login-password-error">
+                        <i class="fas fa-exclamation-circle"></i>
+                        请输入密码
+                    </div>
+                </div>
+                
+                <div class="form-options">
+                    <div class="remember-me">
+                        <input type="checkbox" id="remember-me">
+                        <label for="remember-me">记住我</label>
+                    </div>
+                    <a href="#" class="forgot-password">忘记密码？</a>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-full" id="login-btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    登录
+                </button>
+                
+                <div class="divider"><span>或使用以下方式登录</span></div>
+                
+                <div class="social-login">
+                    <button type="button" class="btn btn-ghost social-btn google">
+                        <i class="fab fa-google"></i>
+                        谷歌账号
+                    </button>
+                    <button type="button" class="btn btn-ghost social-btn wechat">
+                        <i class="fab fa-weixin"></i>
+                        微信账号
+                    </button>
+                </div>
+                
+                <div class="form-footer">
+                    还没有账户？ <a href="#" id="switch-to-register">立即注册</a>
+                </div>
+            </form>
+            
+            <!-- 注册表单 -->
+            <form class="auth-form" id="register-form">
+                <div class="success-message" id="register-success">
+                    <i class="fas fa-check-circle"></i>
+                    <span>注册成功！正在跳转...</span>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="register-name">
+                        <i class="fas fa-user"></i>
+                        姓名
+                    </label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-user input-icon"></i>
+                        <input type="text" id="register-name" class="form-input" placeholder="请输入您的姓名" required>
+                    </div>
+                    <div class="error-message" id="register-name-error">
+                        <i class="fas fa-exclamation-circle"></i>
+                        请输入您的姓名
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="register-email">
+                        <i class="fas fa-envelope"></i>
+                        邮箱地址
+                    </label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-envelope input-icon"></i>
+                        <input type="email" id="register-email" class="form-input" placeholder="请输入您的邮箱地址" required>
+                    </div>
+                    <div class="error-message" id="register-email-error">
+                        <i class="fas fa-exclamation-circle"></i>
+                        请输入有效的邮箱地址
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="register-password">
+                        <i class="fas fa-lock"></i>
+                        密码
+                    </label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" id="register-password" class="form-input" placeholder="请设置密码（至少8位）" required minlength="8">
+                        <i class="fas fa-eye password-toggle" id="register-password-toggle"></i>
+                    </div>
+                    <div class="password-strength">
+                        <div class="password-strength-bar" id="password-strength-bar"></div>
+                    </div>
+                    <div class="password-strength-text" id="password-strength-text">密码强度：弱</div>
+                    <div class="error-message" id="register-password-error">
+                        <i class="fas fa-exclamation-circle"></i>
+                        密码至少需要8位，且包含字母和数字
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="register-confirm">
+                        <i class="fas fa-lock"></i>
+                        确认密码
+                    </label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" id="register-confirm" class="form-input" placeholder="请再次输入密码" required>
+                    </div>
+                    <div class="error-message" id="register-confirm-error">
+                        <i class="fas fa-exclamation-circle"></i>
+                        两次输入的密码不一致
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-users"></i>
+                        用户类型
+                    </label>
+                    <div class="user-type-selector">
+                        <div class="user-type-option selected" data-type="seeker">
+                            <i class="fas fa-hand-holding-heart"></i>
+                            <div>求助者</div>
+                        </div>
+                        <div class="user-type-option" data-type="helper">
+                            <i class="fas fa-hands-helping"></i>
+                            <div>援助者</div>
+                        </div>
+                        <div class="user-type-option" data-type="organization">
+                            <i class="fas fa-building"></i>
+                            <div>组织/机构</div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="user-type" value="seeker">
+                </div>
+                
+                <div class="form-group">
+                    <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer;">
+                        <input type="checkbox" id="agree-terms" style="margin-top: 3px;" required>
+                        <span>我已阅读并同意<a href="#">《用户协议》</a>和<a href="#">《隐私政策》</a></span>
+                    </label>
+                    <div class="error-message" id="agree-terms-error">
+                        <i class="fas fa-exclamation-circle"></i>
+                        请同意用户协议和隐私政策
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-full" id="register-btn">
+                    <i class="fas fa-user-plus"></i>
+                    注册
+                </button>
+                
+                <div class="form-footer">
+                    已有账户？ <a href="#" id="switch-to-login">立即登录</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

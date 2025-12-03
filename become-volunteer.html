@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="成为援手社区志愿者 - 用您的技能和时间帮助他人，加入温暖的援助社区">
+    <meta name="keywords" content="志愿者,成为志愿者,志愿者注册,公益服务,社区援助">
+    <title>成为志愿者 - 援手社区</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 志愿者招募横幅 */
+        .volunteer-banner {
+            background: linear-gradient(135deg, var(--secondary-color), #4e54c8);
+            color: white;
+            padding: 120px 0 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .volunteer-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+            opacity: 0.15;
+        }
+        
+        .volunteer-banner h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .volunteer-banner p {
+            font-size: 20px;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            position: relative;
+            line-height: 1.6;
+        }
+        
+        /* 志愿者福利 */
+        .benefits-section {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+        
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+        
+        .benefit-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .benefit-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+        
+        .benefit-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto 25px;
+        }
+        
+        .benefit-title {
+            font-size: 22px;
+            color: var(--dark-color);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .benefit-description {
+            color: var(--gray-color);
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+        
+        /* 志愿者角色 */
+        .roles-section {
+            padding: 80px 0;
+        }
+        
+        .roles-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .role-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .role-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+        
+        .role-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .role-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        
+        .role-title {
+            font-size: 20px;
+            font-weight: 700;
+        }
+        
+        .role-content {
+            padding: 30px;
+        }
+        
+        .role-requirements {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+        
+        .role-requirements li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+        
+        .role-requirements li:last-child {
+            border-bottom: none;
+        }
+        
+        .role-requirements i {
+            color: var(--primary-color);
+            margin-right: 12px;
+            font-size: 14px;
+        }
+        
+        /* 注册流程 */
+        .registration-process {
+            padding: 80px 0;
+            background: var(--light-color);
+        }
+        
+        .process-timeline {
+            max-width: 800px;
+            margin: 50px auto 0;
+            position: relative;
+        }
+        
+        .process-timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50px;
+            width: 4px;
+            height: 100%;
+            background: var(--primary-color);
+            border-radius: 2px;
+        }
+        
+        .process-step {
+            display: flex;
+            margin-bottom: 60px;
+            position: relative;
+        }
+        
+        .step-number {
+            width: 100px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        
+        .step-circle {
+            width: 50px;
+            height: 50px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .step-content {
+            background: white;
+            border-radius: 16px;
+            padding: 25px 30px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            margin-left: 20px;
+        }
+        
+        .step-title {
+            font-size: 20px;
+            color: var(--dark-color);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .step-description {
+            color: var(--gray-color);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+        
+        .step-duration {
+            background: var(--light-color);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: var(--primary-color);
+            display: inline-block;
+        }
+        
+        /* 技能认证 */
+        .certification-section {
+            padding: 80px 0;
+        }
+        
+        .cert-badges {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .badge-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+        
+        .badge-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .badge-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+        
+        .medical-badge { background: #ffeaea; color: #ff6b6b; }
+        .education-badge { background: #e3f2fd; color: #2196f3; }
+        .tech-badge { background: #e8f5e9; color: #4caf50; }
+        .psychology-badge { background: #f3e5f5; color: #9c27b0; }
+        .legal-badge { background: #fff3e0; color: #ff9800; }
+        .handyman-badge { background: #e0f7fa; color: #00bcd4; }
+        
+        .badge-content {
+            flex: 1;
+        }
+        
+        .badge-content h4 {
+            margin: 0 0 8px;
+            color: var(--dark-color);
+        }
+        
+        .badge-content p {
+            margin: 0;
+            color: var(--gray-color);
+            font-size: 14px;
+        }
+        
+        .verify-tag {
+            background: #4caf50;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        /* 志愿者故事 */
+        .stories-section {
+            padding: 80px 0;
+            background: var(--light-color);
+        }
+        
+        .stories-slider {
+            display: flex;
+            gap: 30px;
+            overflow-x: auto;
+            padding: 20px 10px;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .story-card {
+            flex: 0 0 350px;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .story-image {
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .story-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .story-category {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--primary-color);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+        
+        .story-content {
+            padding: 25px;
+        }
+        
+        .story-quote {
+            font-style: italic;
+            color: var(--gray-color);
+            line-height: 1.7;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .story-quote::before {
+            content: '"';
+            font-size: 48px;
+            color: var(--primary-color);
+            position: absolute;
+            top: -20px;
+            left: -10px;
+            opacity: 0.3;
+        }
+        
+        .story-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #ddd;
+            margin-right: 15px;
+            overflow: hidden;
+        }
+        
+        .author-info h5 {
+            margin: 0 0 5px;
+            color: var(--dark-color);
+        }
+        
+        .author-info p {
+            margin: 0;
+            color: var(--gray-color);
+            font-size: 14px;
+        }
+        
+        /* 注册表单 */
+        .registration-form-section {
+            padding: 80px 0;
+        }
+        
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+            font-weight: 600;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            background: white;
+            cursor: pointer;
+        }
+        
+        .skills-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .skill-tag {
+            background: #f0f0f0;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .skill-tag.selected {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .availability-selector {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .availability-option {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .availability-option.selected {
+            border-color: var(--primary-color);
+            background: rgba(var(--primary-rgb), 0.1);
+        }
+        
+        .availability-option i {
+            font-size: 24px;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .volunteer-banner {
+                padding: 80px 0 60px;
+            }
+            
+            .volunteer-banner h1 {
+                font-size: 36px;
+            }
+            
+            .benefits-section {
+                padding: 60px 0;
+            }
+            
+            .benefits-grid {
+                gap: 30px;
+            }
+            
+            .benefit-card {
+                padding: 30px 20px;
+            }
+            
+            .roles-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .process-timeline::before {
+                left: 25px;
+            }
+            
+            .step-number {
+                width: 50px;
+            }
+            
+            .step-circle {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+            
+            .step-content {
+                padding: 20px;
+            }
+            
+            .cert-badges {
+                grid-template-columns: 1fr;
+            }
+            
+            .story-card {
+                flex: 0 0 300px;
+            }
+            
+            .form-container {
+                padding: 30px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .volunteer-banner h1 {
+                font-size: 28px;
+            }
+            
+            .volunteer-banner p {
+                font-size: 16px;
+            }
+            
+            .benefit-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 24px;
+            }
+            
+            .benefit-title {
+                font-size: 20px;
+            }
+            
+            .process-step {
+                flex-direction: column;
+            }
+            
+            .step-content {
+                margin-left: 0;
+                margin-top: 20px;
+            }
+            
+            .availability-selector {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 跳过导航链接（辅助功能） -->
+    <a href="#main-content" class="sr-only">跳过导航</a>
+    
+    <!-- 导航栏 -->
+    <header>
+        <div class="container">
+            <nav class="navbar" aria-label="主导航">
+                <div class="logo">
+                    <i class="fas fa-hands-helping" aria-hidden="true"></i>
+                    援手社区
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html"><i class="fas fa-home"></i> 首页</a></li>
+                    <li><a href="#benefits"><i class="fas fa-gift"></i> 志愿者福利</a></li>
+                    <li><a href="#roles"><i class="fas fa-user-tag"></i> 志愿者角色</a></li>
+                    <li><a href="#process"><i class="fas fa-list-ol"></i> 注册流程</a></li>
+                    <li><a href="#certification"><i class="fas fa-award"></i> 技能认证</a></li>
+                    <li><a href="#stories"><i class="fas fa-heart"></i> 志愿者故事</a></li>
+                    <li><a href="login.html" class="btn btn-primary"><i class="fas fa-user-circle"></i> 登录/注册</a></li>
+                </ul>
+                <button class="mobile-menu" aria-label="切换菜单" aria-expanded="false">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 主内容区域 -->
+    <main id="main-content">
+        <!-- 志愿者招募横幅 -->
+        <section class="volunteer-banner">
+            <div class="container">
+                <h1>成为援手社区志愿者</h1>
+                <p>用您的技能、时间和善意，为需要帮助的人点亮希望之光。加入我们，成为温暖社会的一份子，让每一份善意都有回响。</p>
+                <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                    <a href="#registration" class="btn btn-primary" style="background: white; color: var(--primary-color); font-weight: 700; padding: 18px 40px; font-size: 18px;">
+                        立即注册志愿者 <i class="fas fa-user-plus"></i>
+                    </a>
+                    <a href="#stories" class="btn btn-outline" style="background: transparent; border-color: white; color: white; padding: 18px 40px; font-size: 18px;">
+                        听听志愿者故事 <i class="fas fa-play-circle"></i>
+                    </a>
+                </div>
+                <div class="video-stats" style="margin-top: 60px; color: white;">
+                    <div class="stat">
+                        <span class="stat-number" style="color: white;">8,247</span>
+                        <span class="stat-label">活跃志愿者</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" style="color: white;">94.7%</span>
+                        <span class="stat-label">匹配成功率</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" style="color: white;">23分钟</span>
+                        <span class="stat-label">平均响应时间</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 志愿者福利 -->
+        <section class="benefits-section" id="benefits">
+            <div class="container">
+                <div class="section-title">
+                    <h2>志愿者专属福利</h2>
+                    <p>加入援手社区，您不仅能够帮助他人，还能获得专属权益和成长机会</p>
+                </div>
+                
+                <div class="benefits-grid">
+                    <!-- 福利1 -->
+                    <div class="benefit-card">
+                        <div class="benefit-icon">🏆</div>
+                        <h3 class="benefit-title">志愿服务认证</h3>
+                        <p class="benefit-description">获得官方志愿服务时长认证，可用于学校社会实践、工作背景提升等，提升个人履历。</p>
+                        <div class="step-tip" style="margin-top: 20px; text-align: left;">
+                            <i class="fas fa-lightbulb"></i>
+                            <strong>适用场景：</strong> 升学、求职、评优评先
+                        </div>
+                    </div>
+                    
+                    <!-- 福利2 -->
+                    <div class="benefit-card">
+                        <div class="benefit-icon">📚</div>
+                        <h3 class="benefit-title">专业技能培训</h3>
+                        <p class="benefit-description">免费参加急救、心理咨询、沟通技巧等专业培训，提升个人能力，获得相关技能证书。</p>
+                        <div class="step-tip" style="margin-top: 20px; text-align: left;">
+                            <i class="fas fa-lightbulb"></i>
+                            <strong>培训频率：</strong> 每月2-3次线上/线下课程
+                        </div>
+                    </div>
+                    
+                    <!-- 福利3 -->
+                    <div class="benefit-card">
+                        <div class="benefit-icon">🤝</div>
+                        <h3 class="benefit-title">社区人脉网络</h3>
+                        <p class="benefit-description">加入志愿者专属社群，结识志同道合的伙伴，拓展人脉资源，参与社区建设和活动。</p>
+                        <div class="step-tip" style="margin-top: 20px; text-align: left;">
+                            <i class="fas fa-lightbulb"></i>
+                            <strong>活动形式：</strong> 定期聚会、主题沙龙、团队建设
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 志愿者角色 -->
+        <section class="roles-section" id="roles">
+            <div class="container">
+                <div class="section-title">
+                    <h2>选择适合您的志愿者角色</h2>
+                    <p>根据您的兴趣、技能和时间，选择最适合的志愿者角色</p>
+                </div>
+                
+                <div class="roles-container">
+                    <!-- 角色1：日常帮助 -->
+                    <div class="role-card">
+                        <div class="role-header">
+                            <div class="role-icon">🛒</div>
+                            <h3 class="role-title">日常帮助志愿者</h3>
+                        </div>
+                        <div class="role-content">
+                            <ul class="role-requirements">
+                                <li><i class="fas fa-check"></i> 协助购物、送餐等日常事务</li>
+                                <li><i class="fas fa-check"></i> 陪伴聊天、情感支持</li>
+                                <li><i class="fas fa-check"></i> 简单家务协助</li>
+                                <li><i class="fas fa-check"></i> 每周至少2小时服务时间</li>
+                                <li><i class="fas fa-check"></i> 有耐心和同理心</li>
+                            </ul>
+                            <a href="#registration" class="btn btn-primary" style="width: 100%; padding: 12px;">
+                                <i class="fas fa-user-plus"></i> 申请此角色
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- 角色2：专业技能 -->
+                    <div class="role-card">
+                        <div class="role-header">
+                            <div class="role-icon">🔧</div>
+                            <h3 class="role-title">专业技能志愿者</h3>
+                        </div>
+                        <div class="role-content">
+                            <ul class="role-requirements">
+                                <li><i class="fas fa-check"></i> 医疗、法律、教育等专业背景</li>
+                                <li><i class="fas fa-check"></i> 提供专业咨询和指导</li>
+                                <li><i class="fas fa-check"></i> 技术维修、IT支持等</li>
+                                <li><i class="fas fa-check"></i> 相关资格证书或经验</li>
+                                <li><i class="fas fa-check"></i> 每月至少4小时服务时间</li>
+                            </ul>
+                            <a href="#registration" class="btn btn-primary" style="width: 100%; padding: 12px;">
+                                <i class="fas fa-user-plus"></i> 申请此角色
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- 角色3：紧急响应 -->
+                    <div class="role-card">
+                        <div class="role-header">
+                            <div class="role-icon">🚨</div>
+                            <h3 class="role-title">紧急响应志愿者</h3>
+                        </div>
+                        <div class="role-content">
+                            <ul class="role-requirements">
+                                <li><i class="fas fa-check"></i> 24小时待命（轮班制）</li>
+                                <li><i class="fas fa-check"></i> 急救、消防救援等资质</li>
+                                <li><i class="fas fa-check"></i> 良好的应急处理能力</li>
+                                <li><i class="fas fa-check"></i> 通过紧急响应培训</li>
+                                <li><i class="fas fa-check"></i> 心理素质强，沉着冷静</li>
+                            </ul>
+                            <a href="#registration" class="btn btn-primary" style="width: 100%; padding: 12px;">
+                                <i class="fas fa-user-plus"></i> 申请此角色
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 注册流程 -->
+        <section class="registration-process" id="process">
+            <div class="container">
+                <div class="section-title">
+                    <h2>志愿者注册流程</h2>
+                    <p>简单四步，快速成为认证志愿者</p>
+                </div>
+                
+                <div class="process-timeline">
+                    <!-- 步骤1 -->
+                    <div class="process-step">
+                        <div class="step-number">
+                            <div class="step-circle">1</div>
+                        </div>
+                        <div class="step-content">
+                            <h3 class="step-title">在线注册与信息填写</h3>
+                            <p class="step-description">填写基本信息，选择感兴趣的志愿者角色，描述您的技能和经验。整个过程只需5-10分钟。</p>
+                            <span class="step-duration">约5-10分钟</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 步骤2 -->
+                    <div class="process-step">
+                        <div class="step-number">
+                            <div class="step-circle">2</div>
+                        </div>
+                        <div class="step-content">
+                            <h3 class="step-title">背景审核与资质验证</h3>
+                            <p class="step-description">我们的团队将对您的信息进行审核，验证相关资质。审核结果将在1-3个工作日内通过邮件通知。</p>
+                            <span class="step-duration">1-3个工作日</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 步骤3 -->
+                    <div class="process-step">
+                        <div class="step-number">
+                            <div class="step-circle">3</div>
+                        </div>
+                        <div class="step-content">
+                            <h3 class="step-title">在线培训与测试</h3>
+                            <p class="step-description">完成志愿者基础培训课程并通过测试，了解平台规则、沟通技巧和注意事项。</p>
+                            <span class="step-duration">约30-60分钟</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 步骤4 -->
+                    <div class="process-step">
+                        <div class="step-number">
+                            <div class="step-circle">4</div>
+                        </div>
+                        <div class="step-content">
+                            <h3 class="step-title">正式成为志愿者</h3>
+                            <p class="step-description">审核通过后，您将获得志愿者认证，可以开始接收求助信息，提供帮助。</p>
+                            <span class="step-duration">立即开始</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 技能认证 -->
+        <section class="certification-section" id="certification">
+            <div class="container">
+                <div class="section-title">
+                    <h2>志愿者技能认证</h2>
+                    <p>专业认证的志愿者，确保援助质量与安全</p>
+                </div>
+                
+                <div class="cert-badges">
+                    <div class="badge-card">
+                        <div class="badge-icon medical-badge">🏥</div>
+                        <div class="badge-content">
+                            <h4>医疗急救认证</h4>
+                            <p>124人已通过认证，可提供专业医疗帮助</p>
+                        </div>
+                        <div class="verify-tag">已验证</div>
+                    </div>
+                    
+                    <div class="badge-card">
+                        <div class="badge-icon education-badge">📚</div>
+                        <div class="badge-content">
+                            <h4>教育辅导认证</h4>
+                            <p>367名教师/大学生志愿者，专业教学能力</p>
+                        </div>
+                        <div class="verify-tag">已验证</div>
+                    </div>
+                    
+                    <div class="badge-card">
+                        <div class="badge-icon tech-badge">💻</div>
+                        <div class="badge-content">
+                            <h4>技术支持认证</h4>
+                            <p>89名技术专家，解决各类技术问题</p>
+                        </div>
+                        <div class="verify-tag">已验证</div>
+                    </div>
+                    
+                    <div class="badge-card">
+                        <div class="badge-icon psychology-badge">🧠</div>
+                        <div class="badge-content">
+                            <h4>心理咨询认证</h4>
+                            <p>56名心理咨询师，提供心理支持</p>
+                        </div>
+                        <div class="verify-tag">已验证</div>
+                    </div>
+                    
+                    <div class="badge-card">
+                        <div class="badge-icon legal-badge">⚖️</div>
+                        <div class="badge-content">
+                            <h4>法律援助认证</h4>
+                            <p>42名法律专业人士，提供法律咨询</p>
+                        </div>
+                        <div class="verify-tag">已验证</div>
+                    </div>
+                    
+                    <div class="badge-card">
+                        <div class="badge-icon handyman-badge">🔧</div>
+                        <div class="badge-content">
+                            <h4>维修技能认证</h4>
+                            <p>78名维修师傅，解决家电家具问题</p>
+                        </div>
+                        <div class="verify-tag">已验证</div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-40">
+                    <a href="#" class="btn btn-outline" style="padding: 12px 40px;">
+                        <i class="fas fa-graduation-cap"></i> 查看认证要求与流程
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 志愿者故事 -->
+        <section class="stories-section" id="stories">
+            <div class="container">
+                <div class="section-title">
+                    <h2>志愿者故事分享</h2>
+                    <p>听听志愿者们的真实感受和经历</p>
+                </div>
+                
+                <div class="stories-slider">
+                    <!-- 故事1 -->
+                    <div class="story-card">
+                        <div class="story-image">
+                            <img src="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="志愿者帮助老人">
+                            <div class="story-category">助老服务</div>
+                        </div>
+                        <div class="story-content">
+                            <p class="story-quote">"帮助王奶奶这半年，我收获的远比我付出的多。看到她脸上的笑容，让我明白了什么是真正的幸福。"</p>
+                            <div class="story-author">
+                                <div class="author-avatar">
+                                    <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="李女士头像">
+                                </div>
+                                <div class="author-info">
+                                    <h5>李女士</h5>
+                                    <p>助老志愿者 · 服务时长：128小时</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 故事2 -->
+                    <div class="story-card">
+                        <div class="story-image">
+                            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="志愿者辅导学生">
+                            <div class="story-category">教育帮扶</div>
+                        </div>
+                        <div class="story-content">
+                            <p class="story-quote">"看到小明的数学成绩从不及格到优秀，那种成就感无法用言语形容。教育真的可以改变一个孩子的未来。"</p>
+                            <div class="story-author">
+                                <div class="author-avatar">
+                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="张老师头像">
+                                </div>
+                                <div class="author-info">
+                                    <h5>张老师</h5>
+                                    <p>教育志愿者 · 服务时长：96小时</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 故事3 -->
+                    <div class="story-card">
+                        <div class="story-image">
+                            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="志愿者团队合作">
+                            <div class="story-category">团队合作</div>
+                        </div>
+                        <div class="story-content">
+                            <p class="story-quote">"在援手社区，我不仅帮助了他人，还结识了一群志同道合的朋友。我们一起成长，一起让社区变得更美好。"</p>
+                            <div class="story-author">
+                                <div class="author-avatar">
+                                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="王先生头像">
+                                </div>
+                                <div class="author-info">
+                                    <h5>王先生</h5>
+                                    <p>团队志愿者 · 服务时长：256小时</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 注册表单 -->
+        <section class="registration-form-section" id="registration">
+            <div class="container">
+                <div class="section-title">
+                    <h2>志愿者注册</h2>
+                    <p>填写以下信息，开始您的志愿者之旅</p>
+                </div>
+                
+                <div class="form-container">
+                    <form id="volunteer-registration-form">
+                        <div class="form-group">
+                            <label class="form-label" for="fullName">姓名 *</label>
+                            <input type="text" class="form-control" id="fullName" name="fullName" required placeholder="请输入您的真实姓名">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="phone">手机号码 *</label>
+                            <input type="tel" class="form-control" id="phone" name="phone" required placeholder="请输入您的手机号码">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="email">电子邮箱 *</label>
+                            <input type="email" class="form-control" id="email" name="email" required placeholder="请输入您的电子邮箱">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="volunteerRole">志愿者角色 *</label>
+                            <select class="form-select" id="volunteerRole" name="volunteerRole" required>
+                                <option value="">请选择志愿者角色</option>
+                                <option value="daily-help">日常帮助志愿者</option>
+                                <option value="professional">专业技能志愿者</option>
+                                <option value="emergency">紧急响应志愿者</option>
+                                <option value="all">都可以，听从分配</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">您的技能与专长 *</label>
+                            <div class="skills-selector">
+                                <span class="skill-tag" data-skill="medical">医疗急救</span>
+                                <span class="skill-tag" data-skill="education">教育辅导</span>
+                                <span class="skill-tag" data-skill="tech">技术支持</span>
+                                <span class="skill-tag" data-skill="psychology">心理支持</span>
+                                <span class="skill-tag" data-skill="legal">法律咨询</span>
+                                <span class="skill-tag" data-skill="repair">维修技能</span>
+                                <span class="skill-tag" data-skill="cooking">烹饪</span>
+                                <span class="skill-tag" data-skill="driving">驾驶</span>
+                                <span class="skill-tag" data-skill="language">外语翻译</span>
+                                <span class="skill-tag" data-skill="other">其他</span>
+                            </div>
+                            <input type="hidden" id="selectedSkills" name="selectedSkills">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="availability">可提供服务时间 *</label>
+                            <div class="availability-selector">
+                                <div class="availability-option" data-value="weekday">
+                                    <i class="fas fa-sun"></i>
+                                    <div>工作日</div>
+                                    <small>周一至周五</small>
+                                </div>
+                                <div class="availability-option" data-value="weekend">
+                                    <i class="fas fa-moon"></i>
+                                    <div>周末</div>
+                                    <small>周六、周日</small>
+                                </div>
+                                <div class="availability-option" data-value="flexible">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <div>灵活时间</div>
+                                    <small>根据需求安排</small>
+                                </div>
+                            </div>
+                            <input type="hidden" id="availability" name="availability">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="experience">相关经验描述</label>
+                            <textarea class="form-control" id="experience" name="experience" rows="4" placeholder="请描述您相关的志愿者经验、工作经历或技能证书（如有）"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="motivation">申请动机 *</label>
+                            <textarea class="form-control" id="motivation" name="motivation" rows="4" required placeholder="请简要说明您希望成为志愿者的原因和期望"></textarea>
+                        </div>
+                        
+                        <div class="form-group" style="margin-top: 40px;">
+                            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 18px; font-size: 18px;">
+                                <i class="fas fa-paper-plane"></i> 提交申请
+                            </button>
+                        </div>
+                        
+                        <p style="text-align: center; color: var(--gray-color); font-size: 14px; margin-top: 20px;">
+                            提交申请后，我们将在1-3个工作日内与您联系。如有问题，请致电：15612140351
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 底部 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>成为志愿者</h3>
+                    <ul class="footer-links">
+                        <li><a href="#benefits"><i class="fas fa-chevron-right"></i> 志愿者福利</a></li>
+                        <li><a href="#roles"><i class="fas fa-chevron-right"></i> 志愿者角色</a></li>
+                        <li><a href="#process"><i class="fas fa-chevron-right"></i> 注册流程</a></li>
+                        <li><a href="#certification"><i class="fas fa-chevron-right"></i> 技能认证</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>帮助中心</h3>
+                    <ul class="footer-links">
+                        <li><a href="how-to-get-help.html"><i class="fas fa-chevron-right"></i> 如何求助</a></li>
+                        <li><a href="post-help.html"><i class="fas fa-chevron-right"></i> 发布求助</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> 常见问题</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> 用户协议</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>核心功能</h3>
+                    <ul class="footer-links">
+                        <li><a href="intelligent-matching.html"><i class="fas fa-chevron-right"></i> 智能匹配系统</a></li>
+                        <li><a href="secure-communication.html"><i class="fas fa-chevron-right"></i> 安全沟通平台</a></li>
+                        <li><a href="credit-rating.html"><i class="fas fa-chevron-right"></i> 信用评价系统</a></li>
+                        <li><a href="map-visualization.html"><i class="fas fa-chevron-right"></i> 地图可视化</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>联系我们</h3>
+                    <ul class="footer-links footer-contact">
+                        <li><i class="fas fa-envelope"></i> 邮箱：2639687821@qq.com</li>
+                        <li><i class="fas fa-phone-alt"></i> 电话：15612140351</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 地址：河北科技大学</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 援手社区 - 综合性社会援助平台 版权所有 | 冀ICP备12345678号</p>
+                <p class="mt-20">让每一份善意都有回响，让每一次求助都有回应</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+        // 技能选择功能
+        document.addEventListener('DOMContentLoaded', function() {
+            // 技能标签选择
+            const skillTags = document.querySelectorAll('.skill-tag');
+            const selectedSkillsInput = document.getElementById('selectedSkills');
+            const selectedSkills = [];
+            
+            skillTags.forEach(tag => {
+                tag.addEventListener('click', function() {
+                    const skill = this.getAttribute('data-skill');
+                    if (this.classList.contains('selected')) {
+                        this.classList.remove('selected');
+                        const index = selectedSkills.indexOf(skill);
+                        if (index > -1) {
+                            selectedSkills.splice(index, 1);
+                        }
+                    } else {
+                        this.classList.add('selected');
+                        selectedSkills.push(skill);
+                    }
+                    selectedSkillsInput.value = selectedSkills.join(',');
+                });
+            });
+            
+            // 服务时间选择
+            const availabilityOptions = document.querySelectorAll('.availability-option');
+            const availabilityInput = document.getElementById('availability');
+            
+            availabilityOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // 移除其他选项的选中状态
+                    availabilityOptions.forEach(opt => opt.classList.remove('selected'));
+                    
+                    // 选中当前选项
+                    this.classList.add('selected');
+                    availabilityInput.value = this.getAttribute('data-value');
+                });
+            });
+            
+            // 表单提交
+            const registrationForm = document.getElementById('volunteer-registration-form');
+            registrationForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // 验证表单
+                const fullName = document.getElementById('fullName').value;
+                const phone = document.getElementById('phone').value;
+                const email = document.getElementById('email').value;
+                const volunteerRole = document.getElementById('volunteerRole').value;
+                const motivation = document.getElementById('motivation').value;
+                const availability = document.getElementById('availability').value;
+                
+                if (!fullName || !phone || !email || !volunteerRole || !motivation || !availability) {
+                    alert('请填写所有必填字段（标有*的字段）');
+                    return;
+                }
+                
+                if (selectedSkills.length === 0) {
+                    alert('请至少选择一项技能');
+                    return;
+                }
+                
+                // 模拟提交成功
+                alert('志愿者申请已提交！我们将在1-3个工作日内与您联系。感谢您的申请！');
+                registrationForm.reset();
+                skillTags.forEach(tag => tag.classList.remove('selected'));
+                availabilityOptions.forEach(opt => opt.classList.remove('selected'));
+                selectedSkillsInput.value = '';
+                availabilityInput.value = '';
+                selectedSkills.length = 0;
+                
+                // 滚动到页面顶部
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>

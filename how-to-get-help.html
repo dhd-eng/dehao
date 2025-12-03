@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="如何通过援手社区获取帮助 - 简单三步发布求助，快速获得援助">
+    <meta name="keywords" content="发布求助,获取帮助,求助流程,社会援助,志愿者帮助">
+    <title>如何求助 - 援手社区</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 求助流程样式 */
+        .help-process {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+        
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+        
+        .process-step {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .process-step:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+        
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 auto 25px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .step-icon {
+            font-size: 48px;
+            margin-bottom: 25px;
+            color: var(--primary-color);
+        }
+        
+        .step-title {
+            font-size: 22px;
+            color: var(--dark-color);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .step-description {
+            color: var(--gray-color);
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+        
+        .step-tip {
+            background: var(--light-color);
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 20px;
+            border-left: 4px solid var(--primary-color);
+            text-align: left;
+        }
+        
+        .step-tip i {
+            color: var(--primary-color);
+            margin-right: 10px;
+        }
+        
+        /* 求助分类 */
+        .help-categories {
+            padding: 80px 0;
+        }
+        
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .category-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+        
+        .category-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .category-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        
+        .category-title {
+            font-size: 20px;
+            font-weight: 700;
+        }
+        
+        .category-content {
+            padding: 25px;
+        }
+        
+        .category-list {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+        
+        .category-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+        
+        .category-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .category-list i {
+            color: var(--primary-color);
+            margin-right: 12px;
+            font-size: 14px;
+        }
+        
+        /* 常见问题 */
+        .faq-section {
+            padding: 80px 0;
+            background: var(--light-color);
+        }
+        
+        .faq-container {
+            max-width: 800px;
+            margin: 50px auto 0;
+        }
+        
+        .faq-item {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .faq-question {
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .faq-question:hover {
+            background: #f8f9fa;
+        }
+        
+        .faq-question h4 {
+            margin: 0;
+            font-size: 18px;
+            color: var(--dark-color);
+            flex: 1;
+        }
+        
+        .faq-toggle {
+            color: var(--primary-color);
+            font-size: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .faq-answer {
+            padding: 0 30px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease, padding 0.5s ease;
+        }
+        
+        .faq-answer.active {
+            padding: 25px 30px;
+            max-height: 1000px;
+        }
+        
+        .faq-answer p {
+            color: var(--gray-color);
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+        
+        .faq-answer ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .faq-answer li {
+            margin-bottom: 8px;
+            color: var(--gray-color);
+        }
+        
+        /* 紧急求助 */
+        .emergency-help {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+            margin-top: 80px;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .emergency-help::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+            opacity: 0.1;
+        }
+        
+        .emergency-help h2 {
+            color: white;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .emergency-help p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+        }
+        
+        .emergency-btn {
+            background: white;
+            color: #ff6b6b;
+            font-weight: 700;
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-size: 18px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .emergency-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(255, 255, 255, 0.2);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .help-process {
+                padding: 60px 0;
+            }
+            
+            .process-steps {
+                gap: 30px;
+            }
+            
+            .process-step {
+                padding: 30px 20px;
+            }
+            
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .faq-question {
+                padding: 20px;
+            }
+            
+            .faq-question h4 {
+                font-size: 16px;
+            }
+            
+            .emergency-help {
+                padding: 40px 20px;
+                margin-top: 50px;
+            }
+            
+            .emergency-btn {
+                padding: 15px 30px;
+                font-size: 16px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .step-icon {
+                font-size: 40px;
+            }
+            
+            .step-title {
+                font-size: 20px;
+            }
+            
+            .category-header {
+                padding: 20px;
+            }
+            
+            .faq-question {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 跳过导航链接（辅助功能） -->
+    <a href="#main-content" class="sr-only">跳过导航</a>
+    
+    <!-- 导航栏 -->
+    <header>
+        <div class="container">
+            <nav class="navbar" aria-label="主导航">
+                <div class="logo">
+                    <i class="fas fa-hands-helping" aria-hidden="true"></i>
+                    援手社区
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html"><i class="fas fa-home"></i> 首页</a></li>
+                    <li><a href="#process"><i class="fas fa-list-ol"></i> 求助流程</a></li>
+                    <li><a href="#categories"><i class="fas fa-th-large"></i> 求助分类</a></li>
+                    <li><a href="#faq"><i class="fas fa-question-circle"></i> 常见问题</a></li>
+                    <li><a href="#emergency"><i class="fas fa-exclamation-circle"></i> 紧急求助</a></li>
+                    <li><a href="login.html" class="btn btn-primary"><i class="fas fa-user-circle"></i> 登录/注册</a></li>
+                </ul>
+                <button class="mobile-menu" aria-label="切换菜单" aria-expanded="false">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 主内容区域 -->
+    <main id="main-content">
+        <!-- 页面标题 -->
+        <section class="page-header">
+            <div class="container">
+                <div class="page-title">
+                    <h1>如何获取帮助</h1>
+                    <p>简单三步发布求助，快速获得援助，让每一份善意都能及时到达</p>
+                </div>
+                <div class="page-breadcrumb">
+                    <a href="index.html">首页</a> / <span>如何求助</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 求助流程 -->
+        <section class="help-process" id="process">
+            <div class="container">
+                <div class="section-title">
+                    <h2>简单三步，快速获得帮助</h2>
+                    <p>我们的流程设计简单直观，让您在需要帮助时能够快速发布信息</p>
+                </div>
+                
+                <div class="process-steps">
+                    <!-- 步骤1 -->
+                    <div class="process-step">
+                        <div class="step-number">01</div>
+                        <div class="step-icon">📝</div>
+                        <h3 class="step-title">发布求助信息</h3>
+                        <p class="step-description">填写基本信息，描述您的需求，选择求助类型和紧急程度。我们保护您的隐私，不会公开敏感信息。</p>
+                        <div class="step-tip">
+                            <i class="fas fa-lightbulb"></i>
+                            <strong>小贴士：</strong> 详细描述您的需求有助于志愿者更好地理解并提供帮助
+                        </div>
+                    </div>
+                    
+                    <!-- 步骤2 -->
+                    <div class="process-step">
+                        <div class="step-number">02</div>
+                        <div class="step-icon">🔍</div>
+                        <h3 class="step-title">智能匹配志愿者</h3>
+                        <p class="step-description">系统根据您的位置、需求和志愿者技能进行智能匹配，快速找到最合适的援助者。</p>
+                        <div class="step-tip">
+                            <i class="fas fa-lightbulb"></i>
+                            <strong>小贴士：</strong> 可以查看志愿者的评价和认证信息，选择您信任的志愿者
+                        </div>
+                    </div>
+                    
+                    <!-- 步骤3 -->
+                    <div class="process-step">
+                        <div class="step-number">03</div>
+                        <div class="step-icon">🤝</div>
+                        <h3 class="step-title">获得帮助与反馈</h3>
+                        <p class="step-description">通过安全沟通平台与志愿者联系，获得帮助后可以对志愿者进行评价，帮助系统完善信任机制。</p>
+                        <div class="step-tip">
+                            <i class="fas fa-lightbulb"></i>
+                            <strong>小贴士：</strong> 及时更新求助状态，可以帮助更多需要类似帮助的人
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-50">
+                    <a href="post-help.html" class="btn btn-primary" style="padding: 18px 50px; font-size: 18px;">
+                        <i class="fas fa-bullhorn"></i> 立即发布求助
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 求助分类 -->
+        <section class="help-categories" id="categories">
+            <div class="container">
+                <div class="section-title">
+                    <h2>求助分类与范围</h2>
+                    <p>我们覆盖多种求助类型，确保不同需求都能得到满足</p>
+                </div>
+                
+                <div class="category-grid">
+                    <!-- 生活帮助 -->
+                    <div class="category-card">
+                        <div class="category-header">
+                            <div class="category-icon">🛒</div>
+                            <h3 class="category-title">生活帮助</h3>
+                        </div>
+                        <div class="category-content">
+                            <ul class="category-list">
+                                <li><i class="fas fa-check"></i> 日常购物与代购</li>
+                                <li><i class="fas fa-check"></i> 送餐与配餐服务</li>
+                                <li><i class="fas fa-check"></i> 家政清洁帮助</li>
+                                <li><i class="fas fa-check"></i> 宠物照看与遛狗</li>
+                                <li><i class="fas fa-check"></i> 简单维修与安装</li>
+                            </ul>
+                            <a href="post-help.html" class="btn btn-outline" style="width: 100%; padding: 12px;">
+                                <i class="fas fa-plus-circle"></i> 发布此类求助
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- 医疗健康 -->
+                    <div class="category-card">
+                        <div class="category-header">
+                            <div class="category-icon">🏥</div>
+                            <h3 class="category-title">医疗健康</h3>
+                        </div>
+                        <div class="category-content">
+                            <ul class="category-list">
+                                <li><i class="fas fa-check"></i> 陪同就医与挂号</li>
+                                <li><i class="fas fa-check"></i> 药品购买与配送</li>
+                                <li><i class="fas fa-check"></i> 健康咨询与监测</li>
+                                <li><i class="fas fa-check"></i> 康复训练陪伴</li>
+                                <li><i class="fas fa-check"></i> 心理支持与倾听</li>
+                            </ul>
+                            <a href="post-help.html" class="btn btn-outline" style="width: 100%; padding: 12px;">
+                                <i class="fas fa-plus-circle"></i> 发布此类求助
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- 教育学习 -->
+                    <div class="category-card">
+                        <div class="category-header">
+                            <div class="category-icon">📚</div>
+                            <h3 class="category-title">教育学习</h3>
+                        </div>
+                        <div class="category-content">
+                            <ul class="category-list">
+                                <li><i class="fas fa-check"></i> 课业辅导与答疑</li>
+                                <li><i class="fas fa-check"></i> 技能培训与教学</li>
+                                <li><i class="fas fa-check"></i> 学习资料分享</li>
+                                <li><i class="fas fa-check"></i> 学习方法指导</li>
+                                <li><i class="fas fa-check"></i> 考试准备帮助</li>
+                            </ul>
+                            <a href="post-help.html" class="btn btn-outline" style="width: 100%; padding: 12px;">
+                                <i class="fas fa-plus-circle"></i> 发布此类求助
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-40">
+                    <a href="#" class="btn btn-outline" style="padding: 12px 40px;">
+                        <i class="fas fa-list-alt"></i> 查看完整分类列表
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 常见问题 -->
+        <section class="faq-section" id="faq">
+            <div class="container">
+                <div class="section-title">
+                    <h2>常见问题解答</h2>
+                    <p>解答您在使用过程中可能遇到的问题</p>
+                </div>
+                
+                <div class="faq-container">
+                    <!-- 问题1 -->
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            <h4>发布求助需要收费吗？</h4>
+                            <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>援手社区是一个公益性平台，<strong>发布求助完全免费</strong>。我们的目标是连接需要帮助的人与愿意提供帮助的人，不向求助者收取任何费用。平台运营依靠政府支持、企业捐赠和志愿者贡献。</p>
+                            <p>但是，如果求助涉及需要购买物资或专业服务，可能需要与志愿者协商相关费用，这需要在求助描述中明确说明。</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 问题2 -->
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            <h4>如何确保个人信息安全？</h4>
+                            <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>我们采取多层安全措施保护您的个人信息：</p>
+                            <ul>
+                                <li><strong>匿名发布选项：</strong> 可以选择不公开真实姓名和联系方式</li>
+                                <li><strong>加密通信：</strong> 所有站内消息都经过端到端加密</li>
+                                <li><strong>隐私保护：</strong> 地址信息只显示大概区域，不显示具体门牌号</li>
+                                <li><strong>志愿者审核：</strong> 所有志愿者都经过实名认证和背景审核</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- 问题3 -->
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            <h4>一般需要多久才能获得帮助？</h4>
+                            <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>获得帮助的时间取决于求助的紧急程度和类型：</p>
+                            <ul>
+                                <li><strong>紧急求助：</strong> 平均响应时间15分钟内，24小时内解决</li>
+                                <li><strong>高优先级：</strong> 平均响应时间1小时内，3天内解决</li>
+                                <li><strong>一般求助：</strong> 平均响应时间4小时内，7天内解决</li>
+                            </ul>
+                            <p>平台会根据您的求助紧急程度进行优先推送，并发送短信提醒附近志愿者。</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 问题4 -->
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            <h4>如果对志愿者不满意怎么办？</h4>
+                            <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>我们提供了多种保障措施：</p>
+                            <ul>
+                                <li><strong>双向评价系统：</strong> 求助结束后可以对志愿者进行匿名评价</li>
+                                <li><strong>平台介入：</strong> 如果出现纠纷，可以申请平台客服介入协调</li>
+                                <li><strong>更换志愿者：</strong> 如果对当前志愿者不满意，可以申请更换其他志愿者</li>
+                                <li><strong>投诉机制：</strong> 对于不专业或不礼貌的志愿者，可以通过投诉按钮举报</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 紧急求助 -->
+        <section class="emergency-help" id="emergency">
+            <div class="container">
+                <h2>需要紧急帮助？</h2>
+                <p>如果您遇到紧急情况需要立即援助，请使用我们的紧急求助功能。系统将优先推送您的求助，并通知附近的专业志愿者和救援组织。</p>
+                <a href="post-help.html?type=emergency" class="emergency-btn">
+                    <i class="fas fa-exclamation-triangle"></i> 立即发起紧急求助
+                </a>
+                <p style="margin-top: 30px; font-size: 14px; opacity: 0.9;">
+                    对于生命危险等极端紧急情况，请立即拨打紧急电话：<strong>110（报警）</strong>、<strong>120（急救）</strong>、<strong>119（消防）</strong>
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- 底部 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>如何求助</h3>
+                    <ul class="footer-links">
+                        <li><a href="#process"><i class="fas fa-chevron-right"></i> 求助流程</a></li>
+                        <li><a href="#categories"><i class="fas fa-chevron-right"></i> 求助分类</a></li>
+                        <li><a href="#faq"><i class="fas fa-chevron-right"></i> 常见问题</a></li>
+                        <li><a href="#emergency"><i class="fas fa-chevron-right"></i> 紧急求助</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>帮助中心</h3>
+                    <ul class="footer-links">
+                        <li><a href="post-help.html"><i class="fas fa-chevron-right"></i> 发布求助</a></li>
+                        <li><a href="become-volunteer.html"><i class="fas fa-chevron-right"></i> 成为志愿者</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> 用户协议</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> 隐私政策</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>核心功能</h3>
+                    <ul class="footer-links">
+                        <li><a href="intelligent-matching.html"><i class="fas fa-chevron-right"></i> 智能匹配系统</a></li>
+                        <li><a href="secure-communication.html"><i class="fas fa-chevron-right"></i> 安全沟通平台</a></li>
+                        <li><a href="credit-rating.html"><i class="fas fa-chevron-right"></i> 信用评价系统</a></li>
+                        <li><a href="map-visualization.html"><i class="fas fa-chevron-right"></i> 地图可视化</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>联系我们</h3>
+                    <ul class="footer-links footer-contact">
+                        <li><i class="fas fa-envelope"></i> 邮箱：2639687821@qq.com</li>
+                        <li><i class="fas fa-phone-alt"></i> 电话：15612140351</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 地址：河北科技大学</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 援手社区 - 综合性社会援助平台 版权所有 | 冀ICP备12345678号</p>
+                <p class="mt-20">让每一份善意都有回响，让每一次求助都有回应</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+        // 常见问题切换功能
+        function toggleFAQ(element) {
+            const faqItem = element.parentElement;
+            const answer = faqItem.querySelector('.faq-answer');
+            const toggleIcon = element.querySelector('.faq-toggle i');
+            
+            // 切换答案显示
+            answer.classList.toggle('active');
+            
+            // 切换图标
+            if (answer.classList.contains('active')) {
+                toggleIcon.className = 'fas fa-chevron-up';
+            } else {
+                toggleIcon.className = 'fas fa-chevron-down';
+            }
+        }
+        
+        // 初始化：默认展开第一个FAQ
+        document.addEventListener('DOMContentLoaded', function() {
+            const firstFaq = document.querySelector('.faq-item');
+            if (firstFaq) {
+                const answer = firstFaq.querySelector('.faq-answer');
+                const toggleIcon = firstFaq.querySelector('.faq-toggle i');
+                answer.classList.add('active');
+                toggleIcon.className = 'fas fa-chevron-up';
+            }
+        });
+    </script>
+</body>
+</html>
